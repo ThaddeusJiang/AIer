@@ -7,7 +7,13 @@ import {
 
 const apiKey = process.env.OPENAI_API_KEY;
 
-export const OpenAIStream = async (prompt: string) => {
+export const OpenAIStream = async ({
+  queryTo,
+  prompt
+}: {
+  queryTo: string;
+  prompt: string;
+}) => {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
@@ -22,8 +28,9 @@ export const OpenAIStream = async (prompt: string) => {
       messages: [
         {
           role: 'system',
-          content:
-            'You are a helpful assistant that accurately answers queries using tweets. Use the text provided to form your answer, but avoid copying word-for-word from the essays. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Response in the same language as the user speaks'
+          // content:
+          //   'You are a helpful assistant that accurately answers queries using tweets. Use the text provided to form your answer, but avoid copying word-for-word from the essays. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Response in the same language as the user speaks'
+          content: `You are an advanced artificial intelligence. By learning a large amount of SNS content, you have become familiar with ${queryTo}. Please disguise yourself as him and answer the questions. You can use the text provided to form your answer, but avoid copying word-for-word from the essays. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Response in the same language as the user speaks.`
         },
         {
           role: 'user',

@@ -1,15 +1,25 @@
 import { Answer } from '@/components/ui/Answer/Answer';
 import { PGChunk } from '@/types';
 import { useUser } from '@/utils/useUser';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { IconArrowRight } from '@tabler/icons-react';
 import endent from 'endent';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Tweet } from 'react-tweet';
 
-export default function Chat() {
+export default function Chat({
+  availableReplicas
+}: {
+  availableReplicas: {
+    sourceId: string;
+    sourceBrand: string;
+    sourceUsername: string;
+  }[];
+}) {
   const router = useRouter();
   const { user } = useUser();
 
@@ -28,7 +38,13 @@ export default function Chat() {
 
   const { register, handleSubmit } = useForm();
 
-  const handleAnswer = async (query: string) => {
+  const handleAnswer = async ({
+    talkWith,
+    query
+  }: {
+    talkWith: string;
+    query: string;
+  }) => {
     setAnswer('');
     setChunks([]);
 
@@ -42,7 +58,7 @@ export default function Chat() {
       body: JSON.stringify({
         query,
         matches: matchCount,
-        queryTo: user?.id
+        queryTo: talkWith
       })
     });
 
@@ -98,7 +114,8 @@ export default function Chat() {
 
   const onSubmit = (data: any) => {
     const query = data.query;
-    handleAnswer(query);
+    const talkWith = data.talkWith;
+    handleAnswer({ query, talkWith });
   };
 
   return (
@@ -116,14 +133,31 @@ export default function Chat() {
 
       <div className="flex flex-col pb-60">
         <div className="flex-1 ">
-          <div className="mx-auto flex w-full max-w-[750px] flex-col items-center px-3 pt-4 sm:pt-8">
+          <div className="mx-auto flex w-full max-w-[550px] flex-col items-center px-3 pt-4 sm:pt-8">
             <form
-              className="relative w-full mt-4"
+              className="relative w-full mt-4 form-control"
               onSubmit={handleSubmit(onSubmit)}
             >
+              <div className="flex w-full justify-start space-x-2 items-center">
+                <label htmlFor="talkWith" className=" label">
+                  Talk with
+                </label>
+                <select
+                  {...register('talkWith')}
+                  className="select select-bordered text-gray-900 select-sm"
+                >
+                  {availableReplicas.map((d) => {
+                    return (
+                      <option key={d.sourceUsername} value={d.sourceId}>
+                        {d.sourceBrand}/{d.sourceUsername}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
               <div>
                 <textarea
-                  className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-4 sm:leading-6 text-lg"
+                  className="textarea textarea-bordered mt-4 w-full text-gray-900 "
                   rows={3}
                   placeholder="How TJ view the TypeScript?"
                   {...register('query', { required: true })}
@@ -180,7 +214,7 @@ export default function Chat() {
                 </div>
               </div>
             ) : (
-              <div className="mt-6 text-center text-lg">{`AIer - an AI avatar, digital immortality.`}</div>
+              <div className="mt-6 text-center text-lg">{`You can talk to yourself or chat with AIers anytime.`}</div>
             )}
           </div>
         </div>
@@ -188,3 +222,36 @@ export default function Chat() {
     </>
   );
 }
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false
+      }
+    };
+  }
+
+  return {
+    props: {
+      availableReplicas: [
+        {
+          sourceId: 'd9655e45-0bb7-4610-9d42-52059214c7a1',
+          sourceBrand: 'Twitter',
+          sourceUsername: 'ThaddeusJiang'
+        },
+        {
+          sourceId: 'abb9e761-9f0d-4d3a-b201-bf40f19a5474',
+          sourceBrand: 'Twitter',
+          sourceUsername: 'mieisgood'
+        }
+      ]
+    }
+  };
+};

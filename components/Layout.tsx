@@ -14,8 +14,9 @@ interface Props extends PropsWithChildren {
 export default function Layout({ children, meta: pageMeta }: Props) {
   const router = useRouter();
   const meta = {
-    title: 'Next.js Subscription Starter',
-    description: 'Brought to you by Vercel, Stripe, and Supabase.',
+    title: 'AIer',
+    description:
+      "AIer is a service that helps you create and share your digital replicas. It's powered by AI and machine learning.",
     cardImage: '/og.png',
     ...pageMeta
   };

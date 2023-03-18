@@ -24,12 +24,12 @@ const Navbar = () => {
           <div className="flex flex-1 items-center">
             <Link
               href={user ? '/chat' : '/'}
-              className="cursor-pointer rounded-full transform duration-100 ease-in-out flex items-center space-x-2"
+              className="cursor-pointer transform duration-100 ease-in-out flex items-center space-x-2"
               aria-label="Logo"
             >
               <Logo />
               <span>
-                <strong>AIer</strong> - talking with AI counterparts
+                <strong>AIer</strong> - talking with digital replicas
               </span>
             </Link>
           </div>

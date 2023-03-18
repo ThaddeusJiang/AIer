@@ -6,11 +6,15 @@ export const config = {
 
 const handler = async (req: Request): Promise<Response> => {
   try {
-    const { prompt } = (await req.json()) as {
+    const { queryTo, prompt } = (await req.json()) as {
+      queryTo: string;
       prompt: string;
     };
 
-    const stream = await OpenAIStream(prompt);
+    const stream = await OpenAIStream({
+      queryTo,
+      prompt
+    });
 
     return new Response(stream);
   } catch (error) {

@@ -1,35 +1,52 @@
 {
-  "name": "nextjs-subscription-payments",
-  "version": "0.0.0",
+  "name": "aier",
+  "version": "0.0.1",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "stripe:listen": "stripe listen --forward-to=localhost:3000/api/webhooks --project-name=saas-starter"
+    "stripe:listen": "stripe listen --forward-to=localhost:3000/api/webhooks --project-name=saas-starter",
+    "scrape": "tsx scripts/scrape.ts",
+    "embed:t": "tsx scripts/embed_tweets.ts"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.13",
+    "@heroicons/react": "^2.0.16",
     "@stripe/stripe-js": "^1.48.0",
     "@supabase/auth-helpers-nextjs": "^0.5.4",
     "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/auth-ui-react": "^0.3.3",
     "@supabase/auth-ui-shared": "^0.1.2",
-    "@supabase/supabase-js": "^2.10.0",
+    "@tabler/icons-react": "^2.10.0",
     "classnames": "^2.3.2",
+    "daisyui": "^2.51.4",
+    "endent": "^2.1.0",
+    "eventsource-parser": "^0.1.0",
     "next": "^13.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.5",
     "react-merge-refs": "^2.0.1",
+    "react-tweet": "^2.0.0",
     "stripe": "^11.13.0",
-    "swr": "^2.0.4",
-    "tailwindcss": "^3.2.7"
+    "swr": "^2.0.4"
   },
   "devDependencies": {
+    "@next/env": "^13.2.4",
+    "@supabase/supabase-js": "^2.11.0",
     "@types/node": "^18.14.4",
     "@types/react": "^18.0.28",
     "autoprefixer": "^10.4.13",
+    "axios": "^1.3.4",
+    "cheerio": "^1.0.0-rc.12",
+    "gpt-3-encoder": "^1.1.4",
+    "openai": "^3.2.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
+    "tailwindcss": "^3.2.7",
+    "tsx": "^3.12.5",
     "typescript": "^4.9.5"
   },
   "prettier": {

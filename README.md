@@ -1,6 +1,6 @@
-# Next.js Subscription Payments Starter
+# AIer
 
-The all-in-one starter kit for high-performance SaaS applications.
+AIer is a web application that allows you to create and share AI avatars with your friends. It is built with Next.js, Supabase.
 
 ## Features
 
@@ -116,7 +116,6 @@ You can use the [Supabase CLI](https://supabase.com/docs/reference/cli/usage#sup
 
 ```bash
 npm install supabase --save-dev
-yarn add supabase --dev
 ```
 
 2. Connect to supabase
@@ -190,7 +189,4 @@ Running this Stripe command will print a webhook secret (such as, `whsec_***`) t
 ```bash
 npm install
 npm run dev
-# or
-yarn
-yarn dev
 ```

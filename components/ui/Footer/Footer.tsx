@@ -17,7 +17,7 @@ export default function Footer() {
             <span className="rounded-full border border-zinc-700 mr-2">
               <Logo />
             </span>
-            <span>ACME</span>
+            <span>AIer</span>
           </Link>
         </div>
         <div className="col-span-1 lg:col-span-2">
@@ -85,7 +85,7 @@ export default function Footer() {
           <div className="flex space-x-6 items-center h-10">
             <a
               aria-label="Github Repository"
-              href="https://github.com/vercel/nextjs-subscription-payments"
+              href="https://github.com/ThaddeusJiang/aier"
             >
               <GitHub />
             </a>
@@ -94,14 +94,14 @@ export default function Footer() {
       </div>
       <div className="py-12 flex flex-col md:flex-row justify-between items-center space-y-4 bg-zinc-900">
         <div>
-          <span>&copy; 2020 ACME, Inc. All rights reserved.</span>
+          <span>&copy; 2020 AIer, Inc. All rights reserved.</span>
         </div>
         <div className="flex items-center">
           <span className="text-white">Crafted by</span>
-          <a href="https://vercel.com" aria-label="Vercel.com Link">
+          <a href="https://aier.app" aria-label="AIer.app Link">
             <img
               src="/vercel.svg"
-              alt="Vercel.com Logo"
+              alt="AIer.app Logo"
               className="inline-block h-6 ml-4 text-white"
             />
           </a>

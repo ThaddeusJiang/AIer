@@ -1,4 +1,4 @@
-/** 
+/**
 * USERS
 * Note: This table contains user data. Users should only be able to view and update their own data.
 */
@@ -18,8 +18,8 @@ create policy "Can update own user data." on users for update using (auth.uid() 
 
 /**
 * This trigger automatically creates a user entry when a new user signs up via Supabase Auth.
-*/ 
-create function public.handle_new_user() 
+*/
+create function public.handle_new_user()
 returns trigger as $$
 begin
   insert into public.users (id, full_name, avatar_url)
@@ -44,7 +44,7 @@ create table customers (
 alter table customers enable row level security;
 -- No policies as this is a private table that the user must not have access to.
 
-/** 
+/**
 * PRODUCTS
 * Note: products are created and managed in Stripe and synced to our DB via Stripe webhooks.
 */
@@ -75,7 +75,7 @@ create table prices (
   -- Price ID from Stripe, e.g. price_1234.
   id text primary key,
   -- The ID of the prduct that this price belongs to.
-  product_id text references products, 
+  product_id text references products,
   -- Whether the price can be used for new purchases.
   active boolean,
   -- A brief description of the price.
@@ -143,3 +143,75 @@ create policy "Can only view own subs data." on subscriptions for select using (
  */
 drop publication if exists supabase_realtime;
 create publication supabase_realtime for table products, prices;
+
+--  RUN 1st
+create extension vector;
+
+-- RUN 2nd
+create table embeddings (
+  id bigserial primary key,
+  user_id text,
+  source_brand text,
+  source_username text,
+  essay_title text,
+  essay_url text,
+  essay_date text,
+  essay_thanks text,
+  content text,
+  content_length bigint,
+  content_tokens bigint,
+  embedding vector (1536)
+);
+
+create table queries (
+  id bigserial primary key,
+  query_from text,
+  query_to text,
+  query_text text
+);
+
+-- RUN 3rd after running the scripts
+create or replace function embeddings_search (
+  query_embedding vector(1536),
+  similarity_threshold float,
+  match_count int,
+  query_to text
+)
+returns table (
+  id bigint,
+  user_id text,
+  essay_title text,
+  essay_url text,
+  essay_date text,
+  essay_thanks text,
+  content text,
+  content_length bigint,
+  content_tokens bigint,
+  similarity float
+)
+language plpgsql
+as $$
+begin
+  return query
+  select
+    emb.id,
+    emb.user_id,
+    emb.essay_title,
+    emb.essay_url,
+    emb.essay_date,
+    emb.essay_thanks,
+    emb.content,
+    emb.content_length,
+    emb.content_tokens,
+    1 - (emb.embedding <=> query_embedding) as similarity
+  from embeddings AS emb
+  where 1 - (emb.embedding <=> query_embedding) > similarity_threshold AND emb.user_id = query_to
+  order by emb.embedding <=> query_embedding
+  limit match_count;
+end;
+$$;
+
+-- RUN 4th
+create index on embeddings
+using ivfflat (embedding vector_cosine_ops)
+with (lists = 100);

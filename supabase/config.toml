@@ -1,6 +1,6 @@
 # A string used to distinguish different Supabase projects on the same host. Defaults to the working
 # directory name when running `supabase init`.
-project_id = "nextjs-subscription-payments"
+project_id = "aier"
 
 [api]
 # Port to use for the API URL.
@@ -71,7 +71,7 @@ redirect_uri = "http://localhost:54321/auth/v1/callback"
 # or any other third-party OIDC providers.
 url = ""
 [auth.external.github]
-enabled = true
+enabled = false
 client_id = ""
 secret = ""
 # Overrides the default auth redirectUrl.

@@ -9,7 +9,7 @@ import type { Database } from 'types_db';
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
-const supabaseAdmin = createClient<Database>(
+export const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 );
@@ -177,9 +177,33 @@ const manageSubscriptionStatusChange = async (
     );
 };
 
+const createQueryRecord = async ({
+  queryFrom,
+  queryTo,
+  queryText
+}: {
+  queryFrom: string;
+  queryTo: string;
+  queryText: string;
+}) => {
+  const queryData = {
+    query_from: queryFrom,
+    query_to: queryTo,
+    query_text: queryText
+  };
+  const { error, data } = await supabaseAdmin
+    .from('queries')
+    .insert(queryData)
+    .select();
+  if (error) throw error;
+  const [{ id }] = data;
+  console.log(`Query inserted: ${id}`);
+};
+
 export {
   upsertProductRecord,
   upsertPriceRecord,
   createOrRetrieveCustomer,
-  manageSubscriptionStatusChange
+  manageSubscriptionStatusChange,
+  createQueryRecord
 };

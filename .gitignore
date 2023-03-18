@@ -26,6 +26,7 @@ yarn-error.log*
 
 # local env files
 .env.local
+.env*.local
 .env.development.local
 .env.test.local
 .env.production.local
@@ -35,3 +36,6 @@ yarn-error.log*
 
 # editors
 .vscode
+
+# data
+*.csv

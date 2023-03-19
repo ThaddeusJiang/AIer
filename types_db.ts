@@ -9,6 +9,44 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      avatars: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string
+          id: string
+          owner_id: string | null
+          source_brand: string | null
+          source_username: string | null
+          status: string | null
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name: string
+          id: string
+          owner_id?: string | null
+          source_brand?: string | null
+          source_username?: string | null
+          status?: string | null
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          owner_id?: string | null
+          source_brand?: string | null
+          source_username?: string | null
+          status?: string | null
+          updated_at?: string
+          username?: string
+        }
+      }
       customers: {
         Row: {
           id: string
@@ -95,6 +133,7 @@ export interface Database {
       }
       embeddings: {
         Row: {
+          avatar_id: string | null
           content: string | null
           content_length: number | null
           content_tokens: number | null
@@ -106,9 +145,9 @@ export interface Database {
           id: number
           source_brand: string | null
           source_username: string | null
-          user_id: string | null
         }
         Insert: {
+          avatar_id?: string | null
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
@@ -120,9 +159,9 @@ export interface Database {
           id?: number
           source_brand?: string | null
           source_username?: string | null
-          user_id?: string | null
         }
         Update: {
+          avatar_id?: string | null
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
@@ -134,7 +173,6 @@ export interface Database {
           id?: number
           source_brand?: string | null
           source_username?: string | null
-          user_id?: string | null
         }
       }
       prices: {
@@ -202,6 +240,29 @@ export interface Database {
           image?: string | null
           metadata?: Json | null
           name?: string | null
+        }
+      }
+      queries: {
+        Row: {
+          created_at: string
+          from_id: string | null
+          id: number
+          message_text: string | null
+          to_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          from_id?: string | null
+          id?: number
+          message_text?: string | null
+          to_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          from_id?: string | null
+          id?: number
+          message_text?: string | null
+          to_id?: string | null
         }
       }
       subscriptions: {
@@ -294,7 +355,7 @@ export interface Database {
         }
         Returns: {
           id: number
-          user_id: string
+          avatar_id: string
           essay_title: string
           essay_url: string
           essay_date: string

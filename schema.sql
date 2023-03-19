@@ -16,6 +16,19 @@ alter table users enable row level security;
 create policy "Can view own user data." on users for select using (auth.uid() = id);
 create policy "Can update own user data." on users for update using (auth.uid() = id);
 
+CREATE TABLE avatars (
+  id text not null PRIMARY KEY,
+  username text NOT NULL,
+  display_name text NOT NULL,
+  avatar_url text,
+  source_brand text,
+  source_username text,
+  status text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  owner_id uuid references auth.users
+);
+
 /**
 * This trigger automatically creates a user entry when a new user signs up via Supabase Auth.
 */
@@ -150,7 +163,7 @@ create extension vector;
 -- RUN 2nd
 create table embeddings (
   id bigserial primary key,
-  user_id text,
+  avatar_id text,
   source_brand text,
   source_username text,
   essay_title text,
@@ -165,9 +178,10 @@ create table embeddings (
 
 create table queries (
   id bigserial primary key,
-  query_from text,
-  query_to text,
-  query_text text
+  from_id text,
+  to_id text,
+  message_text text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
 -- RUN 3rd after running the scripts
@@ -179,7 +193,7 @@ create or replace function embeddings_search (
 )
 returns table (
   id bigint,
-  user_id text,
+  avatar_id text,
   essay_title text,
   essay_url text,
   essay_date text,
@@ -195,7 +209,7 @@ begin
   return query
   select
     emb.id,
-    emb.user_id,
+    emb.avatar_id,
     emb.essay_title,
     emb.essay_url,
     emb.essay_date,
@@ -205,7 +219,7 @@ begin
     emb.content_tokens,
     1 - (emb.embedding <=> query_embedding) as similarity
   from embeddings AS emb
-  where 1 - (emb.embedding <=> query_embedding) > similarity_threshold AND emb.user_id = query_to
+  where 1 - (emb.embedding <=> query_embedding) > similarity_threshold AND emb.avatar_id = query_to
   order by emb.embedding <=> query_embedding
   limit match_count;
 end;

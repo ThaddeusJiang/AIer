@@ -2,10 +2,10 @@ import { PropsWithChildren } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
+import { Navbar } from '@/components/ui/Navbar/Navbar';
 
 import { PageMeta } from '../types';
+import { Header } from './lp/Header';
 
 interface Props extends PropsWithChildren {
   meta?: PageMeta;
@@ -40,9 +40,8 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={meta.cardImage} />
       </Head>
-      <Navbar />
+      <Header />
       <main id="skip">{children}</main>
-      <Footer />
     </>
   );
 }

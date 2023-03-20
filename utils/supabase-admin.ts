@@ -14,7 +14,7 @@ export const supabaseAdmin = createClient<Database>(
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 );
 
-const upsertProductRecord = async (product: Stripe.Product) => {
+export const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
     id: product.id,
     active: product.active,
@@ -29,7 +29,7 @@ const upsertProductRecord = async (product: Stripe.Product) => {
   console.log(`Product inserted/updated: ${product.id}`);
 };
 
-const upsertPriceRecord = async (price: Stripe.Price) => {
+export const upsertPriceRecord = async (price: Stripe.Price) => {
   const priceData: Price = {
     id: price.id,
     product_id: typeof price.product === 'string' ? price.product : '',
@@ -49,7 +49,7 @@ const upsertPriceRecord = async (price: Stripe.Price) => {
   console.log(`Price inserted/updated: ${price.id}`);
 };
 
-const createOrRetrieveCustomer = async ({
+export const createOrRetrieveCustomer = async ({
   email,
   uuid
 }: {
@@ -105,7 +105,7 @@ const copyBillingDetailsToCustomer = async (
   if (error) throw error;
 };
 
-const manageSubscriptionStatusChange = async (
+export const manageSubscriptionStatusChange = async (
   subscriptionId: string,
   customerId: string,
   createAction = false
@@ -177,19 +177,19 @@ const manageSubscriptionStatusChange = async (
     );
 };
 
-const createQueryRecord = async ({
-  queryFrom,
-  queryTo,
-  queryText
+export const createQueryRecord = async ({
+  from,
+  to,
+  message
 }: {
-  queryFrom: string;
-  queryTo: string;
-  queryText: string;
+  from: string;
+  to: string;
+  message: string;
 }) => {
   const queryData = {
-    query_from: queryFrom,
-    query_to: queryTo,
-    query_text: queryText
+    from_id: from,
+    to_id: to,
+    message_text: message
   };
   const { error, data } = await supabaseAdmin
     .from('queries')
@@ -200,10 +200,40 @@ const createQueryRecord = async ({
   console.log(`Query inserted: ${id}`);
 };
 
-export {
-  upsertProductRecord,
-  upsertPriceRecord,
-  createOrRetrieveCustomer,
-  manageSubscriptionStatusChange,
-  createQueryRecord
+const apiKey = process.env.OPENAI_API_KEY;
+
+export const searchEmbeddings = async ({
+  query,
+  limit = 5,
+  queryTo
+}: {
+  query: string;
+  limit?: number;
+  queryTo: string;
+}) => {
+  const input = query.replace(/\n/g, ' ');
+
+  const embeddingsJson = await fetch('https://api.openai.com/v1/embeddings', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      model: 'text-embedding-ada-002',
+      input
+    })
+  });
+
+  const json = await embeddingsJson.json();
+  const embedding = json.data[0].embedding;
+
+  const { data, error } = await supabaseAdmin.rpc('embeddings_search', {
+    query_embedding: embedding,
+    similarity_threshold: 0.01,
+    match_count: limit,
+    query_to: queryTo
+  });
+
+  return { data, error };
 };

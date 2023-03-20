@@ -1,6 +1,6 @@
 # AIer
 
-AIer is a web application that allows you to create and share AI avatars with your friends. It is built with Next.js, Supabase.
+AIer is a web application that allows you to create and share AI Replicas with your friends. It is built with Next.js, Supabase.
 
 ## Features
 

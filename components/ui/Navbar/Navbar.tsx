@@ -9,28 +9,29 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import classNames from 'classnames';
 
-const Navbar = () => {
+export const Navbar = () => {
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
 
   return (
-    <nav className="sticky top-0 bg-black z-40 transition-all duration-150">
+    <nav className="transition-all duration-150">
       <a href="#skip" className="sr-only focus:not-sr-only">
         Skip to content
       </a>
       <div className="mx-auto max-w-6xl px-6">
-        <div className="flex justify-between align-center flex-row py-4 md:py-6 relative">
-          <div className="flex flex-1 items-center">
+        <div className="flex justify-between align-center flex-row py-4 md:py-6 relative ">
+          <div className="flex flex-1 items-center space-x-2">
             <Link
               href={user ? '/chat' : '/'}
-              className="cursor-pointer transform duration-100 ease-in-out flex items-center space-x-2"
+              className="cursor-pointer transform duration-100 ease-in-out "
               aria-label="Logo"
             >
               <Logo />
-              <span>
-                <strong>AIer</strong> - talking with digital replicas
-              </span>
+            </Link>
+
+            <Link href="/avatars" className="link">
+              Avatars
             </Link>
           </div>
 
@@ -152,5 +153,3 @@ const Navbar = () => {
     </nav>
   );
 };
-
-export default Navbar;

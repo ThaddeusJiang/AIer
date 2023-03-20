@@ -1,15 +1,43 @@
 import { OpenAIStream } from '@/utils/openai';
+import { createQueryRecord, searchEmbeddings } from '@/utils/supabase-admin';
+import endent from 'endent';
 
 export const config = {
-  runtime: 'edge'
+  runtime: 'edge',
+  unstable_allowDynamic: [
+    '/node_modules/function-bind/**' // use a glob to allow anything in the function-bind 3rd party module
+  ]
 };
 
 const handler = async (req: Request): Promise<Response> => {
   try {
-    const { queryTo, prompt } = (await req.json()) as {
+    const { queryFrom, queryTo, query } = (await req.json()) as {
+      queryFrom: string;
       queryTo: string;
-      prompt: string;
+      query: string;
     };
+
+    const { data: chunks, error } = await searchEmbeddings({
+      query,
+      queryTo
+    });
+
+    if (error) {
+      console.error(error);
+      return new Response('Error', { status: 500 });
+    }
+
+    const prompt = endent`
+    Use the following passages to provide an answer to the query: "${query}"
+
+    ${chunks?.map((d: any) => d.content).join('\n\n')}
+    `;
+
+    await createQueryRecord({
+      from: queryFrom,
+      to: queryTo,
+      message: query
+    });
 
     const stream = await OpenAIStream({
       queryTo,

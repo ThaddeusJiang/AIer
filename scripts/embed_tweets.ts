@@ -113,7 +113,7 @@ function tweet2essay(tweetRecord: string) {
 
 (async () => {
   if (!source_file || !user_id) {
-    console.log('params is invalid.');
+    console.error('params is invalid.');
     return;
   }
   const rl = readline.createInterface({

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Button } from '@/components/lp/Button';
 import { Container } from '@/components/lp/Container';
 
-function SwirlyDoodle({ className }) {
+export function SwirlyDoodle({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
@@ -20,7 +20,7 @@ function SwirlyDoodle({ className }) {
   );
 }
 
-function CheckIcon({ className }) {
+export function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
@@ -46,7 +46,23 @@ function CheckIcon({ className }) {
   );
 }
 
-function Plan({ name, price, description, href, features, featured = false }) {
+const billingInterval = 'month';
+
+function Plan({
+  name,
+  price,
+  description,
+  href,
+  features,
+  featured = false
+}: {
+  name: string;
+  price: string;
+  description: string;
+  href: string;
+  features: string[];
+  featured?: boolean;
+}) {
   return (
     <section
       className={clsx(
@@ -64,7 +80,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
         {description}
       </p>
       <p className="order-first font-display text-5xl font-light tracking-tight text-white">
-        {price}
+        {price} <span className="text-xl">/ {billingInterval}</span>
       </p>
       <ul
         role="list"
@@ -93,7 +109,18 @@ function Plan({ name, price, description, href, features, featured = false }) {
   );
 }
 
-export function Pricing() {
+export function Pricing({
+  plans
+}: {
+  plans?: {
+    featured: boolean;
+    name: string;
+    price: string;
+    description: string;
+    href: string;
+    features: string[];
+  }[];
+}) {
   return (
     <section
       id="pricing"
@@ -110,27 +137,18 @@ export function Pricing() {
             for everyone.
           </h2>
           <p className="mt-4 text-lg text-slate-400">
-            It doesn’t matter what size your business is, our software won’t
-            work well for you.
+            You can request a refund at any time if you genuinely feel that the
+            service is not valuable.
           </p>
         </div>
-        <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
-          <Plan
-            name="Starter"
-            price="$9"
-            description="Good for anyone who is self-employed and just getting started."
-            href="/signin"
-            features={[
-              'Send 10 quotes and invoices',
-              'Connect up to 2 bank accounts',
-              'Track up to 15 expenses per month',
-              'Manual payroll support',
-              'Export up to 3 reports'
-            ]}
-          />
+        <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-2 xl:mx-0 xl:gap-x-8">
+          {/* {plans.map((plan) => (
+            <Plan {...plan} />
+          ))} */}
+
           <Plan
             featured
-            name="Small business"
+            name="Basic"
             price="$15"
             description="Perfect for small / medium sized businesses."
             href="/signin"
@@ -145,7 +163,7 @@ export function Pricing() {
             ]}
           />
           <Plan
-            name="Enterprise"
+            name="Plus"
             price="$39"
             description="For even the biggest enterprise companies."
             href="/signin"

@@ -3,7 +3,10 @@ import { createQueryRecord, searchEmbeddings } from '@/utils/supabase-admin';
 import endent from 'endent';
 
 export const config = {
-  runtime: 'edge'
+  runtime: 'edge',
+  unstable_allowDynamic: [
+    '/node_modules/function-bind/**' // use a glob to allow anything in the function-bind 3rd party module
+  ]
 };
 
 const handler = async (req: Request): Promise<Response> => {

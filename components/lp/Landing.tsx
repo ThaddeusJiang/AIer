@@ -14,10 +14,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>TaxPal - Accounting made simple for small businesses</title>
+        <title>AIer - digital avatar and digital immortality</title>
         <meta
           name="description"
-          content="Most bookkeeping software is accurate, but hard to use. We make the opposite trade-off, and hope you don’t get audited."
+          content="Break through time and physical limitations, achieve digital avatar and digital immortality. ~ powered by AI"
         />
       </Head>
 
@@ -26,9 +26,9 @@ export default function Home() {
         <PrimaryFeatures />
         <SecondaryFeatures />
         <CallToAction />
-        <Testimonials />
+        {/* <Testimonials /> */}
         <Pricing />
-        <Faqs />
+        {/* <Faqs /> */}
       </main>
       <Footer />
     </>

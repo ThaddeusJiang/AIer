@@ -13,8 +13,8 @@ export interface Database {
         Row: {
           avatar_url: string | null
           created_at: string
-          display_name: string
           id: string
+          name: string
           owner_id: string | null
           source_brand: string | null
           source_username: string | null
@@ -25,8 +25,8 @@ export interface Database {
         Insert: {
           avatar_url?: string | null
           created_at?: string
-          display_name: string
           id: string
+          name: string
           owner_id?: string | null
           source_brand?: string | null
           source_username?: string | null
@@ -37,8 +37,8 @@ export interface Database {
         Update: {
           avatar_url?: string | null
           created_at?: string
-          display_name?: string
           id?: string
+          name?: string
           owner_id?: string | null
           source_brand?: string | null
           source_username?: string | null

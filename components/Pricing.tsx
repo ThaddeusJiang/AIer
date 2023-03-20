@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 
-import Button from '@/components/ui/Button';
 import { postData } from '@/utils/helpers';
 import { getStripe } from '@/utils/stripe-client';
 import { useUser } from '@/utils/useUser';
@@ -74,7 +73,7 @@ export default function Pricing({ products }: Props) {
           <h1 className="text-4xl font-extrabold  sm:text-center sm:text-6xl">
             Pricing Plans
           </h1>
-          <p className="mt-5 text-xl text-zinc-200 sm:text-center sm:text-2xl max-w-2xl m-auto">
+          <p className="mt-5 text-xl text-zinc-800 sm:text-center sm:text-2xl max-w-2xl m-auto">
             Start building for free, then add a site plan to go live. Account
             plans unlock additional features.
           </p>
@@ -103,7 +102,7 @@ export default function Pricing({ products }: Props) {
             </button>
           </div>
         </div>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-4">
+        <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 ">
           {products.map((product) => {
             const price = product?.prices?.find(
               (price) => price.interval === billingInterval
@@ -139,18 +138,16 @@ export default function Pricing({ products }: Props) {
                       /{billingInterval}
                     </span>
                   </p>
-                  <Button
-                    variant="slim"
+                  <button
+                    className="btn"
                     type="button"
                     disabled={isLoading}
-                    loading={priceIdLoading === price.id}
                     onClick={() => handleCheckout(price)}
-                    className="mt-8 block w-full rounded-md py-2 text-sm font-semibold  text-center hover:bg-zinc-900"
                   >
                     {product.name === subscription?.prices?.products?.name
                       ? 'Manage'
                       : 'Subscribe'}
-                  </Button>
+                  </button>
                 </div>
               </div>
             );

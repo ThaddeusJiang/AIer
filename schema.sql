@@ -19,7 +19,7 @@ create policy "Can update own user data." on users for update using (auth.uid() 
 CREATE TABLE avatars (
   id text not null PRIMARY KEY,
   username text NOT NULL,
-  display_name text NOT NULL,
+  name text NOT NULL,
   avatar_url text,
   source_brand text,
   source_username text,

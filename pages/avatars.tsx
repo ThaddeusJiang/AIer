@@ -1,24 +1,21 @@
+import { Avatars } from '@/components/Avatars';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { GetServerSidePropsContext } from 'next';
-import Link from 'next/link';
 
-export default function AIersPage({
+export default function AvatarsPage({
   avatars
 }: {
   avatars: {
     id: string;
     username: string;
+    name: string;
+    avatar_url: string;
+    desc?: string;
+    twitterUrl?: string;
+    linkedinUrl?: string;
   }[];
 }) {
-  return (
-    <>
-      {avatars.map((avatar) => (
-        <div key={avatar.id}>
-          <Link href={`/chat/${avatar.username}`}>{avatar.username}</Link>
-        </div>
-      ))}
-    </>
-  );
+  return <Avatars avatars={avatars} />;
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

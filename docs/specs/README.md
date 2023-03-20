@@ -14,7 +14,7 @@ interface user {
         twitter: {
             id: string,
             username: string,
-            displayName: string,
+            name: string,
             profileImage: string,
             accessToken: string,
             accessTokenSecret: string
@@ -30,7 +30,7 @@ CREATE TABLE sns (
     brand TEXT NOT NULL,
     user_id TEXT NOT NULL,
     username TEXT NOT NULL,
-    display_name TEXT NOT NULL,
+    name TEXT NOT NULL,
     avatar TEXT NOT NULL,
     user_id references auth.users
 );

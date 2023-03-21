@@ -30,7 +30,7 @@ export function Avatars({
           className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
         >
           {avatars.map((avatar) => (
-            <li key={avatar.name}>
+            <li key={avatar.username}>
               <Link href={`/chat/${avatar.username}`}>
                 <img
                   className="mx-auto h-56 w-56 rounded-full"
@@ -43,7 +43,7 @@ export function Avatars({
               <h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900">
                 {avatar.name}
               </h3>
-              <h4>{avatar.username}</h4>
+              <h4 className=" text-sm ">@{avatar.username}</h4>
               <p className="text-sm leading-6 text-gray-600">{avatar.desc}</p>
               <ul role="list" className="mt-6 flex justify-center gap-x-6">
                 {avatar.twitterUrl ? (

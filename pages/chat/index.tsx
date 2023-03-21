@@ -9,6 +9,7 @@ export default function ChatPage({
   avatar: {
     id: string;
     username: string;
+    name: string;
   };
 }) {
   const { user } = useUser();

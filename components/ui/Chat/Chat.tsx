@@ -16,6 +16,7 @@ export function Chat({
   avatar: {
     id: string;
     username: string;
+    name: string;
   };
   user: User | null;
 }) {
@@ -102,10 +103,10 @@ export function Chat({
   return (
     <>
       <Head>
-        <title>Talk with {avatar.username}</title>
+        <title>Talk with {avatar.name}</title>
         <meta
           name="description"
-          content={`Talk with ${avatar.username} on the web. Ask ${avatar.username} anything!`}
+          content={`Talk with ${avatar.name} on the web. Ask ${avatar.name} anything!`}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -120,12 +121,12 @@ export function Chat({
             >
               <div>
                 <label htmlFor="talkWith" className=" label">
-                  Talk with {avatar?.username}
+                  Talk with {avatar?.name}
                 </label>
                 <textarea
                   className="textarea textarea-bordered mt-4 w-full text-gray-900 "
                   rows={3}
-                  placeholder={`Hi, I am ${avatar?.username}.\nAsk me anything!`}
+                  placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
                   {...register('query', { required: true })}
                 />
               </div>

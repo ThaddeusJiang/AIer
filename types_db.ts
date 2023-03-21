@@ -156,7 +156,7 @@ export interface Database {
           essay_thanks?: string | null
           essay_title?: string | null
           essay_url?: string | null
-          id?: number
+          id: number
           source_brand?: string | null
           source_username?: string | null
         }

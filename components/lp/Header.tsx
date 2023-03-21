@@ -53,6 +53,10 @@ function MobileNavIcon({ open }: { open: boolean }) {
 }
 
 function MobileNavigation() {
+  const router = useRouter();
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
+
   return (
     <Popover>
       <Popover.Button
@@ -86,11 +90,38 @@ function MobileNavigation() {
             as="div"
             className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-white p-4 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
           >
-            <MobileNavLink href="#features">Features</MobileNavLink>
-            <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
-            <MobileNavLink href="#pricing">Pricing</MobileNavLink>
-            <hr className="m-2 border-slate-300/40" />
-            <MobileNavLink href="/signin">Sign in</MobileNavLink>
+            {user ? (
+              <>
+                <MobileNavLink href="/chat">Chat</MobileNavLink>
+                <MobileNavLink href="/avatars">Avatars</MobileNavLink>
+                <hr className="m-2 border-slate-300/40" />
+                <MobileNavLink href="/settings/profile">
+                  Your Profile
+                </MobileNavLink>
+                <MobileNavLink href="/settings/pricing">Pricing</MobileNavLink>
+                <hr className="m-2 border-slate-300/40" />
+                <Popover.Button
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await supabaseClient.auth.signOut();
+                    router.push('/signin');
+                  }}
+                  className="block w-full p-2"
+                >
+                  Sign out
+                </Popover.Button>
+              </>
+            ) : (
+              <>
+                <MobileNavLink href="/#features">Features</MobileNavLink>
+                <MobileNavLink href="/#testimonials">
+                  Testimonials
+                </MobileNavLink>
+                <MobileNavLink href="/#pricing">Pricing</MobileNavLink>
+                <hr className="m-2 border-slate-300/40" />
+                <MobileNavLink href="/signin">Sign in</MobileNavLink>
+              </>
+            )}
           </Popover.Panel>
         </Transition.Child>
       </Transition.Root>
@@ -106,7 +137,7 @@ export function Header() {
   return (
     <header className="py-10">
       <Container>
-        <nav className="relative z-50 flex justify-between">
+        <nav className="relative z-50 flex justify-between ">
           <div className="flex items-center md:gap-x-12">
             <Link href="/" aria-label="Home">
               <Logo className="h-10 w-auto" />
@@ -120,15 +151,16 @@ export function Header() {
               <div className="hidden md:flex md:gap-x-6">
                 <NavLink href="/#features">Features</NavLink>
                 <NavLink href="/#testimonials">Testimonials</NavLink>
-                <NavLink href="/pricing">Pricing</NavLink>
+                <NavLink href="/#pricing">Pricing</NavLink>
               </div>
             )}
           </div>
-          {user ? (
-            <>
-              {/* Right section on desktop */}
-              <div className="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
-                {/* <button
+          <div className="flex items-center">
+            {user ? (
+              <>
+                {/* Right section on desktop */}
+                <div className="hidden md:ml-4 md:flex md:items-center md:pr-0.5">
+                  {/* <button
                   type="button"
                   className="flex-shrink-0 p-1 text-indigo-200 rounded-full hover:text-white hover:bg-white hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-white"
                 >
@@ -136,94 +168,89 @@ export function Header() {
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button> */}
 
-                {/* Profile dropdown */}
-                <Menu as="div" className="ml-4 relative flex-shrink-0">
-                  {({ open: isUserMenuOpen }) => (
-                    <>
-                      <div>
-                        <Menu.Button className="bg-white rounded-full flex items-center space-x-2 text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
-                          <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src={'https://www.gravatar.com/avatar/ANY'}
-                            alt={'User'}
-                          />
-                          <span>Personal</span>
-                        </Menu.Button>
-                      </div>
-                      <Transition
-                        show={isUserMenuOpen}
-                        as={Fragment}
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items
-                          static
-                          className="origin-top-right z-40 absolute -right-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  {/* Profile dropdown */}
+                  <Menu as="div" className="ml-4 relative flex-shrink-0">
+                    {({ open: isUserMenuOpen }) => (
+                      <>
+                        <div>
+                          <Menu.Button className="bg-white rounded-full flex items-center space-x-2 text-lg tracking-tight text-slate-900 ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
+                            <span className="sr-only">Open user menu</span>
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src={'https://www.gravatar.com/avatar/ANY'}
+                              alt={'User'}
+                            />
+                            <span>Personal</span>
+                          </Menu.Button>
+                        </div>
+                        <Transition
+                          show={isUserMenuOpen}
+                          as={Fragment}
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                href="/settings/profile"
-                                className={clsx(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
-                                )}
-                              >
-                                Your Profile
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            <Link
-                              href="/#pricing"
-                              className="block px-4 py-2 text-sm text-gray-700"
-                            >
-                              Pricing
-                            </Link>
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <div
-                                role="button"
-                                className={clsx(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
-                                )}
-                                onClick={async (e) => {
-                                  e.preventDefault();
-                                  await supabaseClient.auth.signOut();
-                                  router.push('/signin');
-                                }}
-                                aria-hidden="true"
-                              >
-                                Sign out
-                              </div>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
-                      </Transition>
-                    </>
-                  )}
-                </Menu>
+                          <Menu.Items
+                            static
+                            className="origin-top-right z-40 absolute -right-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                          >
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  href="/settings/profile"
+                                  className={clsx(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-lg tracking-tight text-slate-900'
+                                  )}
+                                >
+                                  Your Profile
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <hr className="m-2 border-slate-300/40" />
+                            <Menu.Item>
+                              {({ active }) => (
+                                <div
+                                  role="button"
+                                  className={clsx(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-lg tracking-tight text-slate-900'
+                                  )}
+                                  onClick={async (e) => {
+                                    e.preventDefault();
+                                    await supabaseClient.auth.signOut();
+                                    router.push('/signin');
+                                  }}
+                                  aria-hidden="true"
+                                >
+                                  Sign out
+                                </div>
+                              )}
+                            </Menu.Item>
+                          </Menu.Items>
+                        </Transition>
+                      </>
+                    )}
+                  </Menu>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center gap-x-5 md:gap-x-8">
+                <Button href="/signin" color="blue">
+                  <span>
+                    Get started <span className="hidden lg:inline">today</span>
+                  </span>
+                </Button>
+
+                <div className="hidden md:block">
+                  <NavLink href="/signin">Sign in</NavLink>
+                </div>
               </div>
-            </>
-          ) : (
-            <div className="flex items-center gap-x-5 md:gap-x-8">
-              <div className="hidden md:block">
-                <NavLink href="/signin">Sign in</NavLink>
-              </div>
-              <Button href="/signin" color="blue">
-                <span>
-                  Get started <span className="hidden lg:inline">today</span>
-                </span>
-              </Button>
-              <div className="-mr-1 md:hidden">
-                <MobileNavigation />
-              </div>
+            )}
+            <div className="-mr-1 md:hidden">
+              <MobileNavigation />
             </div>
-          )}
+          </div>
         </nav>
       </Container>
     </header>

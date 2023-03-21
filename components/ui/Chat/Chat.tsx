@@ -1,7 +1,7 @@
 import { Answer } from '@/components/ui/Answer/Answer';
 import { PGChunk } from '@/types';
 import { User } from '@supabase/auth-helpers-react';
-import { IconArrowRight } from '@tabler/icons-react';
+import { IconArrowUp } from '@tabler/icons-react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -25,7 +25,7 @@ export function Chat({
   const [answer, setAnswer] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       query: ''
     },
@@ -100,6 +100,8 @@ export function Chat({
     handleAnswer({ query });
   };
 
+  const query = watch('query');
+
   return (
     <>
       <Head>
@@ -123,24 +125,28 @@ export function Chat({
                 <label htmlFor="talkWith" className=" label">
                   Talk with {avatar?.name}
                 </label>
-                <textarea
-                  className="textarea textarea-bordered mt-4 w-full text-gray-900 "
-                  rows={3}
-                  placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
-                  {...register('query', { required: true })}
-                />
-              </div>
-
-              <div className="flex w-full justify-end">
-                <button className="mt-4  " type="submit">
-                  <IconArrowRight className=" h-7 w-7 rounded-full bg-blue-500 p-1 hover:cursor-pointer hover:bg-blue-600 sm:h-10 sm:w-10 text-white" />
-                </button>
+                <div className="relative">
+                  <textarea
+                    className="textarea textarea-lg textarea-bordered focus:outline-none mt-4 w-full text-gray-900 "
+                    rows={3}
+                    placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
+                    {...register('query', { required: true })}
+                  />
+                </div>
+                {query ? (
+                  <button
+                    className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle "
+                    type="submit"
+                  >
+                    <IconArrowUp className="h-7 w-7" />
+                  </button>
+                ) : null}
               </div>
             </form>
 
             <div className="mt-6 text-center text-lg">
-              You can talk to {/* TODO: */}
-              <Link href={`/chat/ThaddeusJiang`} className="link">
+              You can talk to {/* TODO: 一个请求 form */}
+              <Link href={`/settings/avatars`} className="link">
                 yourself
               </Link>{' '}
               or{' '}
@@ -171,7 +177,7 @@ export function Chat({
                 </div>
               </div>
             ) : answer ? (
-              <div className="mt-6">
+              <div className="mt-6 w-full">
                 <div className="font-bold text-2xl mb-2">Answer</div>
                 <Answer text={answer} />
 

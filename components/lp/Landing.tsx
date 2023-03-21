@@ -23,8 +23,8 @@ export default function Home() {
 
       <main>
         <Hero />
-        <PrimaryFeatures />
-        <SecondaryFeatures />
+        {/* <PrimaryFeatures /> */}
+        {/* <SecondaryFeatures /> */}
         <CallToAction />
         {/* <Testimonials /> */}
         <Pricing />

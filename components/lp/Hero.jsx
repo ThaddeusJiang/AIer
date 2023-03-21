@@ -31,7 +31,7 @@ export function Hero() {
         AI Replicas are online 24/7 without any inconvenience, they can help you
         achieve digital immortality.
       </p>
-      <div className="mt-10 flex justify-center gap-x-6">
+      {/* <div className="mt-10 flex justify-center gap-x-6">
         <Button href="/signin">Get 6 months free</Button>
         <Button
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -45,8 +45,8 @@ export function Hero() {
           </svg>
           <span className="ml-3">Watch video</span>
         </Button>
-      </div>
-      <div className="mt-36 lg:mt-44">
+      </div> */}
+      {/* <div className="mt-36 lg:mt-44">
         <p className="font-display text-base text-slate-900">
           Trusted by these six companies so far
         </p>
@@ -80,7 +80,7 @@ export function Hero() {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </Container>
   );
 }

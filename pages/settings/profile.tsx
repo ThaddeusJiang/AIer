@@ -85,11 +85,8 @@ export default function Account({ user }: { user: User }) {
       <div className="max-w-6xl mx-auto pt-8 sm:pt-24 pb-8 px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:flex-col sm:align-center">
           <h1 className="text-4xl font-extrabold  sm:text-center sm:text-6xl">
-            Account
+            Profile
           </h1>
-          <p className="mt-5 text-xl  sm:text-center sm:text-2xl max-w-2xl m-auto">
-            We partnered with Stripe for a simplified billing.
-          </p>
         </div>
       </div>
       <div className="p-4">
@@ -123,7 +120,7 @@ export default function Account({ user }: { user: User }) {
             ) : subscription ? (
               `${subscriptionPrice}/${subscription?.prices?.interval}`
             ) : (
-              <Link href="/pricing">Choose your plan</Link>
+              <Link href="/settings/pricing">Choose your plan</Link>
             )}
           </div>
         </Card>

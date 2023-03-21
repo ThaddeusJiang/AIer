@@ -1,5 +1,6 @@
 import { OpenAIStream } from '@/utils/openai';
-import { createQueryRecord, searchEmbeddings } from '@/utils/supabase-admin';
+import { createQueryRecord, searchEmbeddings } from '@/utils/supabase-only';
+
 import endent from 'endent';
 
 export const config = {

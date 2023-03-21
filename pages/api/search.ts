@@ -1,5 +1,4 @@
-import { searchEmbeddings } from '@/utils/supabase-admin';
-
+import { searchEmbeddings } from '@/utils/supabase-only';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // export const config = {

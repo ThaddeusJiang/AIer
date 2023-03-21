@@ -11,16 +11,15 @@ import { Worker, isMainThread, workerData } from 'worker_threads';
 
 loadEnvConfig('');
 
+const avatar_id = process.env.AVATAR_ID;
 const source_file = process.env.SOURCE_FILE;
-const user_id = process.env.USER_ID;
-const source_brand = 'twitter';
-const source_username = process.env.SOURCE_USERNAME;
+const worker_count = process.env.WORKER_COUNT ?? 100;
 
 const generateEmbeddings = async (
   essays: PGEssay[],
   start: number,
   end: number,
-  user_id: string
+  avatar_id: string
 ) => {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
@@ -55,26 +54,20 @@ const generateEmbeddings = async (
 
       const [{ embedding }] = embeddingResponse.data.data;
 
-      const { data, error } = await supabase
-        .from('embeddings')
-        .insert({
-          user_id,
-          source_brand,
-          essay_title,
-          essay_url,
-          essay_date,
-          essay_thanks,
-          content,
-          content_length,
-          content_tokens,
-          embedding
-        })
-        .select('*');
+      const { error } = await supabase.from('embeddings').insert({
+        avatar_id,
+        essay_title,
+        essay_url,
+        essay_date,
+        essay_thanks,
+        content,
+        content_length,
+        content_tokens,
+        embedding
+      });
 
       if (error) {
         console.log('error', error);
-      } else {
-        console.log('saved', i, j);
       }
 
       await new Promise((resolve) => setTimeout(resolve, 200));
@@ -112,7 +105,7 @@ function tweet2essay(tweetRecord: string) {
 }
 
 (async () => {
-  if (!source_file || !user_id) {
+  if (!source_file || !avatar_id) {
     console.error('params is invalid.');
     return;
   }
@@ -129,10 +122,14 @@ function tweet2essay(tweetRecord: string) {
   await events.once(rl, 'close');
 
   if (isMainThread) {
-    const workerCount = 200;
+    const workerCount = Number(worker_count);
     const totalCount = essays.length;
     const tasksPerWorker = Math.ceil(totalCount / workerCount);
-    console.log('total', totalCount, 'tasksPerWorker', tasksPerWorker);
+    console.log({
+      workers: workerCount,
+      total: totalCount,
+      unit: tasksPerWorker
+    });
 
     for (let i = 0; i < workerCount; i++) {
       const start = i * tasksPerWorker;
@@ -145,7 +142,7 @@ function tweet2essay(tweetRecord: string) {
   } else {
     const { start, end } = workerData as { start: number; end: number };
 
-    console.log('start embedding', user_id, source_file, start, end);
-    await generateEmbeddings(essays, start, end, user_id);
+    console.log('start embedding', avatar_id, start, end);
+    await generateEmbeddings(essays, start, end, avatar_id);
   }
 })();

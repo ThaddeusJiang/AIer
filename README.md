@@ -190,3 +190,22 @@ Running this Stripe command will print a webhook secret (such as, `whsec_***`) t
 npm install
 npm run dev
 ```
+
+### Embedding
+
+```bash
+cd scripts
+split -l 3000 data.txt temp_
+```
+
+modify [.env.local](./.env.local)
+
+```bash
+AVATAR_ID=sxzz
+SOURCE_FILE=scripts/temp_aa
+WORKER_COUNT=100
+```
+
+```bash
+npm run embed:t
+```

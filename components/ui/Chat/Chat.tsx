@@ -116,7 +116,7 @@ export function Chat({
 
       <div className="flex flex-col pb-60">
         <div className="flex-1 ">
-          <div className="mx-auto flex w-full max-w-[550px] flex-col items-center px-3 pt-4 sm:pt-8">
+          <div className="mx-auto flex w-full sm:max-w-screen-sm flex-col items-center px-3 pt-4 sm:pt-8">
             <form
               className="relative w-full mt-4 form-control"
               onSubmit={handleSubmit(onSubmit)}
@@ -127,7 +127,7 @@ export function Chat({
                 </label>
                 <div className="relative">
                   <textarea
-                    className="textarea textarea-lg textarea-bordered focus:outline-none mt-4 w-full text-gray-900 "
+                    className="textarea text-base sm:textarea-lg textarea-bordered focus:outline-none mt-4 w-full text-gray-900 "
                     rows={3}
                     placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
                     {...register('query', { required: true })}
@@ -145,7 +145,7 @@ export function Chat({
             </form>
 
             <div className="mt-6 text-center text-lg">
-              You can talk to {/* TODO: 一个请求 form */}
+              You can talk with
               <Link href={`/settings/avatars`} className="link">
                 yourself
               </Link>{' '}

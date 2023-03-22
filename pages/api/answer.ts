@@ -28,22 +28,28 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response('Error', { status: 500 });
     }
 
-    const prompt = endent`
-    Use the following passages to provide an answer to the query: "${query}"
-
-    ${chunks?.map((d: any) => d.content).join('\n\n')}
-    `;
-
     await createQueryRecord({
       from: queryFrom,
       to: queryTo,
       message: query
     });
 
-    const stream = await OpenAIStream({
-      queryTo,
-      prompt
-    });
+    const messages = [
+      // MEMO: 调教 openAI
+      {
+        role: 'system',
+        content: `Please disguise yourself as ${queryTo}, This is your past message: ${chunks
+          ?.map((d: any) => d.content)
+          .join('\n\n')}.
+        Please answer the question in a similar style.`
+      },
+      {
+        role: 'user',
+        content: query
+      }
+    ];
+
+    const stream = await OpenAIStream({ messages });
 
     return new Response(stream);
   } catch (error) {

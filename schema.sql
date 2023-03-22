@@ -21,9 +21,10 @@ CREATE TABLE avatars (
   username text NOT NULL,
   name text NOT NULL,
   avatar_url text,
-  source_brand text,
-  source_username text,
   status text,
+  source text,
+  bio text,
+  welcome_message text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
   owner_id uuid references auth.users

@@ -12,39 +12,42 @@ export interface Database {
       avatars: {
         Row: {
           avatar_url: string | null
+          bio: string | null
           created_at: string
           id: string
           name: string
           owner_id: string | null
-          source_brand: string | null
-          source_username: string | null
+          source: string | null
           status: string | null
           updated_at: string
           username: string
+          welcome_message: string | null
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           id: string
           name: string
           owner_id?: string | null
-          source_brand?: string | null
-          source_username?: string | null
+          source?: string | null
           status?: string | null
           updated_at?: string
           username: string
+          welcome_message?: string | null
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           id?: string
           name?: string
           owner_id?: string | null
-          source_brand?: string | null
-          source_username?: string | null
+          source?: string | null
           status?: string | null
           updated_at?: string
           username?: string
+          welcome_message?: string | null
         }
       }
       customers: {

@@ -16,7 +16,6 @@ export default function Layout({ children, meta: pageMeta }: Props) {
     title: 'AIer',
     description:
       "AIer is a service that helps you create and share your digital replicas. It's powered by AI and machine learning.",
-    cardImage: '/og.png',
     ...pageMeta
   };
 
@@ -38,7 +37,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         <meta name="twitter:site" content="@aierdotapp" />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
-        <meta name="twitter:image" content={meta.cardImage} />
+        <meta name="twitter:image" content={`${getURL()}api/og`} />
       </Head>
       <Header />
       <main id="skip">{children}</main>

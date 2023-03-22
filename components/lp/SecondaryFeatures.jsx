@@ -1,33 +1,29 @@
-import { useId } from 'react'
-import Image from 'next/image'
-import { Tab } from '@headlessui/react'
-import clsx from 'clsx'
+import { useId } from "react";
 
-import { Container } from '@/components/lp/Container'
-import screenshotContacts from '@/images/screenshots/contacts.png'
-import screenshotInventory from '@/images/screenshots/inventory.png'
-import screenshotProfitLoss from '@/images/screenshots/profit-loss.png'
+import Image from "next/image";
+
+import { Tab } from "@headlessui/react";
+
+import clsx from "clsx";
+
+import { Container } from "~/components/lp/Container";
+import screenshotContacts from "~/images/screenshots/contacts.png";
+import screenshotInventory from "~/images/screenshots/inventory.png";
+import screenshotProfitLoss from "~/images/screenshots/profit-loss.png";
 
 const features = [
   {
-    name: 'Reporting',
-    summary: 'Stay on top of things with always up-to-date reporting features.',
+    name: "Reporting",
+    summary: "Stay on top of things with always up-to-date reporting features.",
     description:
-      'We talked about reporting in the section above but we needed three items here, so mentioning it one more time for posterity.',
+      "We talked about reporting in the section above but we needed three items here, so mentioning it one more time for posterity.",
     image: screenshotProfitLoss,
     icon: function ReportingIcon() {
-      let id = useId()
+      let id = useId();
       return (
         <>
           <defs>
-            <linearGradient
-              id={id}
-              x1="11.5"
-              y1={18}
-              x2={36}
-              y2="15.5"
-              gradientUnits="userSpaceOnUse"
-            >
+            <linearGradient id={id} x1="11.5" y1={18} x2={36} y2="15.5" gradientUnits="userSpaceOnUse">
               <stop offset=".194" stopColor="#fff" />
               <stop offset={1} stopColor="#6692F1" />
             </linearGradient>
@@ -40,43 +36,30 @@ const features = [
             strokeLinejoin="round"
           />
         </>
-      )
-    },
+      );
+    }
   },
   {
-    name: 'Inventory',
-    summary:
-      'Never lose track of what’s in stock with accurate inventory tracking.',
+    name: "Inventory",
+    summary: "Never lose track of what’s in stock with accurate inventory tracking.",
     description:
-      'We don’t offer this as part of our software but that statement is inarguably true. Accurate inventory tracking would help you for sure.',
+      "We don’t offer this as part of our software but that statement is inarguably true. Accurate inventory tracking would help you for sure.",
     image: screenshotInventory,
     icon: function InventoryIcon() {
       return (
         <>
-          <path
-            opacity=".5"
-            d="M8 17a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z"
-            fill="#fff"
-          />
-          <path
-            opacity=".3"
-            d="M8 24a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z"
-            fill="#fff"
-          />
-          <path
-            d="M8 10a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z"
-            fill="#fff"
-          />
+          <path opacity=".5" d="M8 17a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z" fill="#fff" />
+          <path opacity=".3" d="M8 24a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z" fill="#fff" />
+          <path d="M8 10a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z" fill="#fff" />
         </>
-      )
-    },
+      );
+    }
   },
   {
-    name: 'Contacts',
-    summary:
-      'Organize all of your contacts, service providers, and invoices in one place.',
+    name: "Contacts",
+    summary: "Organize all of your contacts, service providers, and invoices in one place.",
     description:
-      'This also isn’t actually a feature, it’s just some friendly advice. We definitely recommend that you do this, you’ll feel really organized and professional.',
+      "This also isn’t actually a feature, it’s just some friendly advice. We definitely recommend that you do this, you’ll feel really organized and professional.",
     image: screenshotContacts,
     icon: function ContactsIcon() {
       return (
@@ -91,41 +74,26 @@ const features = [
             fill="#fff"
           />
         </>
-      )
-    },
-  },
-]
+      );
+    }
+  }
+];
 
 function Feature({ feature, isActive, className, ...props }) {
   return (
-    <div
-      className={clsx(className, !isActive && 'opacity-75 hover:opacity-100')}
-      {...props}
-    >
-      <div
-        className={clsx(
-          'w-9 rounded-lg',
-          isActive ? 'bg-blue-600' : 'bg-slate-500'
-        )}
-      >
+    <div className={clsx(className, !isActive && "opacity-75 hover:opacity-100")} {...props}>
+      <div className={clsx("w-9 rounded-lg", isActive ? "bg-blue-600" : "bg-slate-500")}>
         <svg aria-hidden="true" className="h-9 w-9" fill="none">
           <feature.icon />
         </svg>
       </div>
-      <h3
-        className={clsx(
-          'mt-6 text-sm font-medium',
-          isActive ? 'text-blue-600' : 'text-slate-600'
-        )}
-      >
+      <h3 className={clsx("mt-6 text-sm font-medium", isActive ? "text-blue-600" : "text-slate-600")}>
         {feature.name}
       </h3>
-      <p className="mt-2 font-display text-xl text-slate-900">
-        {feature.summary}
-      </p>
+      <p className="mt-2 font-display text-xl text-slate-900">{feature.summary}</p>
       <p className="mt-4 text-sm text-slate-600">{feature.description}</p>
     </div>
-  )
+  );
 }
 
 function FeaturesMobile() {
@@ -137,18 +105,13 @@ function FeaturesMobile() {
           <div className="relative mt-10 pb-10">
             <div className="absolute -inset-x-4 bottom-0 top-8 bg-slate-200 sm:-inset-x-6" />
             <div className="relative mx-auto w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
-              <Image
-                className="w-full"
-                src={feature.image}
-                alt=""
-                sizes="52.75rem"
-              />
+              <Image className="w-full" src={feature.image} alt="" sizes="52.75rem" />
             </div>
           </div>
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 function FeaturesDesktop() {
@@ -167,7 +130,7 @@ function FeaturesDesktop() {
                       <span className="absolute inset-0" />
                       {feature.name}
                     </Tab>
-                  ),
+                  )
                 }}
                 isActive={featureIndex === selectedIndex}
                 className="relative"
@@ -181,19 +144,14 @@ function FeaturesDesktop() {
                   static
                   key={feature.name}
                   className={clsx(
-                    'px-5 transition duration-500 ease-in-out [&:not(:focus-visible)]:focus:outline-none',
-                    featureIndex !== selectedIndex && 'opacity-60'
+                    "px-5 transition duration-500 ease-in-out [&:not(:focus-visible)]:focus:outline-none",
+                    featureIndex !== selectedIndex && "opacity-60"
                   )}
                   style={{ transform: `translateX(-${selectedIndex * 100}%)` }}
                   aria-hidden={featureIndex !== selectedIndex}
                 >
                   <div className="w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
-                    <Image
-                      className="w-full"
-                      src={feature.image}
-                      alt=""
-                      sizes="52.75rem"
-                    />
+                    <Image className="w-full" src={feature.image} alt="" sizes="52.75rem" />
                   </div>
                 </Tab.Panel>
               ))}
@@ -203,7 +161,7 @@ function FeaturesDesktop() {
         </>
       )}
     </Tab.Group>
-  )
+  );
 }
 
 export function SecondaryFeatures() {
@@ -219,13 +177,13 @@ export function SecondaryFeatures() {
             Simplify everyday business tasks.
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            Because you’d probably be a little confused if we suggested you
-            complicate your everyday business tasks instead.
+            Because you’d probably be a little confused if we suggested you complicate your everyday business tasks
+            instead.
           </p>
         </div>
         <FeaturesMobile />
         <FeaturesDesktop />
       </Container>
     </section>
-  )
+  );
 }

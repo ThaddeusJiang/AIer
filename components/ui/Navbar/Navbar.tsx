@@ -1,13 +1,15 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { Fragment } from "react";
 
-import Logo from '@/components/icons/Logo';
-import { useUser } from '@/utils/useUser';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { Menu, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
-import classNames from 'classnames';
+import { Menu, Transition } from "@headlessui/react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+
+import classNames from "classnames";
+
+import Logo from "~/components/icons/Logo";
+import { useUser } from "~/utils/useUser";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -23,7 +25,7 @@ export const Navbar = () => {
         <div className="flex justify-between align-center flex-row py-4 md:py-6 relative ">
           <div className="flex flex-1 items-center space-x-2">
             <Link
-              href={user ? '/chat' : '/'}
+              href={user ? "/chat" : "/"}
               className="cursor-pointer transform duration-100 ease-in-out "
               aria-label="Logo"
             >
@@ -66,8 +68,8 @@ export const Navbar = () => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={'https://www.gravatar.com/avatar/ANY'}
-                              alt={'User'}
+                              src={"https://www.gravatar.com/avatar/ANY"}
+                              alt={"User"}
                             />
                           </Menu.Button>
                         </div>
@@ -87,8 +89,8 @@ export const Navbar = () => {
                                 <Link
                                   href="/settings/profile"
                                   className={classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
                                   Your Profile
@@ -100,8 +102,8 @@ export const Navbar = () => {
                                 <Link
                                   href="/settings/billing"
                                   className={classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
                                   Settings
@@ -109,10 +111,7 @@ export const Navbar = () => {
                               )}
                             </Menu.Item>
                             <Menu.Item>
-                              <Link
-                                href="/settings/pricing"
-                                className="block px-4 py-2 text-sm text-gray-700"
-                              >
+                              <Link href="/settings/pricing" className="block px-4 py-2 text-sm text-gray-700">
                                 Pricing
                               </Link>
                             </Menu.Item>
@@ -121,13 +120,13 @@ export const Navbar = () => {
                                 <div
                                   role="button"
                                   className={classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                   onClick={async (e) => {
                                     e.preventDefault();
                                     await supabaseClient.auth.signOut();
-                                    router.push('/signin');
+                                    router.push("/signin");
                                   }}
                                   aria-hidden="true"
                                 >

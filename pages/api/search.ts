@@ -1,5 +1,6 @@
-import { searchEmbeddings } from '@/utils/supabase-only';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
+
+import { searchEmbeddings } from "~/utils/supabase-only";
 
 // export const config = {
 //   runtime: 'edge'

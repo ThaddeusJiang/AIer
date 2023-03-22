@@ -1,8 +1,9 @@
-import { ImageResponse } from '@vercel/og';
-import { NextRequest } from 'next/server';
+import { NextRequest } from "next/server";
+
+import { ImageResponse } from "@vercel/og";
 
 export const config = {
-  runtime: 'edge'
+  runtime: "edge"
 };
 
 export default function (req: NextRequest) {
@@ -18,24 +19,18 @@ export default function (req: NextRequest) {
     (
       <div
         style={{
-          display: 'flex',
+          display: "flex",
           fontSize: 40,
-          color: 'black',
-          background: 'white',
-          width: '100%',
-          height: '100%',
-          textAlign: 'center',
-          justifyContent: 'center',
-          alignItems: 'center'
+          color: "black",
+          background: "white",
+          width: "100%",
+          height: "100%",
+          textAlign: "center",
+          justifyContent: "center",
+          alignItems: "center"
         }}
       >
-        <svg
-          width="109"
-          height="40"
-          viewBox="0 0 109 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="109" height="40" viewBox="0 0 109 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fill-rule="evenodd"
             clip-rule="evenodd"

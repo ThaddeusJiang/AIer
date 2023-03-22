@@ -1,12 +1,14 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react';
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { useEffect } from "react";
 
-import LoadingDots from '@/components/ui/LoadingDots';
-import Logo from '@/components/icons/Logo';
-import { getURL } from '@/utils/helpers';
+import { useRouter } from "next/router";
+
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+
+import Logo from "~/components/icons/Logo";
+import LoadingDots from "~/components/ui/LoadingDots";
+import { getURL } from "~/utils/helpers";
 
 const SignIn = () => {
   const router = useRouter();
@@ -15,7 +17,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (user) {
-      router.replace('/chat');
+      router.replace("/chat");
     }
   }, [user]);
 
@@ -29,7 +31,7 @@ const SignIn = () => {
           <div className="flex flex-col space-y-4">
             <Auth
               supabaseClient={supabaseClient}
-              providers={['google']}
+              providers={["google"]}
               redirectTo={`${getURL()}chat`}
               magicLink={true}
               appearance={{
@@ -37,8 +39,8 @@ const SignIn = () => {
                 variables: {
                   default: {
                     colors: {
-                      brand: '#404040',
-                      brandAccent: '#52525b'
+                      brand: "#404040",
+                      brandAccent: "#52525b"
                     }
                   }
                 }

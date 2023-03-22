@@ -1,4 +1,5 @@
-import Stripe from 'stripe';
+import Stripe from "stripe";
+
 export interface PageMeta {
   title: string;
   description: string;
@@ -70,7 +71,7 @@ export interface Subscription {
 }
 
 export enum OpenAIModel {
-  DAVINCI_TURBO = 'gpt-3.5-turbo'
+  DAVINCI_TURBO = "gpt-3.5-turbo"
 }
 
 export type PGEssay = {

@@ -1,9 +1,6 @@
-import { OpenAIModel } from '@/types';
-import {
-  createParser,
-  ParsedEvent,
-  ReconnectInterval
-} from 'eventsource-parser';
+import { ParsedEvent, ReconnectInterval, createParser } from "eventsource-parser";
+
+import { OpenAIModel } from "~/types";
 
 const apiKey = process.env.OPENAI_API_KEY;
 
@@ -18,12 +15,12 @@ export const OpenAIStream = async ({
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`
     },
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({
       model: OpenAIModel.DAVINCI_TURBO,
       messages,
@@ -34,16 +31,16 @@ export const OpenAIStream = async ({
   });
 
   if (res.status !== 200) {
-    throw new Error('OpenAI API returned an error');
+    throw new Error("OpenAI API returned an error");
   }
 
   const stream = new ReadableStream({
     async start(controller) {
       const onParse = (event: ParsedEvent | ReconnectInterval) => {
-        if (event.type === 'event') {
+        if (event.type === "event") {
           const data = event.data;
 
-          if (data === '[DONE]') {
+          if (data === "[DONE]") {
             controller.close();
             return;
           }

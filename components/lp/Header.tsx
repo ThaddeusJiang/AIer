@@ -1,23 +1,20 @@
-import { Fragment } from 'react';
-import Link from 'next/link';
-import { Menu, Popover, Transition } from '@headlessui/react';
-import clsx from 'clsx';
+import { Fragment } from "react";
 
-import { Button } from '@/components/lp/Button';
-import { Container } from '@/components/lp/Container';
-import { Logo } from '@/components/lp/Logo';
-import { NavLink } from '@/components/lp/NavLink';
-import { useRouter } from 'next/router';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useUser } from '@/utils/useUser';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-function MobileNavLink({
-  href,
-  children
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+import { Menu, Popover, Transition } from "@headlessui/react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+
+import clsx from "clsx";
+
+import { Button } from "~/components/lp/Button";
+import { Container } from "~/components/lp/Container";
+import { Logo } from "~/components/lp/Logo";
+import { NavLink } from "~/components/lp/NavLink";
+import { useUser } from "~/utils/useUser";
+
+function MobileNavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Popover.Button as={Link} href={href} className="block w-full p-2">
       {children}
@@ -34,20 +31,8 @@ function MobileNavIcon({ open }: { open: boolean }) {
       strokeWidth={2}
       strokeLinecap="round"
     >
-      <path
-        d="M0 1H14M0 7H14M0 13H14"
-        className={clsx(
-          'origin-center transition',
-          open && 'scale-90 opacity-0'
-        )}
-      />
-      <path
-        d="M2 2L12 12M12 2L2 12"
-        className={clsx(
-          'origin-center transition',
-          !open && 'scale-90 opacity-0'
-        )}
-      />
+      <path d="M0 1H14M0 7H14M0 13H14" className={clsx("origin-center transition", open && "scale-90 opacity-0")} />
+      <path d="M2 2L12 12M12 2L2 12" className={clsx("origin-center transition", !open && "scale-90 opacity-0")} />
     </svg>
   );
 }
@@ -95,16 +80,14 @@ function MobileNavigation() {
                 <MobileNavLink href="/chat">Chat</MobileNavLink>
                 <MobileNavLink href="/avatars">Avatars</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
-                <MobileNavLink href="/settings/profile">
-                  Your Profile
-                </MobileNavLink>
+                <MobileNavLink href="/settings/profile">Your Profile</MobileNavLink>
                 <MobileNavLink href="/settings/pricing">Pricing</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <Popover.Button
                   onClick={async (e) => {
                     e.preventDefault();
                     await supabaseClient.auth.signOut();
-                    router.push('/signin');
+                    router.push("/signin");
                   }}
                   className="block w-full p-2"
                 >
@@ -114,9 +97,7 @@ function MobileNavigation() {
             ) : (
               <>
                 <MobileNavLink href="/#features">Features</MobileNavLink>
-                <MobileNavLink href="/#testimonials">
-                  Testimonials
-                </MobileNavLink>
+                <MobileNavLink href="/#testimonials">Testimonials</MobileNavLink>
                 <MobileNavLink href="/#pricing">Pricing</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <MobileNavLink href="/signin">Sign in</MobileNavLink>
@@ -139,7 +120,7 @@ export function Header() {
       <Container>
         <nav className="relative z-50 flex justify-between ">
           <div className="flex items-center md:gap-x-12">
-            <Link href={user ? '/chat' : '/'} aria-label="Home">
+            <Link href={user ? "/chat" : "/"} aria-label="Home">
               <Logo className="h-10 w-auto" />
             </Link>
             {user ? (
@@ -177,8 +158,8 @@ export function Header() {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={'https://www.gravatar.com/avatar/ANY'}
-                              alt={'User'}
+                              src={"https://www.gravatar.com/avatar/ANY"}
+                              alt={"User"}
                             />
                             <span>Personal</span>
                           </Menu.Button>
@@ -199,8 +180,8 @@ export function Header() {
                                 <Link
                                   href="/settings/profile"
                                   className={clsx(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-lg tracking-tight text-slate-900'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-lg tracking-tight text-slate-900"
                                   )}
                                 >
                                   Your Profile
@@ -213,13 +194,13 @@ export function Header() {
                                 <div
                                   role="button"
                                   className={clsx(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-lg tracking-tight text-slate-900'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-lg tracking-tight text-slate-900"
                                   )}
                                   onClick={async (e) => {
                                     e.preventDefault();
                                     await supabaseClient.auth.signOut();
-                                    router.push('/signin');
+                                    router.push("/signin");
                                   }}
                                   aria-hidden="true"
                                 >

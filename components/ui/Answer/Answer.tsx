@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import styles from "./answer.module.css";
 
 interface AnswerProps {
@@ -15,11 +16,7 @@ export const Answer: React.FC<AnswerProps> = ({ text }) => {
   return (
     <div>
       {words.map((word, index) => (
-        <span
-          key={index}
-          className={styles.fadeIn}
-          style={{ animationDelay: `${index * 0.01}s` }}
-        >
+        <span key={index} className={styles.fadeIn} style={{ animationDelay: `${index * 0.01}s` }}>
           {word}{" "}
         </span>
       ))}

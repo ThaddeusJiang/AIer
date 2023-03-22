@@ -1,7 +1,9 @@
-import { useUser } from '@/utils/useUser';
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { GetServerSidePropsContext } from 'next';
-import { Chat } from '@/components/ui/Chat/Chat';
+import { GetServerSidePropsContext } from "next";
+
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+
+import { Chat } from "~/components/ui/Chat/Chat";
+import { useUser } from "~/utils/useUser";
 
 export default function ChatPage({
   avatar
@@ -30,17 +32,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!session) {
     return {
       redirect: {
-        destination: '/signin',
+        destination: "/signin",
         permanent: false
       }
     };
   }
 
-  const { data, error } = await supabase
-    .from('avatars')
-    .select()
-    .eq('username', 'aier')
-    .single();
+  const { data, error } = await supabase.from("avatars").select().eq("username", "aier").single();
   if (error) {
     console.error(error);
     return {

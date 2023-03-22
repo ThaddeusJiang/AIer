@@ -1,9 +1,10 @@
-import { GetStaticPropsResult } from 'next';
+import { GetStaticPropsResult } from "next";
 
-import Pricing from '@/components/Pricing';
-import { getActiveProductsWithPrices } from '@/utils/supabase-client';
-import { Product } from 'types';
-import Landing from '@/components/lp/Landing';
+import { Product } from "types";
+
+import Pricing from "~/components/Pricing";
+import Landing from "~/components/lp/Landing";
+import { getActiveProductsWithPrices } from "~/utils/supabase-client";
 
 interface Props {
   products: Product[];

@@ -1,16 +1,11 @@
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { Button } from '@/components/lp/Button';
-import { Container } from '@/components/lp/Container';
+import { Button } from "~/components/lp/Button";
+import { Container } from "~/components/lp/Container";
 
 export function SwirlyDoodle({ className }: { className?: string }) {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 281 40"
-      className={className}
-      preserveAspectRatio="none"
-    >
+    <svg aria-hidden="true" viewBox="0 0 281 40" className={className} preserveAspectRatio="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -22,31 +17,17 @@ export function SwirlyDoodle({ className }: { className?: string }) {
 
 export function CheckIcon({ className }: { className?: string }) {
   return (
-    <svg
-      aria-hidden="true"
-      className={clsx(
-        'h-6 w-6 flex-none fill-current stroke-current',
-        className
-      )}
-    >
+    <svg aria-hidden="true" className={clsx("h-6 w-6 flex-none fill-current stroke-current", className)}>
       <path
         d="M9.307 12.248a.75.75 0 1 0-1.114 1.004l1.114-1.004ZM11 15.25l-.557.502a.75.75 0 0 0 1.15-.043L11 15.25Zm4.844-5.041a.75.75 0 0 0-1.188-.918l1.188.918Zm-7.651 3.043 2.25 2.5 1.114-1.004-2.25-2.5-1.114 1.004Zm3.4 2.457 4.25-5.5-1.187-.918-4.25 5.5 1.188.918Z"
         strokeWidth={0}
       />
-      <circle
-        cx={12}
-        cy={12}
-        r={8.25}
-        fill="none"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <circle cx={12} cy={12} r={8.25} fill="none" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-const billingInterval = 'month';
+const billingInterval = "month";
 
 function Plan({
   name,
@@ -66,39 +47,29 @@ function Plan({
   return (
     <section
       className={clsx(
-        'flex flex-col rounded-3xl px-6 sm:px-8',
-        featured ? 'order-first bg-blue-600 py-8 lg:order-none' : 'lg:py-8'
+        "flex flex-col rounded-3xl px-6 sm:px-8",
+        featured ? "order-first bg-blue-600 py-8 lg:order-none" : "lg:py-8"
       )}
     >
       <h3 className="mt-5 font-display text-lg text-white">{name}</h3>
-      <p
-        className={clsx(
-          'mt-2 text-base',
-          featured ? 'text-white' : 'text-slate-400'
-        )}
-      >
-        {description}
-      </p>
+      <p className={clsx("mt-2 text-base", featured ? "text-white" : "text-slate-400")}>{description}</p>
       <p className="order-first font-display text-5xl font-light tracking-tight text-white">
         {price} <span className="text-xl">/ {billingInterval}</span>
       </p>
       <ul
         role="list"
-        className={clsx(
-          'order-last mt-10 flex flex-col gap-y-3 text-sm',
-          featured ? 'text-white' : 'text-slate-200'
-        )}
+        className={clsx("order-last mt-10 flex flex-col gap-y-3 text-sm", featured ? "text-white" : "text-slate-200")}
       >
         {features.map((feature) => (
           <li key={feature} className="flex">
-            <CheckIcon className={featured ? 'text-white' : 'text-slate-400'} />
+            <CheckIcon className={featured ? "text-white" : "text-slate-400"} />
             <span className="ml-4">{feature}</span>
           </li>
         ))}
       </ul>
       <Button
         href={href}
-        variant={featured ? 'solid' : 'outline'}
+        variant={featured ? "solid" : "outline"}
         color="white"
         className="mt-8"
         aria-label={`Get started with the ${name} plan for ${price}`}
@@ -122,23 +93,18 @@ export function Pricing({
   }[];
 }) {
   return (
-    <section
-      id="pricing"
-      aria-label="Pricing"
-      className="bg-slate-900 py-20 sm:py-32"
-    >
+    <section id="pricing" aria-label="Pricing" className="bg-slate-900 py-20 sm:py-32">
       <Container>
         <div className="md:text-center">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
             <span className="relative whitespace-nowrap">
               <SwirlyDoodle className="absolute top-1/2 left-0 h-[1em] w-full fill-blue-400" />
               <span className="relative">Simple pricing,</span>
-            </span>{' '}
+            </span>{" "}
             for everyone.
           </h2>
           <p className="mt-4 text-lg text-slate-400">
-            You can request a refund at any time if you genuinely feel that the
-            service is not valuable.
+            You can request a refund at any time if you genuinely feel that the service is not valuable.
           </p>
         </div>
         <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-2 xl:mx-0 xl:gap-x-8">
@@ -153,13 +119,13 @@ export function Pricing({
             description="Perfect for small / medium sized businesses."
             href="/signin"
             features={[
-              'Send 25 quotes and invoices',
-              'Connect up to 5 bank accounts',
-              'Track up to 50 expenses per month',
-              'Automated payroll support',
-              'Export up to 12 reports',
-              'Bulk reconcile transactions',
-              'Track in multiple currencies'
+              "Send 25 quotes and invoices",
+              "Connect up to 5 bank accounts",
+              "Track up to 50 expenses per month",
+              "Automated payroll support",
+              "Export up to 12 reports",
+              "Bulk reconcile transactions",
+              "Track in multiple currencies"
             ]}
           />
           <Plan
@@ -168,11 +134,11 @@ export function Pricing({
             description="For even the biggest enterprise companies."
             href="/signin"
             features={[
-              'Send unlimited quotes and invoices',
-              'Connect up to 15 bank accounts',
-              'Track up to 200 expenses per month',
-              'Automated payroll support',
-              'Export up to 25 reports, including TPS'
+              "Send unlimited quotes and invoices",
+              "Connect up to 15 bank accounts",
+              "Track up to 200 expenses per month",
+              "Automated payroll support",
+              "Export up to 25 reports, including TPS"
             ]}
           />
         </div>

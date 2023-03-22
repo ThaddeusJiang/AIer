@@ -1,12 +1,12 @@
-import { OpenAIStream } from '@/utils/openai';
-import { createQueryRecord, searchEmbeddings } from '@/utils/supabase-only';
+import endent from "endent";
 
-import endent from 'endent';
+import { OpenAIStream } from "~/utils/openai";
+import { createQueryRecord, searchEmbeddings } from "~/utils/supabase-only";
 
 export const config = {
-  runtime: 'edge',
+  runtime: "edge",
   unstable_allowDynamic: [
-    '/node_modules/function-bind/**' // use a glob to allow anything in the function-bind 3rd party module
+    "/node_modules/function-bind/**" // use a glob to allow anything in the function-bind 3rd party module
   ]
 };
 
@@ -25,7 +25,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     if (error) {
       console.error(error);
-      return new Response('Error', { status: 500 });
+      return new Response("Error", { status: 500 });
     }
 
     await createQueryRecord({
@@ -37,14 +37,14 @@ const handler = async (req: Request): Promise<Response> => {
     const messages = [
       // MEMO: 调教 openAI
       {
-        role: 'system',
+        role: "system",
         content: `Please disguise yourself as ${queryTo}, This is your past message: ${chunks
           ?.map((d: any) => d.content)
-          .join('\n\n')}.
+          .join("\n\n")}.
         Please answer the question in a similar style.`
       },
       {
-        role: 'user',
+        role: "user",
         content: query
       }
     ];
@@ -54,7 +54,7 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(stream);
   } catch (error) {
     console.error(error);
-    return new Response('Error', { status: 500 });
+    return new Response("Error", { status: 500 });
   }
 };
 

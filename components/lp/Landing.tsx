@@ -1,14 +1,14 @@
-import Head from 'next/head';
+import Head from "next/head";
 
-import { CallToAction } from '@/components/lp/CallToAction';
-import { Faqs } from '@/components/lp/Faqs';
-import { Footer } from '@/components/lp/Footer';
-import { Header } from '@/components/lp/Header';
-import { Hero } from '@/components/lp/Hero';
-import { Pricing } from '@/components/lp/Pricing';
-import { PrimaryFeatures } from '@/components/lp/PrimaryFeatures';
-import { SecondaryFeatures } from '@/components/lp/SecondaryFeatures';
-import { Testimonials } from '@/components/lp/Testimonials';
+import { CallToAction } from "~/components/lp/CallToAction";
+import { Faqs } from "~/components/lp/Faqs";
+import { Footer } from "~/components/lp/Footer";
+import { Header } from "~/components/lp/Header";
+import { Hero } from "~/components/lp/Hero";
+import { Pricing } from "~/components/lp/Pricing";
+import { PrimaryFeatures } from "~/components/lp/PrimaryFeatures";
+import { SecondaryFeatures } from "~/components/lp/SecondaryFeatures";
+import { Testimonials } from "~/components/lp/Testimonials";
 
 export default function Home() {
   return (

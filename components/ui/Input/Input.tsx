@@ -1,6 +1,6 @@
-import React, { InputHTMLAttributes, ChangeEvent } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes } from "react";
 
-interface Props extends Omit<InputHTMLAttributes<any>, 'onChange'> {
+interface Props extends Omit<InputHTMLAttributes<any>, "onChange"> {
   className?: string;
   onChange: (value: string) => void;
 }

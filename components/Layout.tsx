@@ -1,10 +1,12 @@
-import { PropsWithChildren } from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { PropsWithChildren } from "react";
 
-import { PageMeta } from '../types';
-import { Header } from './lp/Header';
-import { getURL } from '@/utils/helpers';
+import Head from "next/head";
+import { useRouter } from "next/router";
+
+import { getURL } from "~/utils/helpers";
+
+import { PageMeta } from "../types";
+import { Header } from "./lp/Header";
 
 interface Props extends PropsWithChildren {
   meta?: PageMeta;
@@ -13,7 +15,7 @@ interface Props extends PropsWithChildren {
 export default function Layout({ children, meta: pageMeta }: Props) {
   const router = useRouter();
   const meta = {
-    title: 'AIer',
+    title: "AIer",
     description:
       "AIer is a service that helps you create and share your AI avatars. It's powered by AI and machine learning.",
     ...pageMeta

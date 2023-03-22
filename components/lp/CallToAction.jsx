@@ -1,15 +1,12 @@
-import Image from 'next/image';
+import Image from "next/image";
 
-import { Button } from '@/components/lp/Button';
-import { Container } from '@/components/lp/Container';
-import backgroundImage from '@/images/background-call-to-action.jpg';
+import { Button } from "~/components/lp/Button";
+import { Container } from "~/components/lp/Container";
+import backgroundImage from "~/images/background-call-to-action.jpg";
 
 export function CallToAction() {
   return (
-    <section
-      id="get-started-today"
-      className="relative overflow-hidden bg-blue-600 py-32"
-    >
+    <section id="get-started-today" className="relative overflow-hidden bg-blue-600 py-32">
       <Image
         className="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
         src={backgroundImage}
@@ -20,9 +17,7 @@ export function CallToAction() {
       />
       <Container className="relative">
         <div className="mx-auto max-w-lg text-center">
-          <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
-            Get started today
-          </h2>
+          <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">Get started today</h2>
           {/* <p className="mt-4 text-lg tracking-tight text-white">
             It’s time to take control of your books. Buy our software so you can
             feel like you’re doing something productive.

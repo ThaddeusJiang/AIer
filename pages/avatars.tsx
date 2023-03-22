@@ -1,6 +1,8 @@
-import { Avatars } from '@/components/Avatars';
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext } from "next";
+
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+
+import { Avatars } from "~/components/Avatars";
 
 export default function AvatarsPage({
   avatars
@@ -21,10 +23,7 @@ export default function AvatarsPage({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
 
-  const { data, error } = await supabase
-    .from('avatars')
-    .select()
-    .eq('status', 'public');
+  const { data, error } = await supabase.from("avatars").select().eq("status", "public");
 
   if (error) {
     console.error(error);

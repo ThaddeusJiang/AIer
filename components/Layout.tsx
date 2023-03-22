@@ -15,7 +15,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
   const meta = {
     title: 'AIer',
     description:
-      "AIer is a service that helps you create and share your digital replicas. It's powered by AI and machine learning.",
+      "AIer is a service that helps you create and share your AI avatars. It's powered by AI and machine learning.",
     ...pageMeta
   };
 

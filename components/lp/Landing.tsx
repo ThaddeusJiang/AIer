@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>AIer - digital avatar and digital immortality</title>
+        <title>AIer - AI avatar and digital immortality</title>
         <meta
           name="description"
           content="Break through time and physical limitations, achieve digital avatar and digital immortality. ~ powered by AI"

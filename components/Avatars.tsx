@@ -41,7 +41,7 @@ export function Avatars({
                 />
               </Link>
               <h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900">
-                {avatar.name}
+                {avatar?.name}
               </h3>
               <h4 className=" text-sm ">@{avatar.username}</h4>
               <p className="text-sm leading-6 text-gray-600">{avatar.desc}</p>

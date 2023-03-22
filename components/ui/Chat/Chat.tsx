@@ -105,10 +105,10 @@ export function Chat({
   return (
     <>
       <Head>
-        <title>Talk with {avatar.name}</title>
+        <title>Talk with {avatar?.name}</title>
         <meta
           name="description"
-          content={`Talk with ${avatar.name} on the web. Ask ${avatar.name} anything!`}
+          content={`Talk with ${avatar?.name} on the web. Ask me anything!`}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

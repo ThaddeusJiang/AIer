@@ -30,7 +30,7 @@ const SignIn = () => {
             <Auth
               supabaseClient={supabaseClient}
               providers={['google']}
-              redirectTo={`${getURL()}/chat`}
+              redirectTo={`${getURL()}chat`}
               magicLink={true}
               appearance={{
                 theme: ThemeSupa,

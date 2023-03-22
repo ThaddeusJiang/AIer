@@ -36,8 +36,8 @@ const CreateCheckoutSession: NextApiHandler = async (req, res) => {
           trial_from_plan: true,
           metadata
         },
-        success_url: `${getURL()}/settings/profile`,
-        cancel_url: `${getURL()}/`
+        success_url: `${getURL()}settings/profile`,
+        cancel_url: `${getURL()}`
       });
 
       return res.status(200).json({ sessionId: session.id });

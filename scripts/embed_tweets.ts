@@ -126,8 +126,8 @@ function tweet2essay(tweetRecord: string) {
     const totalCount = essays.length;
     const tasksPerWorker = Math.ceil(totalCount / workerCount);
     console.log({
-      workers: workerCount,
       total: totalCount,
+      workers: workerCount,
       unit: tasksPerWorker
     });
 

@@ -39,7 +39,7 @@ function Plan({
 }: {
   name: string;
   price: string;
-  description: string;
+  description?: string;
   href: string;
   features: string[];
   featured?: boolean;
@@ -115,30 +115,27 @@ export function Pricing({
           <Plan
             featured
             name="Basic"
-            price="$15"
-            description="Perfect for small / medium sized businesses."
+            price="$3"
+            // description=""
             href="/signin"
             features={[
-              "Send 25 quotes and invoices",
-              "Connect up to 5 bank accounts",
-              "Track up to 50 expenses per month",
-              "Automated payroll support",
-              "Export up to 12 reports",
-              "Bulk reconcile transactions",
-              "Track in multiple currencies"
+              "Create up to 3 avatars",
+              "Send 1000 messages per month",
+              "Available when demand is low",
+              "Standard response speed"
             ]}
           />
           <Plan
             name="Plus"
-            price="$39"
-            description="For even the biggest enterprise companies."
+            price="$6"
+            // description="For sharing avatars to  even the biggest enterprise companies."
             href="/signin"
             features={[
-              "Send unlimited quotes and invoices",
-              "Connect up to 15 bank accounts",
-              "Track up to 200 expenses per month",
-              "Automated payroll support",
-              "Export up to 25 reports, including TPS"
+              "Create up to unlimited avatars",
+              "Send unlimited messages",
+              "Earn the revenue from your avatars",
+              "Available even when demand is high",
+              "Faster response speed"
             ]}
           />
         </div>

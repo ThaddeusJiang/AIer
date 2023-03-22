@@ -23,7 +23,11 @@ export default function AvatarsPage({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
 
-  const { data, error } = await supabase.from("avatars").select().eq("status", "public");
+  const { data, error } = await supabase
+    .from("avatars")
+    .select()
+    .eq("status", "public")
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error(error);

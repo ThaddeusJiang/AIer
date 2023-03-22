@@ -1,4 +1,7 @@
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
+
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 import { CallToAction } from "~/components/lp/CallToAction";
 import { Faqs } from "~/components/lp/Faqs";
@@ -10,7 +13,21 @@ import { PrimaryFeatures } from "~/components/lp/PrimaryFeatures";
 import { SecondaryFeatures } from "~/components/lp/SecondaryFeatures";
 import { Testimonials } from "~/components/lp/Testimonials";
 
-export default function Home() {
+import { Avatars } from "../Avatars";
+
+export default function Landing({
+  avatars
+}: {
+  avatars: {
+    id: string;
+    username: string;
+    name: string;
+    avatar_url: string;
+    desc?: string;
+    twitterUrl?: string;
+    linkedinUrl?: string;
+  }[];
+}) {
   return (
     <>
       <Head>
@@ -27,6 +44,7 @@ export default function Home() {
         {/* <SecondaryFeatures /> */}
         <CallToAction />
         {/* <Testimonials /> */}
+        <Avatars avatars={avatars} />
         <Pricing />
         {/* <Faqs /> */}
       </main>

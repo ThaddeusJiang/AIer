@@ -81,6 +81,7 @@ function MobileNavigation() {
                 <MobileNavLink href="/avatars">Avatars</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <MobileNavLink href="/settings/profile">Your Profile</MobileNavLink>
+                <MobileNavLink href="/settings/avatars">Your Avatars</MobileNavLink>
                 <MobileNavLink href="/settings/pricing">Pricing</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <Popover.Button
@@ -96,8 +97,9 @@ function MobileNavigation() {
               </>
             ) : (
               <>
-                <MobileNavLink href="/#features">Features</MobileNavLink>
-                <MobileNavLink href="/#testimonials">Testimonials</MobileNavLink>
+                {/* <MobileNavLink href="/#features">Features</MobileNavLink>
+                <MobileNavLink href="/#testimonials">Testimonials</MobileNavLink> */}
+                <MobileNavLink href="/#avatars">Avatars</MobileNavLink>
                 <MobileNavLink href="/#pricing">Pricing</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <MobileNavLink href="/signin">Sign in</MobileNavLink>
@@ -130,8 +132,9 @@ export function Header() {
               </div>
             ) : (
               <div className="hidden md:flex md:gap-x-6">
-                <NavLink href="/#features">Features</NavLink>
-                <NavLink href="/#testimonials">Testimonials</NavLink>
+                {/* <NavLink href="/#features">Features</NavLink>
+                <NavLink href="/#testimonials">Testimonials</NavLink> */}
+                <NavLink href="/#avatars">Avatars</NavLink>
                 <NavLink href="/#pricing">Pricing</NavLink>
               </div>
             )}
@@ -185,6 +188,19 @@ export function Header() {
                                   )}
                                 >
                                   Your Profile
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  href="/settings/avatars"
+                                  className={clsx(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-lg tracking-tight text-slate-900"
+                                  )}
+                                >
+                                  Your Avatars
                                 </Link>
                               )}
                             </Menu.Item>

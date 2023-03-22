@@ -138,15 +138,15 @@ export function Chat({
             </form>
 
             <div className="mt-6 text-center text-lg">
-              You can talk with
+              talk with{" "}
               <Link href={`/settings/avatars`} className="link">
                 yourself
               </Link>{" "}
               or{" "}
               <Link href={`/avatars`} className="link">
-                other avatars
+                public avatars
               </Link>{" "}
-              anytime.
+              .
             </div>
 
             {loading ? (

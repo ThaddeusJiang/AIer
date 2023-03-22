@@ -1,6 +1,6 @@
 import { User, createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
-import { ProductWithPrice } from "types";
+import { Avatar, ProductWithPrice } from "types";
 import type { Database } from "types_db";
 
 export const supabase = createBrowserSupabaseClient<Database>();
@@ -18,6 +18,20 @@ export const getActiveProductsWithPrices = async (): Promise<ProductWithPrice[]>
     console.log(error.message);
   }
   // TODO: improve the typing here.
+  return (data as any) || [];
+};
+
+export const getPublicAvatars = async (): Promise<Avatar[]> => {
+  const { data, error } = await supabase
+    .from("avatars")
+    .select()
+    .eq("status", "public")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+  }
+
   return (data as any) || [];
 };
 

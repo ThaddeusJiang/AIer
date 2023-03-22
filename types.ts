@@ -104,3 +104,13 @@ export type PGJSON = {
   tokens: number;
   essays: PGEssay[];
 };
+
+export type Avatar = {
+  id: string;
+  username: string;
+  name: string;
+  avatar_url: string;
+  desc?: string;
+  twitterUrl?: string;
+  linkedinUrl?: string;
+};

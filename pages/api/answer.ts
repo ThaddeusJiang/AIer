@@ -66,8 +66,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     const [stream1, stream2] = stream.tee();
 
-    readStream(stream2).then((message) => {
-      createQueryRecord({
+    await readStream(stream2).then(async (message) => {
+      await createQueryRecord({
         from: queryTo,
         to: queryFrom,
         message

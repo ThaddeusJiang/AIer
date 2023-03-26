@@ -8,13 +8,13 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import classNames from "classnames";
 
-import Logo from "~/components/icons/Logo";
+import { Logo } from "~/components/lp/Logo";
 import { useUser } from "~/utils/useUser";
 
 export const Navbar = () => {
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
-  const { user } = useUser();
+  const { user, userDetails } = useUser();
 
   return (
     <nav className="transition-all duration-150">
@@ -66,11 +66,7 @@ export const Navbar = () => {
                         <div>
                           <Menu.Button className="bg-white rounded-full flex text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                             <span className="sr-only">Open user menu</span>
-                            <img
-                              className="h-8 w-8 rounded-full"
-                              src={"https://www.gravatar.com/avatar/ANY"}
-                              alt={"User"}
-                            />
+                            <img className="h-8 w-8 rounded-full" src={userDetails?.avatar_url} alt={"User"} />
                           </Menu.Button>
                         </div>
                         <Transition

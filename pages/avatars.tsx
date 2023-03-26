@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 import { Avatars } from "~/components/Avatars";
+import { Header } from "~/components/lp/Header";
 
 export default function AvatarsPage({
   avatars
@@ -17,7 +18,12 @@ export default function AvatarsPage({
     linkedinUrl?: string;
   }[];
 }) {
-  return <Avatars avatars={avatars} />;
+  return (
+    <>
+      <Header />
+      <Avatars avatars={avatars} />
+    </>
+  );
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

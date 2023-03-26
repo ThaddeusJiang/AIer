@@ -40,7 +40,7 @@ function MobileNavIcon({ open }: { open: boolean }) {
 function MobileNavigation() {
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
-  const { user } = useUser();
+  const { user, userDetails } = useUser();
 
   return (
     <Popover>
@@ -77,11 +77,10 @@ function MobileNavigation() {
           >
             {user ? (
               <>
-                <MobileNavLink href="/chat">Chat</MobileNavLink>
+                <MobileNavLink href="/settings/avatars">Your Avatars</MobileNavLink>
                 <MobileNavLink href="/avatars">Avatars</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <MobileNavLink href="/settings/profile">Your Profile</MobileNavLink>
-                <MobileNavLink href="/settings/avatars">Your Avatars</MobileNavLink>
                 <MobileNavLink href="/settings/pricing">Pricing</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <Popover.Button
@@ -115,7 +114,7 @@ function MobileNavigation() {
 export function Header() {
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
-  const { user } = useUser();
+  const { user, userDetails } = useUser();
 
   return (
     <header className="py-10">
@@ -127,8 +126,8 @@ export function Header() {
             </Link>
             {user ? (
               <div className="hidden md:flex md:gap-x-6">
-                <NavLink href="/chat">Chat</NavLink>
-                <NavLink href="/avatars">Avatars</NavLink>
+                <NavLink href="/settings/avatars">Your Avatars</NavLink>
+                <NavLink href="/avatars">Other Avatars</NavLink>
               </div>
             ) : (
               <div className="hidden md:flex md:gap-x-6">
@@ -159,11 +158,22 @@ export function Header() {
                         <div>
                           <Menu.Button className="bg-white rounded-full flex items-center space-x-2 text-lg tracking-tight text-slate-900 ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                             <span className="sr-only">Open user menu</span>
-                            <img
-                              className="h-8 w-8 rounded-full"
-                              src={"https://www.gravatar.com/avatar/ANY"}
-                              alt={"User"}
-                            />
+
+                            {userDetails?.avatar_url ? (
+                              <>
+                                <img
+                                  className="mx-auto h-8 w-8 rounded-full"
+                                  src={userDetails.avatar_url}
+                                  alt={`Avatar of ${userDetails.full_name}`}
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <div className="avatar">
+                                  <div className="w-24 rounded-full">{userDetails?.full_name?.[0]}</div>
+                                </div>
+                              </>
+                            )}
                             <span>Personal</span>
                           </Menu.Button>
                         </div>
@@ -188,19 +198,6 @@ export function Header() {
                                   )}
                                 >
                                   Your Profile
-                                </Link>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  href="/settings/avatars"
-                                  className={clsx(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-lg tracking-tight text-slate-900"
-                                  )}
-                                >
-                                  Your Avatars
                                 </Link>
                               )}
                             </Menu.Item>

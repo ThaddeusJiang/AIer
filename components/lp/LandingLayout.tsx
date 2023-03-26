@@ -5,14 +5,13 @@ import { useRouter } from "next/router";
 
 import { getURL } from "~/utils/helpers";
 
-import { PageMeta } from "../types";
-import { Header } from "./lp/Header";
+import { PageMeta } from "../../types";
 
 interface Props extends PropsWithChildren {
   meta?: PageMeta;
 }
 
-export default function Layout({ children, meta: pageMeta }: Props) {
+export default function LandingLayout({ children, meta: pageMeta }: Props) {
   const router = useRouter();
   const meta = {
     title: "AIer",
@@ -41,7 +40,6 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={`${getURL()}api/og`} />
       </Head>
-      <Header />
       <main id="skip">{children}</main>
     </>
   );

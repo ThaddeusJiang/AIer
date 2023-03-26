@@ -29,11 +29,21 @@ export function Avatars({
           {avatars.map((avatar) => (
             <li key={avatar.username}>
               <Link href={`/chat/${avatar.username}`}>
-                <img
-                  className="mx-auto h-56 w-56 rounded-full"
-                  src={avatar.avatar_url ?? "https://www.gravatar.com/avatar/ANY"}
-                  alt=""
-                />
+                {avatar.avatar_url ? (
+                  <>
+                    <img
+                      className="mx-auto h-56 w-56 rounded-full"
+                      src={avatar.avatar_url}
+                      alt={`Avatar of ${avatar.name}`}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div className="avatar">
+                      <div className="w-24 rounded-full">{avatar.name[0]}</div>
+                    </div>
+                  </>
+                )}
               </Link>
               <h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
               <h4 className=" text-sm ">@{avatar.username}</h4>

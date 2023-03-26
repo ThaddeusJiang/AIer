@@ -1,14 +1,24 @@
 import endent from "endent";
 
 import { OpenAIStream } from "~/utils/openai";
+import { getAvatar } from "~/utils/supabase-client";
 import { createQueryRecord, searchEmbeddings } from "~/utils/supabase-only";
 
 export const config = {
-  runtime: "edge",
-  unstable_allowDynamic: [
-    "/node_modules/function-bind/**" // use a glob to allow anything in the function-bind 3rd party module
-  ]
+  runtime: "edge"
 };
+
+async function readStream(stream: ReadableStream): Promise<string> {
+  const reader = stream.getReader();
+  let data = "";
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) {
+      return data;
+    }
+    data += new TextDecoder().decode(value);
+  }
+}
 
 const handler = async (req: Request): Promise<Response> => {
   try {
@@ -28,6 +38,8 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response("Error", { status: 500 });
     }
 
+    const avatar = await getAvatar(queryTo);
+
     await createQueryRecord({
       from: queryFrom,
       to: queryTo,
@@ -38,9 +50,10 @@ const handler = async (req: Request): Promise<Response> => {
       // MEMO: 调教 openAI
       {
         role: "system",
-        content: `Please disguise yourself as ${queryTo}, This is your past message: ${chunks
-          ?.map((d: any) => d.content)
-          .join("\n\n")}.
+        content: endent`Please disguise yourself as ${avatar?.name}, This is your past message:
+        ###
+        ${chunks?.map((d: any) => d.content).join("\n\n")}
+        ###
         Please answer the question in a similar style.`
       },
       {
@@ -51,7 +64,17 @@ const handler = async (req: Request): Promise<Response> => {
 
     const stream = await OpenAIStream({ messages });
 
-    return new Response(stream);
+    const [stream1, stream2] = stream.tee();
+
+    readStream(stream2).then((message) => {
+      createQueryRecord({
+        from: queryTo,
+        to: queryFrom,
+        message
+      });
+    });
+
+    return new Response(stream1);
   } catch (error) {
     console.error(error);
     return new Response("Error", { status: 500 });

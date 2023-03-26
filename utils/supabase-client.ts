@@ -35,6 +35,16 @@ export const getPublicAvatars = async (): Promise<Avatar[]> => {
   return (data as any) || [];
 };
 
+export const getAvatar = async (id: string): Promise<Avatar | null> => {
+  const { data, error } = await supabase.from("avatars").select().eq("id", id).single();
+
+  if (error) {
+    console.error(error);
+  }
+
+  return (data as any) || null;
+};
+
 export const updateUserName = async (user: User, name: string) => {
   await supabase
     .from("users")

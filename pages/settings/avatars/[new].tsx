@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
+import { Header } from "~/components/lp/Header";
+
 export default function NewAvatarPage() {
   const router = useRouter();
   const { register, handleSubmit } = useForm({
@@ -35,6 +37,7 @@ export default function NewAvatarPage() {
       <Head>
         <title>Request your Avatar</title>
       </Head>
+      <Header />
       <div className="flex flex-col pb-60">
         <div className="flex-1 ">
           <div className="mx-auto flex w-full sm:max-w-screen-sm flex-col items-center px-3 pt-4 sm:pt-8">

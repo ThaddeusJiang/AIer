@@ -101,8 +101,11 @@ function tweet2essay(tweetRecord: string) {
 
   const essays: PGEssay[] = [];
   rl.on("line", (line) => {
-    const essay = tweet2essay(line);
-    essays.push(essay);
+    // 跳过空行
+    if (line.length > 1) {
+      const essay = tweet2essay(line);
+      essays.push(essay);
+    }
   });
   await events.once(rl, "close");
 

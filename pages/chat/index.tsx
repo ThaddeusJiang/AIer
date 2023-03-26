@@ -1,56 +1,27 @@
-import { GetServerSidePropsContext } from "next";
+import Link from "next/link";
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { Header } from "~/components/lp/Header";
 
-import { Chat } from "~/components/ui/Chat/Chat";
-import { useUser } from "~/utils/useUser";
-
-export default function ChatPage({
-  avatar
-}: {
-  avatar: {
-    id: string;
-    username: string;
-    name: string;
-  };
-}) {
-  const { user } = useUser();
-
+export default function ChatPage() {
   return (
     <>
-      <Chat avatar={avatar} user={user} />
+      <Header />
+      <div className="flex flex-col">
+        <div className="flex-1 ">
+          <div className="mx-auto flex w-full sm:max-w-screen-sm flex-col items-center pt-4 sm:pt-8">
+            <h1 className="mt-6 text-center text-lg sm:text-2xl">
+              talk with{" "}
+              <Link href={`/settings/avatars`} className="link">
+                your avatars
+              </Link>{" "}
+              or{" "}
+              <Link href={`/avatars`} className="link">
+                other avatars
+              </Link>
+            </h1>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(ctx);
-  const {
-    data: { session }
-  } = await supabase.auth.getSession();
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false
-      }
-    };
-  }
-
-  const { data, error } = await supabase.from("avatars").select().eq("username", "aier").single();
-  if (error) {
-    console.error(error);
-    return {
-      props: {
-        avatar: null
-      }
-    };
-  }
-
-  return {
-    props: {
-      avatar: data
-    }
-  };
-};

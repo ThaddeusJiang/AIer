@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { User, createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
+import { Header } from "~/components/lp/Header";
 import LoadingDots from "~/components/ui/LoadingDots";
 import { postData } from "~/utils/helpers";
 import { useUser } from "~/utils/useUser";
@@ -77,60 +78,64 @@ export default function Account({ user }: { user: User }) {
     }).format((subscription?.prices?.unit_amount || 0) / 100);
 
   return (
-    <section className=" mb-32">
-      <div className="max-w-6xl mx-auto pt-8 sm:pt-24 pb-8 px-4 sm:px-6 lg:px-8">
-        <div className="sm:flex sm:flex-col sm:align-center">
-          <h1 className="text-4xl font-extrabold  sm:text-center sm:text-6xl">Profile</h1>
+    <>
+      <Header />
+
+      <section className=" mb-32">
+        <div className="max-w-6xl mx-auto pt-8 sm:pt-24 pb-8 px-4 sm:px-6 lg:px-8">
+          <div className="sm:flex sm:flex-col sm:align-center">
+            <h1 className="text-4xl font-extrabold  sm:text-center sm:text-6xl">Profile</h1>
+          </div>
         </div>
-      </div>
-      <div className="p-4">
-        <Card
-          title="Your Plan"
-          description={subscription ? `You are currently on the ${subscription?.prices?.products?.name} plan.` : ""}
-          footer={
-            <div className="flex items-start justify-between flex-col sm:flex-row sm:items-center">
-              <p className="pb-4 sm:pb-0">Manage your subscription on Stripe.</p>
-              <button className=" btn" disabled={loading || !subscription} onClick={redirectToCustomerPortal}>
-                Open customer portal
-              </button>
+        <div className="p-4">
+          <Card
+            title="Your Plan"
+            description={subscription ? `You are currently on the ${subscription?.prices?.products?.name} plan.` : ""}
+            footer={
+              <div className="flex items-start justify-between flex-col sm:flex-row sm:items-center">
+                <p className="pb-4 sm:pb-0">Manage your subscription on Stripe.</p>
+                <button className=" btn" disabled={loading || !subscription} onClick={redirectToCustomerPortal}>
+                  Open customer portal
+                </button>
+              </div>
+            }
+          >
+            <div className="text-xl mt-8 mb-4 font-semibold">
+              {isLoading ? (
+                <div className="h-12 mb-6">
+                  <LoadingDots />
+                </div>
+              ) : subscription ? (
+                `${subscriptionPrice}/${subscription?.prices?.interval}`
+              ) : (
+                <Link href="/settings/pricing">Choose your plan</Link>
+              )}
             </div>
-          }
-        >
-          <div className="text-xl mt-8 mb-4 font-semibold">
-            {isLoading ? (
-              <div className="h-12 mb-6">
-                <LoadingDots />
-              </div>
-            ) : subscription ? (
-              `${subscriptionPrice}/${subscription?.prices?.interval}`
-            ) : (
-              <Link href="/settings/pricing">Choose your plan</Link>
-            )}
-          </div>
-        </Card>
-        <Card
-          title="Your Name"
-          description="Please enter your full name, or a display name you are comfortable with."
-          footer={<p>Please use 64 characters at maximum.</p>}
-        >
-          <div className="text-xl mt-8 mb-4 font-semibold">
-            {userDetails ? (
-              `${userDetails.full_name ?? `${userDetails.first_name} ${userDetails.last_name}`}`
-            ) : (
-              <div className="h-8 mb-6">
-                <LoadingDots />
-              </div>
-            )}
-          </div>
-        </Card>
-        <Card
-          title="Your Email"
-          description="Please enter the email address you want to use to login."
-          footer={<p>We will email you to verify the change.</p>}
-        >
-          <p className="text-xl mt-8 mb-4 font-semibold">{user ? user.email : undefined}</p>
-        </Card>
-      </div>
-    </section>
+          </Card>
+          <Card
+            title="Your Name"
+            description="Please enter your full name, or a display name you are comfortable with."
+            footer={<p>Please use 64 characters at maximum.</p>}
+          >
+            <div className="text-xl mt-8 mb-4 font-semibold">
+              {userDetails ? (
+                `${userDetails.full_name ?? `${userDetails.first_name} ${userDetails.last_name}`}`
+              ) : (
+                <div className="h-8 mb-6">
+                  <LoadingDots />
+                </div>
+              )}
+            </div>
+          </Card>
+          <Card
+            title="Your Email"
+            description="Please enter the email address you want to use to login."
+            footer={<p>We will email you to verify the change.</p>}
+          >
+            <p className="text-xl mt-8 mb-4 font-semibold">{user ? user.email : undefined}</p>
+          </Card>
+        </div>
+      </section>
+    </>
   );
 }

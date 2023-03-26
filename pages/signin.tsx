@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 
-import Logo from "~/components/icons/Logo";
+import { Logo } from "~/components/lp/Logo";
 import LoadingDots from "~/components/ui/LoadingDots";
 import { getURL } from "~/utils/helpers";
 
@@ -26,7 +27,9 @@ const SignIn = () => {
       <div className="flex justify-center height-screen-helper">
         <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-80 ">
           <div className="flex justify-center pb-12 ">
-            <Logo width="64px" height="64px" />
+            <Link href="/">
+              <Logo className="h-10" />
+            </Link>
           </div>
           <div className="flex flex-col space-y-4">
             <Auth

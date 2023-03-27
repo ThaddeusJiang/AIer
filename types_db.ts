@@ -146,8 +146,6 @@ export interface Database {
           essay_title: string | null
           essay_url: string | null
           id: number
-          source_brand: string | null
-          source_username: string | null
         }
         Insert: {
           avatar_id?: string | null
@@ -160,8 +158,6 @@ export interface Database {
           essay_title?: string | null
           essay_url?: string | null
           id: number
-          source_brand?: string | null
-          source_username?: string | null
         }
         Update: {
           avatar_id?: string | null
@@ -174,8 +170,6 @@ export interface Database {
           essay_title?: string | null
           essay_url?: string | null
           id?: number
-          source_brand?: string | null
-          source_username?: string | null
         }
       }
       prices: {

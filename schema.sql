@@ -165,8 +165,6 @@ create extension vector;
 create table embeddings (
   id bigserial primary key,
   avatar_id text,
-  source_brand text,
-  source_username text,
   essay_title text,
   essay_url text,
   essay_date text,

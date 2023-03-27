@@ -60,10 +60,17 @@ const generateEmbeddings = async (essays: PGEssay[], start: number, end: number,
   }
 };
 
-function tweet2essay(tweetRecord: string) {
-  const regex = /^(\d+)\s(.+)\s<(.+)>\s(.+)$/g;
-  const [, id, timestamp, username, text] = regex.exec(tweetRecord) || [];
-
+function tweet2essay({
+  id,
+  timestamp,
+  username,
+  text
+}: {
+  id: string;
+  timestamp: string;
+  username: string;
+  text: string;
+}) {
   const essay = {
     title: text,
     url: `https://twitter.com/${username}/status/${id}`,
@@ -101,9 +108,16 @@ function tweet2essay(tweetRecord: string) {
 
   const essays: PGEssay[] = [];
   rl.on("line", (line) => {
+    const regex = /^(\d+)\s(.+)\s<(.+)>\s(.+)$/g;
+    const [, id, timestamp, username, text] = regex.exec(line) || [];
     // 跳过空行
-    if (line.length > 1) {
-      const essay = tweet2essay(line);
+    if (text?.length > 1) {
+      const essay = tweet2essay({
+        id,
+        timestamp,
+        username,
+        text
+      });
       essays.push(essay);
     }
   });

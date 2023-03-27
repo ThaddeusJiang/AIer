@@ -37,6 +37,7 @@
     "react-tweet": "^2.0.0",
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "^1.8.8",
+    "remark-gfm": "^3.0.1",
     "server-only": "^0.0.1",
     "stripe": "^11.13.0",
     "swr": "^2.0.4"
@@ -44,7 +45,7 @@
   "devDependencies": {
     "@next/env": "^13.2.4",
     "@supabase/supabase-js": "^2.11.0",
-    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/typography": "^0.5.9",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/node": "^18.14.4",
     "@types/react": "^18.0.28",

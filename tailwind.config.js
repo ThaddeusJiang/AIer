@@ -32,7 +32,7 @@ module.exports = {
       }
     }
   },
-  plugins: [require("daisyui"), require("@tailwindcss/forms")],
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
     // themes: ['cmyk']
     themes: ["light"],

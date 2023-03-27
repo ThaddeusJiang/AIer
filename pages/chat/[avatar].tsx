@@ -59,17 +59,17 @@ export default function ChatPage({
       <div className="flex flex-col h-screen overflow-hidden ">
         <div className="flex-shrink-0 ">
           <Header />
-          <div className="w-full px-4 sm:max-w-screen-sm mx-auto">
+          <div className="w-full sm:max-w-screen-sm mx-auto px-4">
             <MiniAvatar avatar={avatar} />
           </div>
         </div>
         <div className="overflow-hidden ">
-          <div ref={messageContainerRef} className=" w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+          <div ref={messageContainerRef} className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
             {listMessagesQuery.isLoading ? <div className=" h-8 ">&nbsp;</div> : <MessageList messages={messages} />}
           </div>
         </div>
         <div className="flex-shrink-0 ">
-          <div className="w-full sm:max-w-screen-sm mx-auto pb-4">
+          <div className="w-full sm:max-w-screen-sm mx-auto py-4 px-2">
             <Chat avatar={avatar} user={user} />
           </div>
         </div>

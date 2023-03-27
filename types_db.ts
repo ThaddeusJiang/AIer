@@ -354,7 +354,7 @@ export interface Database {
           query_to: string
         }
         Returns: {
-          id: number
+          id: string
           avatar_id: string
           essay_title: string
           essay_url: string

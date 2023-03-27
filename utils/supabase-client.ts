@@ -1,6 +1,6 @@
 import { User, createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
-import { Avatar, ProductWithPrice } from "types";
+import { Avatar, ProductWithPrice, UserDetails } from "types";
 import type { Database } from "types_db";
 
 export const supabase = createBrowserSupabaseClient<Database>();
@@ -37,6 +37,16 @@ export const getPublicAvatars = async (): Promise<Avatar[]> => {
 
 export const getAvatar = async (id: string): Promise<Avatar | null> => {
   const { data, error } = await supabase.from("avatars").select().eq("id", id).single();
+
+  if (error) {
+    console.error(error);
+  }
+
+  return (data as any) || null;
+};
+
+export const getUserDetails = async (id: string): Promise<UserDetails | null> => {
+  const { data, error } = await supabase.from("users").select().eq("id", id).single();
 
   if (error) {
     console.error(error);

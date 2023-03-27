@@ -1,7 +1,7 @@
 import endent from "endent";
 
 import { OpenAIStream } from "~/utils/openai";
-import { getAvatar } from "~/utils/supabase-client";
+import { getAvatar, getUserDetails } from "~/utils/supabase-client";
 import { createQueryRecord, searchEmbeddings } from "~/utils/supabase-only";
 
 export const config = {
@@ -39,6 +39,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const avatar = await getAvatar(queryTo);
+    const user = await getUserDetails(queryFrom);
 
     await createQueryRecord({
       from: queryFrom,
@@ -50,11 +51,16 @@ const handler = async (req: Request): Promise<Response> => {
       // MEMO: 调教 openAI
       {
         role: "system",
-        content: endent`Please disguise yourself as ${avatar?.name}, This is your past message:
+        content: endent`
+        Please disguise yourself as ${avatar?.name} and answer ${
+          user?.full_name
+        } question, referring to your previous conversation and responding in the same style. Please try to keep your answers concise.
+
+        Your past posts:
         ###
         ${chunks?.map((d: any) => d.content).join("\n\n")}
         ###
-        Please answer the question in a similar style.`
+        `
       },
       {
         role: "user",

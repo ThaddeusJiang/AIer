@@ -66,6 +66,7 @@ export interface Database {
       }
       embedding_inamori_website: {
         Row: {
+          avatar_id: string | null
           content: string | null
           content_length: number | null
           content_tokens: number | null
@@ -74,9 +75,10 @@ export interface Database {
           essay_thanks: string | null
           essay_title: string | null
           essay_url: string | null
-          id: number
+          id: string
         }
         Insert: {
+          avatar_id?: string | null
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
@@ -85,9 +87,10 @@ export interface Database {
           essay_thanks?: string | null
           essay_title?: string | null
           essay_url?: string | null
-          id: number
+          id: string
         }
         Update: {
+          avatar_id?: string | null
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
@@ -96,7 +99,7 @@ export interface Database {
           essay_thanks?: string | null
           essay_title?: string | null
           essay_url?: string | null
-          id?: number
+          id?: string
         }
       }
       embedding_tj: {
@@ -145,7 +148,7 @@ export interface Database {
           essay_thanks: string | null
           essay_title: string | null
           essay_url: string | null
-          id: number
+          id: string
         }
         Insert: {
           avatar_id?: string | null
@@ -157,7 +160,7 @@ export interface Database {
           essay_thanks?: string | null
           essay_title?: string | null
           essay_url?: string | null
-          id: number
+          id: string
         }
         Update: {
           avatar_id?: string | null
@@ -169,7 +172,7 @@ export interface Database {
           essay_thanks?: string | null
           essay_title?: string | null
           essay_url?: string | null
-          id?: number
+          id?: string
         }
       }
       prices: {

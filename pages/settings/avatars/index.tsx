@@ -40,7 +40,7 @@ export default function SettingsAvatarsPage({
             <li>
               <Link
                 href="/settings/avatars/new"
-                className="btn btn-circle btn-outline border-dashed border-2 w-56 h-56"
+                className="btn btn-circle btn-outline border-dashed border-2 w-40 h-40"
               >
                 <IconPlus className="w-20 h-20 border-dashed" />
               </Link>

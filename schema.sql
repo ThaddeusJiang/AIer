@@ -163,7 +163,7 @@ create extension vector;
 
 -- RUN 2nd
 create table embeddings (
-  id bigserial primary key,
+  id uuid primary key,
   avatar_id text,
   essay_title text,
   essay_url text,
@@ -191,7 +191,7 @@ create or replace function embeddings_search (
   query_to text
 )
 returns table (
-  id bigint,
+  id uuid,
   avatar_id text,
   essay_title text,
   essay_url text,

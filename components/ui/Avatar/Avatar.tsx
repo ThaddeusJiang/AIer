@@ -16,11 +16,21 @@ export const Avatar = ({
   return (
     <div>
       <Link href={`/chat/${avatar.username}`}>
-        <img
-          className="mx-auto h-56 w-56 rounded-full"
-          src={avatar.avatar_url ?? "https://www.gravatar.com/avatar/ANY"}
-          alt=""
-        />
+        {avatar.avatar_url ? (
+          <>
+            <div className="avatar">
+              <img className="!w-40 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="avatar placeholder">
+              <div className="!w-40 bg-neutral-focus text-neutral-content rounded-full">
+                <span className="text-4xl">{avatar.name[0]}</span>
+              </div>
+            </div>
+          </>
+        )}
       </Link>
       <h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
       <h4 className=" text-sm ">@{avatar.username}</h4>

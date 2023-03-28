@@ -228,3 +228,13 @@ $$;
 create index on embeddings
 using ivfflat (embedding vector_cosine_ops)
 with (lists = 100);
+
+create table memos (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  content text,
+  avatar_id text,
+  created_by uuid references auth.users,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  primary key (id)
+);

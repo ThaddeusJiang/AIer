@@ -113,10 +113,9 @@ export function Pricing({
           ))} */}
 
           <Plan
-            featured
-            name="Basic"
-            price="$3"
-            // description=""
+            name="Free"
+            price="$0"
+            description="Get help, advice, companionship anytime, anywhere, achieve personal growth and better know yourself."
             href="/signin"
             features={[
               "Create up to 3 avatars",
@@ -126,14 +125,15 @@ export function Pricing({
             ]}
           />
           <Plan
+            featured
             name="Plus"
             price="$6"
-            // description="For sharing avatars to  even the biggest enterprise companies."
+            description="Copy your knowledge and experience at zero cost, share AI avatars and earn profits by helping others."
             href="/signin"
             features={[
               "Create up to unlimited avatars",
-              "Send unlimited messages",
               "Earn the revenue from your avatars",
+              "Send unlimited messages",
               "Available even when demand is high",
               "Faster response speed"
             ]}

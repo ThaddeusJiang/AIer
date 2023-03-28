@@ -1,6 +1,8 @@
 import { ParsedEvent, ReconnectInterval, createParser } from "eventsource-parser";
 
-import { OpenAIModel } from "~/types";
+export enum OpenAIModel {
+  GTP = "gpt-3.5-turbo"
+}
 
 const apiKey = process.env.OPENAI_API_KEY;
 
@@ -22,7 +24,7 @@ export const OpenAIStream = async ({
     },
     method: "POST",
     body: JSON.stringify({
-      model: OpenAIModel.DAVINCI_TURBO,
+      model: OpenAIModel.GTP,
       messages,
       max_tokens: 300,
       temperature: 0.0,

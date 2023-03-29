@@ -4,6 +4,9 @@ const nextConfig = {
   transpilePackages: ["react-tweet"],
   experimental: {
     appDir: true
+  },
+  images: {
+    domains: ["source.unsplash.com"]
   }
 };
 

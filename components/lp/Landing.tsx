@@ -12,22 +12,11 @@ import { Pricing } from "~/components/lp/Pricing";
 import { PrimaryFeatures } from "~/components/lp/PrimaryFeatures";
 import { SecondaryFeatures } from "~/components/lp/SecondaryFeatures";
 import { Testimonials } from "~/components/lp/Testimonials";
+import { Avatar } from "~/types";
 
 import { Avatars } from "../Avatars";
 
-export default function Landing({
-  avatars
-}: {
-  avatars: {
-    id: string;
-    username: string;
-    name: string;
-    avatar_url: string;
-    desc?: string;
-    twitterUrl?: string;
-    linkedinUrl?: string;
-  }[];
-}) {
+export default function Landing({ avatars }: { avatars: Avatar[] }) {
   return (
     <>
       <Head>

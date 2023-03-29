@@ -13,13 +13,14 @@ export default function NewAvatarPage() {
     defaultValues: {
       username: "",
       name: "",
-      source: ""
+      source: "",
+      bio: ""
     }
   });
 
   const createAvatarMutation = useMutation({
-    mutationFn: async (data: { username: string; name: string }) => {
-      return fetch("/api/avatars", {
+    mutationFn: async (data: { username: string; name: string; bio: string; source: string }) => {
+      return fetch("/api/avatarCreate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -32,7 +33,7 @@ export default function NewAvatarPage() {
     }
   });
 
-  const onSubmit = async (data: { username: string; name: string; source: string }) => {
+  const onSubmit = async (data: { username: string; name: string; bio: string; source: string }) => {
     createAvatarMutation.mutate(data);
   };
 
@@ -60,7 +61,7 @@ export default function NewAvatarPage() {
                 <input
                   type="text"
                   className="input input-bordered w-full"
-                  placeholder="aier"
+                  placeholder="username"
                   {...register("username", { required: true })}
                 />
               </div>
@@ -71,10 +72,29 @@ export default function NewAvatarPage() {
                 <input
                   type="text"
                   className="input input-bordered w-full"
-                  placeholder="Aier"
+                  placeholder="Name"
                   {...register("name", { required: true })}
                 />
               </div>
+
+              <div>
+                <label htmlFor="bio" className=" label">
+                  Bio
+                </label>
+                <textarea className="textarea textarea-bordered w-full" placeholder="Add a bio" {...register("bio")} />
+              </div>
+
+              <div>
+                <label htmlFor="source" className=" label">
+                  Source
+                </label>
+                <textarea
+                  className="textarea textarea-bordered w-full"
+                  placeholder="Write your twitter ID here, e.g. @aierdotapp. I will initialize your avatar with your tweets."
+                  {...register("source")}
+                />
+              </div>
+
               <div className="py-4">
                 <button type="submit" className=" btn btn-primary w-full">
                   Submit

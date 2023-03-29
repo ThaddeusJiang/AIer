@@ -105,8 +105,8 @@ export type Avatar = {
   id: string;
   username: string;
   name: string;
-  avatar_url: string;
-  desc?: string;
+  avatar_url?: string;
+  bio?: string;
   twitterUrl?: string;
   linkedinUrl?: string;
 };

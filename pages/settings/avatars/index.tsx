@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { IconPlus } from "@tabler/icons-react";
+import { IconEdit, IconMessage, IconPlus } from "@tabler/icons-react";
 
 import { Header } from "~/components/lp/Header";
 import { DefaultAvatar } from "~/components/ui/Avatar/DefaultAvatar";
@@ -15,7 +15,7 @@ export default function SettingsAvatarsPage({
     username: string;
     name: string;
     avatar_url: string;
-    desc?: string;
+    bio?: string;
     twitterUrl?: string;
     linkedinUrl?: string;
   }[];
@@ -23,14 +23,11 @@ export default function SettingsAvatarsPage({
   return (
     <>
       <Header />
-      <div className="bg-white ">
-        <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <div className="mx-auto max-w-2xl">
+      <div className="">
+        <div className="mx-auto max-w-7xl px-6  lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Your Avatars</h2>
-            <p className="mt-4 text-lg leading-8 text-gray-600">
-              Sorry, we do not currently offer real-time creation of AI avatars, as the creation process is carried out
-              nightly.
-            </p>
+            <p className="hidden mt-4 text-lg leading-8 text-gray-600">TODO: Add a description here.</p>
           </div>
           <ul
             role="list"
@@ -46,7 +43,7 @@ export default function SettingsAvatarsPage({
             </li>
             {avatars.map((avatar) => (
               <li className="mx-auto" key={avatar.id}>
-                <DefaultAvatar avatar={avatar} url={`/settings/avatars/${avatar.id}`} />
+                <DefaultAvatar avatar={avatar} url={`/chat/${avatar.username}`} edit={true} />
               </li>
             ))}
           </ul>

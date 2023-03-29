@@ -1,21 +1,11 @@
 import Link from "next/link";
 
-export const MiniAvatar = ({
-  avatar
-}: {
-  avatar: {
-    id: string;
-    username: string;
-    name: string;
-    desc?: string;
-    avatar_url?: string;
-    twitterUrl?: string;
-    linkedinUrl?: string;
-  };
-}) => {
+import { Avatar } from "~/types";
+
+export const MiniAvatar = ({ avatar }: { avatar: Avatar }) => {
   return (
     <div className="flex space-x-2 items-center">
-      {avatar.avatar_url ? (
+      {avatar?.avatar_url ? (
         <>
           <div className="avatar">
             <img className="!w-10 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />

@@ -1,20 +1,10 @@
+import { Avatar } from "~/types";
+
 import { DefaultAvatar } from "./ui/Avatar/DefaultAvatar";
 
-export function Avatars({
-  avatars
-}: {
-  avatars: {
-    id: string;
-    username: string;
-    name: string;
-    avatar_url: string;
-    desc?: string;
-    twitterUrl?: string;
-    linkedinUrl?: string;
-  }[];
-}) {
+export function Avatars({ avatars }: { avatars: Avatar[] }) {
   return (
-    <section id="avatars" aria-label="Pricing" className="bg-white py-20 sm:py-32">
+    <section id="avatars" aria-label="Pricing" className="py-20 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Public Avatars</h2>
@@ -28,7 +18,7 @@ export function Avatars({
         >
           {avatars.map((avatar) => (
             <li className="mx-auto" key={avatar.id}>
-              <DefaultAvatar avatar={avatar} url={`/chat/${avatar.id}`} />
+              <DefaultAvatar avatar={avatar} url={`/chat/${avatar.username}`} />
             </li>
           ))}
         </ul>

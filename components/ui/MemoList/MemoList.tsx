@@ -16,7 +16,7 @@ const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => vo
   const createdAt = dayjs(memo.created_at).format("YYYY-MM-DD HH:mm");
   return (
     <div className={classNames("w-full")}>
-      <div className="rounded-lg px-4 py-2 my-2 hover:shadow bg-blue-100">
+      <div className="rounded-lg px-4 py-2 my-2 hover:shadow bg-base-100 ">
         <div className="flex items-center justify-between">
           <p className="text-xs text-gray-600">{createdAt}</p>
           <div className="flex items-center space-x-1">
@@ -50,10 +50,10 @@ const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => vo
 
 export const MemoList = ({ memos, onDelete }: { memos: Memo[]; onDelete: (id: string) => void }) => {
   return (
-    <>
+    <div className=" min-h-screen">
       {memos.map((memo) => (
         <MemoItem key={memo.id} memo={memo} onDelete={onDelete} />
       ))}
-    </>
+    </div>
   );
 };

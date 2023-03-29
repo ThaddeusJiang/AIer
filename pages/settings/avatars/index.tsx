@@ -46,7 +46,7 @@ export default function SettingsAvatarsPage({
             </li>
             {avatars.map((avatar) => (
               <li className="mx-auto" key={avatar.id}>
-                <DefaultAvatar avatar={avatar} />
+                <DefaultAvatar avatar={avatar} url={`/settings/avatars/${avatar.id}`} />
               </li>
             ))}
           </ul>

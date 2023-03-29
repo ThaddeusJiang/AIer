@@ -239,6 +239,7 @@ create table memos (
   updated_by uuid references auth.users,
   deleted_at timestamp with time zone,
   deleted_by uuid references auth.users,
+  embedded bool, -- TODO: embedding id or not
   primary key (id)
 );
 

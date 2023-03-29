@@ -28,7 +28,7 @@ export function Avatars({
         >
           {avatars.map((avatar) => (
             <li className="mx-auto" key={avatar.id}>
-              <DefaultAvatar avatar={avatar} />
+              <DefaultAvatar avatar={avatar} url={`/chat/${avatar.id}`} />
             </li>
           ))}
         </ul>

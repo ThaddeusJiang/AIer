@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 export const DefaultAvatar = ({
-  avatar
+  avatar,
+  url = ""
 }: {
   avatar: {
     id: string;
@@ -12,10 +13,11 @@ export const DefaultAvatar = ({
     twitterUrl?: string;
     linkedinUrl?: string;
   };
+  url?: string;
 }) => {
   return (
     <div className="w-40 text-center">
-      <Link href={`/chat/${avatar.username}`}>
+      <Link href={url}>
         {avatar.avatar_url ? (
           <>
             <div className="avatar">

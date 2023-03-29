@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 
 import { GetServerSidePropsContext } from "next";
 
-import { DevTool } from "@hookform/devtools";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { IconArrowUp } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,9 +9,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Header } from "~/components/lp/Header";
 import { DefaultAvatar } from "~/components/ui/Avatar/DefaultAvatar";
 import { MemoList } from "~/components/ui/MemoList/MemoList";
-import { Avatar, Memo } from "~/types";
+import { Avatar } from "~/types";
 
-export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
+export default function AvatarMemosPage({ avatar }: { avatar: Avatar }) {
   const { register, control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
       content: "",
@@ -98,9 +97,10 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     <>
       <Header />
       <div className="flex justify-center">
-        <DefaultAvatar avatar={avatar} />
+        <DefaultAvatar avatar={avatar} url={`/settings/avatars/${avatar.id}`} />
       </div>
       <div className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+        <h1 className="text-2xl font-bold">MEMO</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full form-control">
           <input type="hidden" {...register("avatar_id")} />
           <div id="content" className=" relative">

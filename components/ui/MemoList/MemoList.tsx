@@ -17,25 +17,27 @@ const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => vo
   return (
     <div className={classNames("w-full")}>
       <div className="rounded-lg px-4 py-2 my-2 hover:shadow bg-blue-100">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <p className="text-xs text-gray-600">{createdAt}</p>
-          <div className="dropdown dropdown-end">
-            <label tabIndex={0}>
-              <IconDots className="w-4 " />
-            </label>
-            <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box ">
-              <li>
-                <a
-                  className="text-sm"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onDelete(memo.id);
-                  }}
-                >
-                  delete
-                </a>
-              </li>
-            </ul>
+          <div className="flex items-center space-x-1">
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0}>
+                <IconDots className="w-4 " />
+              </label>
+              <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box ">
+                <li>
+                  <a
+                    className="text-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onDelete(memo.id);
+                    }}
+                  >
+                    delete
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <article className="prose prose-sm md:prose ">

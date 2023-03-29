@@ -65,9 +65,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
-  const { avatarId } = context.params as { avatarId: string };
+  const { username } = context.params as { username: string };
 
-  const { data: avatar, error: avatarError } = await supabase.from("avatars").select().eq("id", avatarId).single();
+  const { data, error: avatarError } = await supabase.from("avatars").select().eq("username", username);
 
   if (avatarError) {
     console.error(avatarError);
@@ -78,7 +78,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
-  if (!avatar) {
+  if (data.length === 0) {
     return {
       notFound: true
     };
@@ -93,7 +93,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const { data: queries, error: repliesError } = await supabase
     .from("queries")
     .select("id, from_id")
-    .eq("to_id", avatarId);
+    .eq("to_id", data[0]?.id);
 
   const uniqueIds = new Set();
   const uniqueFromIds = new Set();
@@ -103,9 +103,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     uniqueFromIds.add(reply.from_id);
   });
 
+  if (repliesError) {
+    console.error(repliesError);
+  }
+
   return {
     props: {
-      avatar,
+      avatar: data[0],
       replies: uniqueIds.size ?? 0,
       users: uniqueFromIds.size ?? 0
     }

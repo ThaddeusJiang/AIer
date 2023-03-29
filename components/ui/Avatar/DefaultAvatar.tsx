@@ -29,7 +29,7 @@ export const DefaultAvatar = ({ avatar, url = "", edit = false }: { avatar: Avat
         <h3 className=" text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name} </h3>
 
         {edit ? (
-          <Link href={`/settings/avatars/${avatar.id}/`}>
+          <Link href={`/settings/avatars/${avatar.username}`}>
             <IconEdit className="w-5" />
           </Link>
         ) : null}

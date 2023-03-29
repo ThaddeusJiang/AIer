@@ -143,9 +143,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
-  const { avatarId } = context.params as { avatarId: string };
+  const { username } = context.params as { username: string };
 
-  const { data: avatar, error } = await supabase.from("avatars").select().eq("id", avatarId).single();
+  const { data, error } = await supabase.from("avatars").select().eq("username", username);
   if (error) {
     console.error(error);
     return {
@@ -155,9 +155,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
+  if (data.length === 0) {
+    return {
+      notFound: true
+    };
+  }
+
   return {
     props: {
-      avatar
+      avatar: data[0]
     }
   };
 };

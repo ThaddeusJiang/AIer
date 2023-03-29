@@ -42,7 +42,7 @@ export default function SettingsAvatarsPage({
               </Link>
             </li>
             {avatars.map((avatar) => (
-              <li className="mx-auto" key={avatar.id}>
+              <li className="mx-auto" key={avatar.username}>
                 <DefaultAvatar avatar={avatar} url={`/chat/${avatar.username}`} edit={true} />
               </li>
             ))}

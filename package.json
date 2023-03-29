@@ -25,6 +25,7 @@
     "@vercel/og": "^0.4.0",
     "classnames": "^2.3.2",
     "daisyui": "^2.51.4",
+    "dayjs": "^1.11.7",
     "encoding": "^0.1.13",
     "endent": "^2.1.0",
     "eventsource-parser": "^0.1.0",
@@ -43,6 +44,7 @@
     "swr": "^2.0.4"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@next/env": "^13.2.4",
     "@supabase/supabase-js": "^2.11.0",
     "@tailwindcss/typography": "^0.5.9",

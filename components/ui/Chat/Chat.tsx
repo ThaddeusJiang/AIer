@@ -129,22 +129,20 @@ export function Chat({
 
   return (
     <>
-      <form className="relative w-full form-control" onSubmit={handleSubmit(submit)}>
-        <div className="w-full sm:max-w-screen-sm">
-          <div className="relative">
-            <textarea
-              className="textarea text-base textarea-bordered focus:outline-none w-full text-gray-900 "
-              placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
-              rows={2}
-              {...register("query", { required: true })}
-            />
-          </div>
-          {query ? (
-            <button className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle " type="submit">
-              <IconArrowUp className="h-6 w-6" />
-            </button>
-          ) : null}
+      <form className="relative w-full sm:max-w-screen-sm form-control" onSubmit={handleSubmit(submit)}>
+        <div className="relative">
+          <textarea
+            className="textarea text-base textarea-bordered focus:outline-none w-full text-gray-900 "
+            placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
+            rows={2}
+            {...register("query", { required: true })}
+          />
         </div>
+        {query ? (
+          <button className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle " type="submit">
+            <IconArrowUp className="h-6 w-6" />
+          </button>
+        ) : null}
       </form>
 
       {loading ? (

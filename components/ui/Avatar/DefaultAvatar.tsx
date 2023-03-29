@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const Avatar = ({
+export const DefaultAvatar = ({
   avatar
 }: {
   avatar: {
@@ -14,7 +14,7 @@ export const Avatar = ({
   };
 }) => {
   return (
-    <div>
+    <div className="w-40 text-center">
       <Link href={`/chat/${avatar.username}`}>
         {avatar.avatar_url ? (
           <>
@@ -32,7 +32,7 @@ export const Avatar = ({
           </>
         )}
       </Link>
-      <h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
+      <h3 className="mt-2 text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
       <h4 className=" text-sm ">@{avatar.username}</h4>
       <p className="text-sm leading-6 text-gray-600">{avatar.desc}</p>
       <ul role="list" className="mt-6 flex justify-center gap-x-6">

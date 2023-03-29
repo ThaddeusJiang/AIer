@@ -117,3 +117,12 @@ export type Message = {
   to_id: string | null;
   message_text: string | null;
 };
+
+export type Memo = {
+  id: string;
+  content: string;
+  avatar_id: string;
+  created_at: string;
+  created_by: string;
+  updated_at: string;
+};

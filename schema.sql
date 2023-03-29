@@ -232,7 +232,7 @@ with (lists = 100);
 create table memos (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
   content text,
-  avatar_id text, -- TODO: 应该也是外键， uuid references avatars
+  avatar_id text references avatars,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   created_by uuid references auth.users,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null,

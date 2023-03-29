@@ -160,7 +160,7 @@ export interface Database {
           essay_thanks?: string | null
           essay_title?: string | null
           essay_url?: string | null
-          id: string
+          id?: string
         }
         Update: {
           avatar_id?: string | null
@@ -173,6 +173,44 @@ export interface Database {
           essay_title?: string | null
           essay_url?: string | null
           id?: string
+        }
+      }
+      memos: {
+        Row: {
+          avatar_id: string | null
+          content: string | null
+          created_at: string
+          created_by: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          embedded: boolean | null
+          id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          avatar_id?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          embedded?: boolean | null
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          avatar_id?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          embedded?: boolean | null
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
         }
       }
       prices: {

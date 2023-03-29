@@ -2,11 +2,10 @@ import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { IconPlus } from "@tabler/icons-react";
+import { IconEdit, IconMessage, IconPlus } from "@tabler/icons-react";
 
-import { Avatars } from "~/components/Avatars";
 import { Header } from "~/components/lp/Header";
-import { Avatar } from "~/components/ui/Avatar/Avatar";
+import { DefaultAvatar } from "~/components/ui/Avatar/DefaultAvatar";
 
 export default function SettingsAvatarsPage({
   avatars
@@ -16,7 +15,7 @@ export default function SettingsAvatarsPage({
     username: string;
     name: string;
     avatar_url: string;
-    desc?: string;
+    bio?: string;
     twitterUrl?: string;
     linkedinUrl?: string;
   }[];
@@ -24,20 +23,17 @@ export default function SettingsAvatarsPage({
   return (
     <>
       <Header />
-      <div className="bg-white ">
-        <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <div className="mx-auto max-w-2xl">
+      <div className="">
+        <div className="mx-auto max-w-7xl px-6  lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Your Avatars</h2>
-            <p className="mt-4 text-lg leading-8 text-gray-600">
-              Sorry, we do not currently offer real-time creation of AI avatars, as the creation process is carried out
-              nightly.
-            </p>
+            <p className="hidden mt-4 text-lg leading-8 text-gray-600">TODO: Add a description here.</p>
           </div>
           <ul
             role="list"
             className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4"
           >
-            <li>
+            <li className="mx-auto">
               <Link
                 href="/settings/avatars/new"
                 className="btn btn-circle btn-outline border-dashed border-2 w-40 h-40"
@@ -46,8 +42,8 @@ export default function SettingsAvatarsPage({
               </Link>
             </li>
             {avatars.map((avatar) => (
-              <li key={avatar.id}>
-                <Avatar avatar={avatar} />
+              <li className="mx-auto" key={avatar.username}>
+                <DefaultAvatar avatar={avatar} url={`/chat/${avatar.username}`} edit={true} />
               </li>
             ))}
           </ul>

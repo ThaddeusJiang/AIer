@@ -56,3 +56,68 @@ export const createQueryRecord = async ({ from, to, message }: { from: string; t
   const [{ id }] = data;
   console.log(`Query inserted: ${id}`);
 };
+
+// DB:memos, CRUD and search
+export const createMemo = async ({
+  content,
+  avatar_id,
+  created_by
+}: {
+  content: string;
+  avatar_id: string;
+  created_by: string;
+}) => {
+  const memoData = {
+    content,
+    avatar_id,
+    created_by
+  };
+  const { error, data } = await supabaseAdmin.from("memos").insert(memoData).select();
+  if (error) throw error;
+  const [{ id }] = data;
+  console.log(`Memo inserted: ${id}`);
+};
+
+export const readMemo = async ({ id }: { id: string }) => {
+  const { data, error } = await supabaseAdmin.from("memos").select().eq("id", id);
+  if (error) throw error;
+  return data;
+};
+
+export const updateMemo = async ({ id, content }: { id: string; content: string }) => {
+  const memoData = {
+    content,
+    updated_at: new Date().toISOString()
+  };
+  const { error, data } = await supabaseAdmin.from("memos").update(memoData).eq("id", id).select();
+  if (error) throw error;
+  const [{ id: updatedId }] = data;
+  console.log(`Memo updated: ${updatedId}`);
+  return data[0];
+};
+
+export const deleteMemo = async ({ id }: { id: string }) => {
+  const { error, data } = await supabaseAdmin
+    .from("memos")
+    .update({
+      deleted_at: new Date().toISOString()
+    })
+    .eq("id", id)
+    .select();
+  if (error) throw error;
+  const [{ id: deletedId }] = data;
+  console.log(`Memo deleted: ${deletedId}`);
+  return data[0];
+};
+
+export const listMemos = async ({ from = 0, to = 100 }: { from: number; to: number }) => {
+  const { data, error } = await supabaseAdmin.from("memos").select().range(from, to);
+  if (error) throw error;
+  return data;
+};
+
+export const searchMemos = async ({ query, limit = 100 }: { query: string; limit?: number }) => {
+  const { data, error } = await supabaseAdmin.from("memos").select().textSearch("content", query).limit(limit);
+  if (error) throw error;
+  return data;
+};

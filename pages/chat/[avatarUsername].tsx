@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +24,7 @@ export default function ChatPage({
   const { user } = useUser();
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const listMessagesQuery = useQuery({
-    queryKey: ["listMessages", avatar.id],
+    queryKey: ["listMessages", avatar?.id],
     queryFn: async () => {
       const res = await fetch("/api/messages.list", {
         method: "POST",
@@ -33,7 +32,7 @@ export default function ChatPage({
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          avatar: avatar.id
+          avatar: avatar?.id
         })
       });
       return res.json();
@@ -93,10 +92,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     };
   }
 
-  const { avatar } = ctx.params as { avatar: string };
+  const { avatarUsername } = ctx.params as { avatarUsername: string };
+  // MEMO: .single() 会抛出异常
+  const { data, error } = await supabase.from("avatars").select().eq("username", avatarUsername);
 
-  const { data, error } = await supabase.from("avatars").select().eq("username", avatar).single();
   if (error) {
+    console.debug(error);
     console.error(error);
     return {
       props: {
@@ -105,9 +106,16 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     };
   }
 
+  if (data.length === 0) {
+    console.debug("not found");
+    return {
+      notFound: true
+    };
+  }
+
   return {
     props: {
-      avatar: data
+      avatar: data[0]
     }
   };
 };

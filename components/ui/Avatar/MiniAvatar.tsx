@@ -1,25 +1,25 @@
 import Link from "next/link";
 
-export const MiniAvatar = ({
-  avatar
-}: {
-  avatar: {
-    id: string;
-    username: string;
-    name: string;
-    desc?: string;
-    avatar_url?: string;
-    twitterUrl?: string;
-    linkedinUrl?: string;
-  };
-}) => {
+import { Avatar } from "~/types";
+
+export const MiniAvatar = ({ avatar }: { avatar: Avatar }) => {
   return (
     <div className="flex space-x-2 items-center">
-      <div className="avatar">
-        <div className="w-8 rounded-full ring ring-offset-base-100 ring-offset-2">
-          <img src={avatar.avatar_url ?? "https://www.gravatar.com/avatar/ANY"} />
-        </div>
-      </div>
+      {avatar?.avatar_url ? (
+        <>
+          <div className="avatar">
+            <img className="!w-10 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="avatar placeholder">
+            <div className="!w-10 bg-neutral-focus text-neutral-content rounded-full">
+              <span className="text-xl">{avatar.name[0]}</span>
+            </div>
+          </div>
+        </>
+      )}
 
       <div>
         <div className="text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</div>

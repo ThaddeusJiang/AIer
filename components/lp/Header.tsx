@@ -156,7 +156,7 @@ export function Header() {
                     {({ open: isUserMenuOpen }) => (
                       <>
                         <div>
-                          <Menu.Button className="bg-white rounded-full flex items-center space-x-2 text-lg tracking-tight text-slate-900 ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
+                          <Menu.Button className="flex items-center space-x-2 text-lg tracking-tight text-slate-900 ">
                             <span className="sr-only">Open user menu</span>
 
                             {userDetails?.avatar_url ? (

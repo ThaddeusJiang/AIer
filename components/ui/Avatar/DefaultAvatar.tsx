@@ -1,21 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
 
-export const Avatar = ({
-  avatar
-}: {
-  avatar: {
-    id: string;
-    username: string;
-    name: string;
-    desc?: string;
-    avatar_url?: string;
-    twitterUrl?: string;
-    linkedinUrl?: string;
-  };
-}) => {
+import { IconEdit } from "@tabler/icons-react";
+
+import { Avatar } from "~/types";
+
+export const DefaultAvatar = ({ avatar, url = "", edit = false }: { avatar: Avatar; url?: string; edit?: boolean }) => {
   return (
-    <div>
-      <Link href={`/chat/${avatar.username}`}>
+    <div className="w-40 text-center">
+      <Link href={url}>
         {avatar.avatar_url ? (
           <>
             <div className="avatar">
@@ -32,10 +25,19 @@ export const Avatar = ({
           </>
         )}
       </Link>
-      <h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
+      <div className="mt-4 flex justify-center items-center space-x-2">
+        <h3 className=" text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name} </h3>
+
+        {edit ? (
+          <Link href={`/settings/avatars/${avatar.username}`}>
+            <IconEdit className="w-5" />
+          </Link>
+        ) : null}
+      </div>
+
       <h4 className=" text-sm ">@{avatar.username}</h4>
-      <p className="text-sm leading-6 text-gray-600">{avatar.desc}</p>
-      <ul role="list" className="mt-6 flex justify-center gap-x-6">
+      <p className="text-sm leading-6 text-gray-600">{avatar.bio}</p>
+      <ul role="list" className="mt-6 flex gap-x-6">
         {avatar.twitterUrl ? (
           <li>
             <a href={avatar.twitterUrl} className="text-gray-400 hover:text-gray-500">

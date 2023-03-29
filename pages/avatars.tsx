@@ -4,20 +4,9 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 import { Avatars } from "~/components/Avatars";
 import { Header } from "~/components/lp/Header";
+import { Avatar } from "~/types";
 
-export default function AvatarsPage({
-  avatars
-}: {
-  avatars: {
-    id: string;
-    username: string;
-    name: string;
-    avatar_url: string;
-    desc?: string;
-    twitterUrl?: string;
-    linkedinUrl?: string;
-  }[];
-}) {
+export default function AvatarsPage({ avatars }: { avatars: Avatar[] }) {
   return (
     <>
       <Header />

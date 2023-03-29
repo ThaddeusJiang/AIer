@@ -105,8 +105,8 @@ export type Avatar = {
   id: string;
   username: string;
   name: string;
-  avatar_url: string;
-  desc?: string;
+  avatar_url?: string;
+  bio?: string;
   twitterUrl?: string;
   linkedinUrl?: string;
 };
@@ -116,4 +116,14 @@ export type Message = {
   from_id: string | null;
   to_id: string | null;
   message_text: string | null;
+};
+
+export type Memo = {
+  id: string;
+  content: string;
+  avatar_id: string;
+  created_at: string;
+  created_by: string;
+  updated_at: string;
+  embedded?: boolean;
 };

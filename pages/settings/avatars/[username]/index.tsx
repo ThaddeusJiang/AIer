@@ -131,10 +131,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const supabase = createServerSupabaseClient(context);
 
   const {
-    data: { session }
-  } = await supabase.auth.getSession();
+    data: { user }
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return {
       redirect: {
         destination: "/signin",
@@ -146,6 +146,14 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const { username } = context.params as { username: string };
 
   const { data, error } = await supabase.from("avatars").select().eq("username", username);
+
+  const avatar = data?.[0];
+  if (avatar?.owner_id !== user.id) {
+    return {
+      notFound: true
+    };
+  }
+
   if (error) {
     console.error(error);
     return {

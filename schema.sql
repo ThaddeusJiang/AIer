@@ -176,7 +176,7 @@ create table embeddings (
 );
 
 create table queries (
-  id bigserial primary key,
+  id uuid primary key NOT NULL DEFAULT uuid_generate_v4(),
   from_id text,
   to_id text,
   message_text text,

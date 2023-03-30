@@ -3,23 +3,50 @@ import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
+
+import * as yup from "yup";
 
 import { Header } from "~/components/lp/Header";
 
+const schema = yup
+  .object({
+    username: yup
+      .string()
+      .matches(
+        /^[a-zA-Z][a-zA-Z0-9_]*$/,
+        "username must start with a letter and only contain alphanumeric characters and underscores"
+      )
+      .required(),
+    name: yup.string().required(),
+    source: yup.string().required(),
+    bio: yup.string(),
+    avatar_url: yup.string()
+  })
+  .required();
+type FormData = yup.InferType<typeof schema>;
+
 export default function NewAvatarPage() {
   const router = useRouter();
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError
+  } = useForm<FormData>({
     defaultValues: {
       username: "",
       name: "",
       source: "",
-      bio: ""
-    }
+      bio: "",
+      avatar_url: ""
+    },
+    resolver: yupResolver(schema)
   });
 
-  const createAvatarMutation = useMutation({
-    mutationFn: async (data: { username: string; name: string; bio: string; source: string }) => {
+  const avatarCreateMutation = useMutation({
+    mutationFn: async (data: FormData) => {
       return fetch("/api/avatarCreate", {
         method: "POST",
         headers: {
@@ -29,12 +56,24 @@ export default function NewAvatarPage() {
       }).then((res) => res.json());
     },
     onSuccess: (data) => {
-      router.push(`/settings/avatars/${data.id}`);
+      const { id, error } = data;
+      if (error) {
+        console.error(error);
+        setError(
+          "username",
+          { type: "custom", message: "the username is already taken. please choose another one." },
+          {
+            shouldFocus: true
+          }
+        );
+      } else {
+        router.push(`/settings/avatars/${id}`);
+      }
     }
   });
 
-  const onSubmit = async (data: { username: string; name: string; bio: string; source: string }) => {
-    createAvatarMutation.mutate(data);
+  const onSubmit = async (data: FormData) => {
+    avatarCreateMutation.mutate(data);
   };
 
   return (
@@ -64,6 +103,7 @@ export default function NewAvatarPage() {
                   placeholder="username"
                   {...register("username", { required: true })}
                 />
+                {errors.username ? <span className="text-red-500">{errors.username.message}</span> : null}
               </div>
               <div>
                 <label htmlFor="name" className=" label">
@@ -75,13 +115,7 @@ export default function NewAvatarPage() {
                   placeholder="Name"
                   {...register("name", { required: true })}
                 />
-              </div>
-
-              <div>
-                <label htmlFor="bio" className=" label">
-                  Bio
-                </label>
-                <textarea className="textarea textarea-bordered w-full" placeholder="Add a bio" {...register("bio")} />
+                {errors.name ? <span className="text-red-500">{errors.name.message}</span> : null}
               </div>
 
               <div>
@@ -93,10 +127,30 @@ export default function NewAvatarPage() {
                   placeholder="Write your twitter ID here, e.g. @aierdotapp. I will initialize your avatar with your tweets."
                   {...register("source")}
                 />
+                {errors.source ? <span className="text-red-500">{errors.source.message}</span> : null}
+              </div>
+
+              <div>
+                <label htmlFor="avatar_url" className=" label">
+                  Avatar URL
+                </label>
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="https://example.com/avatar.png"
+                  {...register("avatar_url")}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="bio" className=" label">
+                  Bio
+                </label>
+                <textarea className="textarea textarea-bordered w-full" placeholder="Add a bio" {...register("bio")} />
               </div>
 
               <div className="py-4">
-                <button type="submit" className=" btn btn-primary w-full">
+                <button type="submit" disabled={avatarCreateMutation.isLoading} className=" btn btn-primary w-full">
                   Submit
                 </button>
               </div>

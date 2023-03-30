@@ -145,7 +145,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const { username } = context.params as { username: string };
 
-  const { data, error } = await supabase.from("avatars").select().eq("username", username);
+  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase());
 
   const avatar = data?.[0];
   if (avatar?.owner_id !== user.id) {

@@ -92,9 +92,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     };
   }
 
-  const { avatarUsername } = ctx.params as { avatarUsername: string };
+  const { username } = ctx.params as { username: string };
   // MEMO: .single() 会抛出异常
-  const { data, error } = await supabase.from("avatars").select().eq("username", avatarUsername);
+  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase());
 
   if (error) {
     console.debug(error);

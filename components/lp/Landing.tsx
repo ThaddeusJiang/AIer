@@ -14,7 +14,7 @@ import { SecondaryFeatures } from "~/components/lp/SecondaryFeatures";
 import { Testimonials } from "~/components/lp/Testimonials";
 import { Avatar } from "~/types";
 
-import { Avatars } from "../Avatars";
+import { Avatars } from "./Avatars";
 
 export default function Landing({ avatars }: { avatars: Avatar[] }) {
   return (

@@ -1,6 +1,7 @@
 import { Avatar } from "~/types";
 
-import { DefaultAvatar } from "./ui/Avatar/DefaultAvatar";
+import { DefaultAvatar } from "../ui/Avatar/DefaultAvatar";
+import { AvatarsValuesMessage } from "./AvatarsValuesMessage";
 
 export function Avatars({ avatars }: { avatars: Avatar[] }) {
   return (
@@ -8,9 +9,7 @@ export function Avatars({ avatars }: { avatars: Avatar[] }) {
       <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Public Avatars</h2>
-          <p className="mt-4 text-lg leading-8 text-gray-600">
-            Talking with the AIer anytime, without worrying about their availability.
-          </p>
+          <AvatarsValuesMessage />
         </div>
         <ul
           role="list"
@@ -18,7 +17,7 @@ export function Avatars({ avatars }: { avatars: Avatar[] }) {
         >
           {avatars.map((avatar) => (
             <li className="mx-auto" key={avatar.username}>
-              <DefaultAvatar avatar={avatar} url={`/chat/${avatar.username}`} />
+              <DefaultAvatar avatar={avatar} url={`/avatars/${avatar.username}`} />
             </li>
           ))}
         </ul>

@@ -1,19 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import classNames from "classnames";
+import { IconMessage } from "@tabler/icons-react";
 
 import { Avatar } from "~/types";
 
-export const AvatarProfileHeader = ({
-  avatar,
-  edit = false,
-  active = "memo"
-}: {
-  avatar: Avatar;
-  edit?: boolean;
-  active?: string;
-}) => {
+export const AvatarProfileHeader = ({ avatar, edit = false }: { avatar: Avatar; edit?: boolean }) => {
   return (
     <>
       <header className="relative">
@@ -45,6 +37,13 @@ export const AvatarProfileHeader = ({
             )}
           </div>
 
+          <div className=" absolute top-4 right-4">
+            <Link href={`/chat/${avatar.username}`} className="btn gap-1 btn-primary ">
+              <IconMessage className="h-5 w-5 " />
+              <span>Chat</span>
+            </Link>
+          </div>
+
           {edit && (
             <Link
               href={`/settings/avatars/${avatar.username}/edit`}
@@ -60,25 +59,6 @@ export const AvatarProfileHeader = ({
           <h4 className=" text-sm ">@{avatar.username}</h4>
           <p className="text-sm mt-2 leading-6 text-gray-600">{avatar.bio}</p>
         </div>
-
-        <nav className="tabs w-full flex">
-          <Link
-            href={`/settings/avatars/${avatar.username}`}
-            className={classNames("tab tab-lg flex-1 tab-bordered", {
-              "tab-active": active === "memos"
-            })}
-          >
-            Memos
-          </Link>
-          <Link
-            href={`/settings/avatars/${avatar.username}/replies`}
-            className={classNames("tab tab-lg flex-1 tab-bordered", {
-              "tab-active": active === "replies"
-            })}
-          >
-            Replies
-          </Link>
-        </nav>
       </header>
     </>
   );

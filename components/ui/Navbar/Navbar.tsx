@@ -25,7 +25,7 @@ export const Navbar = () => {
         <div className="flex justify-between align-center flex-row py-4 md:py-6 relative ">
           <div className="flex flex-1 items-center space-x-2">
             <Link
-              href={user ? "/chat" : "/"}
+              href={user ? "/home" : "/"}
               className="cursor-pointer transform duration-100 ease-in-out "
               aria-label="Logo"
             >

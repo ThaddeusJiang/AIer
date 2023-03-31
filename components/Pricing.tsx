@@ -72,8 +72,8 @@ export default function Pricing({ products }: Props) {
       return router.push("/signin");
     }
     if (subscription) {
-      // MEMO: 支付成功后，会自动跳转到 /chat 页面
-      return router.push("/chat");
+      // MEMO: 支付成功后，会自动跳转到 /home 页面
+      return router.push("/home");
     }
 
     try {

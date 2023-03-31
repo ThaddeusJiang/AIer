@@ -109,6 +109,8 @@ export type Avatar = {
   bio?: string;
   twitterUrl?: string;
   linkedinUrl?: string;
+  status?: string;
+  owner_id?: string;
 };
 
 export type Message = {

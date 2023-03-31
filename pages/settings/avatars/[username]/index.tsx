@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Header } from "~/components/lp/Header";
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
+import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
 import { MemoList } from "~/components/ui/MemoList/MemoList";
 import { Avatar } from "~/types";
 
@@ -41,7 +42,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     }
   });
 
-  const createMemoMutation = useMutation({
+  const memoCreateMutation = useMutation({
     mutationFn: async (data: { content: string; avatar_id: string }) => {
       const res = await fetch("/api/memoCreate", {
         method: "POST",
@@ -86,7 +87,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   };
 
   const onSubmit = (data: { content: string; avatar_id: string }) => {
-    createMemoMutation.mutate(data);
+    memoCreateMutation.mutate(data);
     reset();
   };
 
@@ -97,7 +98,8 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     <>
       <Header />
       <section className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
-        <AvatarProfileHeader avatar={avatar} active="memos" />
+        <AvatarProfileHeader avatar={avatar} />
+        <AvatarProfileTabs avatar={avatar} active="memos" />
         <div className="mt-4 px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
           <form onSubmit={handleSubmit(onSubmit)} className="w-full form-control">
             <input type="hidden" {...register("avatar_id")} />
@@ -119,6 +121,8 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
               </button>
             </div>
           </form>
+
+          {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}
 
           <MemoList memos={memos} onDelete={onDelete} />
         </div>

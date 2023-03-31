@@ -77,10 +77,10 @@ function MobileNavigation() {
           >
             {user ? (
               <>
+                <MobileNavLink href="/home">Home</MobileNavLink>
                 <MobileNavLink href="/avatars">Avatars</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <MobileNavLink href="/settings/profile">Your Profile</MobileNavLink>
-                <MobileNavLink href="/settings/avatars">Your Avatars</MobileNavLink>
                 <MobileNavLink href="/settings/pricing">Pricing</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <Popover.Button
@@ -121,13 +121,13 @@ export function Header() {
       <Container>
         <nav className="relative z-50 flex justify-between ">
           <div className="flex items-center md:gap-x-12">
-            <Link href={user ? "/chat" : "/"} aria-label="Home">
+            <Link href={user ? "/home" : "/"} aria-label="Home">
               <Logo className="h-10 w-auto" />
             </Link>
             {user ? (
               <div className="hidden md:flex md:gap-x-6">
-                <NavLink href="/settings/avatars">Your Avatars</NavLink>
-                <NavLink href="/avatars">Other Avatars</NavLink>
+                <NavLink href="/home">Home</NavLink>
+                <NavLink href="/avatars">Avatars</NavLink>
               </div>
             ) : (
               <div className="hidden md:flex md:gap-x-6">

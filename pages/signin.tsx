@@ -18,7 +18,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (user) {
-      router.replace("/chat");
+      router.replace("/home");
     }
   }, [user]);
 
@@ -35,7 +35,7 @@ const SignIn = () => {
             <Auth
               supabaseClient={supabaseClient}
               providers={["google"]}
-              redirectTo={`${getURL()}chat`}
+              redirectTo={`${getURL()}home`}
               magicLink={true}
               appearance={{
                 theme: ThemeSupa,

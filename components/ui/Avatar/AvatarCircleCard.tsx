@@ -1,14 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
-
-import { IconEdit } from "@tabler/icons-react";
 
 import { Avatar } from "~/types";
 
-export const DefaultAvatar = ({ avatar, url = "", edit = false }: { avatar: Avatar; url?: string; edit?: boolean }) => {
+export const AvatarCircleCard = ({ avatar }: { avatar: Avatar }) => {
   return (
     <div className="w-40 text-center">
-      <Link href={url}>
+      <Link href={`/avatars/${avatar.username}`}>
         {avatar.avatar_url ? (
           <>
             <div className="avatar">
@@ -27,12 +24,6 @@ export const DefaultAvatar = ({ avatar, url = "", edit = false }: { avatar: Avat
       </Link>
       <div className="mt-4 flex justify-center items-center space-x-2">
         <h3 className=" text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name} </h3>
-
-        {edit ? (
-          <Link href={`/settings/avatars/${avatar.username}`}>
-            <IconEdit className="w-5" />
-          </Link>
-        ) : null}
       </div>
 
       <h4 className=" text-sm ">@{avatar.username}</h4>

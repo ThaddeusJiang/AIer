@@ -15,21 +15,21 @@ export const AvatarProfileHeader = ({ avatar, edit = false }: { avatar: Avatar; 
             alt="avatar's profile background image"
             width={800}
             height={600}
-            className="w-full max-h-40 object-cover object-center"
+            className="w-full max-h-28 object-cover object-center"
           />
         </div>
         <div className="relative">
-          <div className=" absolute -bottom-10 left-4">
+          <div className=" absolute -bottom-14 left-4">
             {avatar.avatar_url ? (
               <>
                 <div className="avatar">
-                  <img className="!w-20 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
+                  <img className="!w-28 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
                 </div>
               </>
             ) : (
               <>
                 <div className="avatar placeholder">
-                  <div className="!w-20 bg-neutral-focus text-neutral-content rounded-full">
+                  <div className="!w-28 bg-neutral-focus text-neutral-content rounded-full">
                     <span className="text-4xl">{avatar.name[0]}</span>
                   </div>
                 </div>
@@ -54,7 +54,7 @@ export const AvatarProfileHeader = ({ avatar, edit = false }: { avatar: Avatar; 
           )}
         </div>
 
-        <div className="ml-4 mt-12">
+        <div className="ml-4 mt-14">
           <h3 className=" text-2xl font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
           <h4 className=" text-sm ">@{avatar.username}</h4>
           <p className="text-sm mt-2 leading-6 text-gray-600">{avatar.bio}</p>

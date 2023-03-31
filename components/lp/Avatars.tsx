@@ -1,6 +1,6 @@
 import { Avatar } from "~/types";
 
-import { DefaultAvatar } from "../ui/Avatar/DefaultAvatar";
+import { AvatarCircleCard } from "../ui/Avatar/AvatarCircleCard";
 import { AvatarsValuesMessage } from "./AvatarsValuesMessage";
 
 export function Avatars({ avatars }: { avatars: Avatar[] }) {
@@ -17,7 +17,7 @@ export function Avatars({ avatars }: { avatars: Avatar[] }) {
         >
           {avatars.map((avatar) => (
             <li className="mx-auto" key={avatar.username}>
-              <DefaultAvatar avatar={avatar} url={`/avatars/${avatar.username}`} />
+              <AvatarCircleCard avatar={avatar} />
             </li>
           ))}
         </ul>

@@ -123,6 +123,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
           </form>
 
           {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}
+          {memoListQuery.isLoading ? <p className="text-center text-gray-500">loading...</p> : null}
 
           <MemoList memos={memos} onDelete={onDelete} />
         </div>

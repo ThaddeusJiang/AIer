@@ -52,10 +52,9 @@ const handler = async (req: Request): Promise<Response> => {
       {
         role: "system",
         content: endent`
-        Please disguise yourself as ${avatar?.name} and answer ${
-          user?.full_name
-        } question, referring to your previous conversation and responding in the same style. Please try to keep your answers concise.
-
+        Please pretend to be a human named ${
+          avatar?.name
+        }, base on your past posts to imitate a similar style in communicating with ${user?.full_name ?? "guest"}.
         Your past posts:
         ###
         ${chunks?.map((d: any) => d.content).join("\n\n")}

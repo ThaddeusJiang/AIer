@@ -2,25 +2,20 @@ import { useEffect, useRef } from "react";
 
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import Link from "next/link";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { IconDots, IconEdit } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Header } from "~/components/lp/Header";
 import { MiniAvatar } from "~/components/ui/Avatar/MiniAvatar";
 import { Chat } from "~/components/ui/Chat/Chat";
 import { MessageList } from "~/components/ui/MessageList/MessageList";
+import { Avatar } from "~/types";
 import { useUser } from "~/utils/useUser";
 
-export default function ChatPage({
-  avatar
-}: {
-  avatar: {
-    id: string;
-    username: string;
-    name: string;
-  };
-}) {
+export default function ChatPage({ avatar }: { avatar: Avatar }) {
   const { user } = useUser();
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const listMessagesQuery = useQuery({
@@ -58,8 +53,35 @@ export default function ChatPage({
       <div className="flex flex-col h-screen overflow-hidden ">
         <div className="flex-shrink-0 ">
           <Header />
-          <div className="w-full sm:max-w-screen-sm mx-auto px-4">
-            <MiniAvatar avatar={avatar} />
+          <div className="w-full sm:max-w-screen-sm mx-auto px-4 py-2 flex justify-between items-center space-x-2">
+            <div className="flex space-x-2">
+              <Link href={`/avatars/${avatar.username}`}>
+                <MiniAvatar avatar={avatar} />
+              </Link>
+              <div>
+                <p className="text-xl font-semibold tracking-tight text-gray-900">{avatar?.name}</p>
+                <p className=" text-sm ">@{avatar.username}</p>
+              </div>
+            </div>
+
+            <div>
+              {user?.id === avatar.owner_id ? (
+                <div className="dropdown dropdown-end">
+                  <label tabIndex={0} className="btn btn-xs btn-square btn-ghost">
+                    <IconDots className="w-4 " />
+                  </label>
+                  <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box ">
+                    <li>
+                      <a className="">
+                        <Link href={`/settings/avatars/${avatar.username}`} className="flex gap-2 ">
+                          <IconEdit /> Memo
+                        </Link>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
         <div className="overflow-hidden ">
@@ -80,10 +102,10 @@ export default function ChatPage({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
   const {
-    data: { session }
-  } = await supabase.auth.getSession();
+    data: { user }
+  } = await supabase.auth.getUser(); // TODO: getUser vs. getSession 有什么区别？
 
-  if (!session) {
+  if (!user) {
     return {
       redirect: {
         destination: "/signin",

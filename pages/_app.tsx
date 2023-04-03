@@ -6,6 +6,7 @@ import React from "react";
 import { Toaster } from "react-hot-toast";
 
 import { AppProps } from "next/app";
+import Script from "next/script";
 
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
@@ -33,6 +34,18 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <div>
+      {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-VW2NTSHYQC" strategy="afterInteractive" />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+           window.dataLayer = window.dataLayer || [];
+           function gtag(){dataLayer.push(arguments);}
+           gtag('js', new Date());
+
+           gtag('config', 'G-VW2NTSHYQC');
+        `}
+      </Script>
+
       <QueryClientProvider client={queryClient}>
         <SessionContextProvider supabaseClient={supabaseClient}>
           <MyUserContextProvider>

@@ -3,6 +3,7 @@ import "styles/main.css";
 
 import { useEffect, useState } from "react";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 
 import { AppProps } from "next/app";
 
@@ -43,6 +44,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
+
+      <Toaster />
     </div>
   );
 }

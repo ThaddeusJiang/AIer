@@ -23,13 +23,13 @@ export const AvatarProfileHeader = ({ avatar, edit = false }: { avatar: Avatar; 
             {avatar.avatar_url ? (
               <>
                 <div className="avatar">
-                  <img className="!w-28 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
+                  <img className="!w-28 !h-28 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
                 </div>
               </>
             ) : (
               <>
                 <div className="avatar placeholder">
-                  <div className="!w-28 bg-neutral-focus text-neutral-content rounded-full">
+                  <div className="!w-28 !h-28 bg-neutral-focus text-neutral-content rounded-full">
                     <span className="text-4xl">{avatar.name[0]}</span>
                   </div>
                 </div>

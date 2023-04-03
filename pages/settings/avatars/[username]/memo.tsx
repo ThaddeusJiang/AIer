@@ -3,16 +3,14 @@ import { useForm } from "react-hook-form";
 import { GetServerSidePropsContext } from "next";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { IconArrowUp } from "@tabler/icons-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Header } from "~/components/lp/Header";
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
 import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
-import { MemoList } from "~/components/ui/MemoList/MemoList";
 import { Avatar } from "~/types";
 
-export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
+export default function MemoCreatePage({ avatar }: { avatar: Avatar }) {
   const { register, control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
       content: "",
@@ -25,22 +23,6 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   });
 
   const queryClient = useQueryClient();
-
-  const memoListQuery = useQuery({
-    queryKey: ["memoList", avatar.id],
-    queryFn: async () => {
-      const res = await fetch("/api/memoList", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          avatar_id: avatar.id
-        })
-      });
-      return res.json();
-    }
-  });
 
   const memoCreateMutation = useMutation({
     mutationFn: async (data: { content: string; avatar_id: string }) => {
@@ -62,36 +44,11 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     }
   });
 
-  const memoDeleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      return fetch(`/api/memoDelete`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ id })
-      }).then((res) => res.json());
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (oldData: any) => {
-        const items = oldData?.items?.filter((memo: { id: string }) => memo.id !== data.id);
-        return {
-          items
-        };
-      });
-    }
-  });
-
-  const onDelete = (id: string) => {
-    memoDeleteMutation.mutate(id);
-  };
-
   const onSubmit = (data: { content: string; avatar_id: string }) => {
     memoCreateMutation.mutate(data);
     reset();
   };
 
-  const memos = memoListQuery.data?.items ?? [];
   const content = watch("content");
 
   return (
@@ -99,34 +56,26 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       <Header />
       <section className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
         <AvatarProfileHeader avatar={avatar} />
-        <AvatarProfileTabs avatar={avatar} active="memos" />
         <div className="mt-4 px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
           <form onSubmit={handleSubmit(onSubmit)} className="w-full form-control">
             <input type="hidden" {...register("avatar_id")} />
             <div id="content" className=" relative">
               <textarea
                 className="textarea text-base textarea-bordered focus:outline-none w-full text-gray-900 "
-                rows={2}
+                rows={5}
                 {...register("content", {
                   required: true
                 })}
               />
-
-              <button
-                disabled={!content}
-                className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle "
-                type="submit"
-              >
-                <IconArrowUp className="h-6 w-6" />
-              </button>
             </div>
+            <button
+              disabled={!content || memoCreateMutation.isLoading}
+              className=" mt-4 btn btn-primary "
+              type="submit"
+            >
+              Save
+            </button>
           </form>
-
-          {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}
-          {memoListQuery.isLoading ? <p className="text-center text-gray-500">loading...</p> : null}
-
-          {/* TODO: 如何 MemoList API 请求不影响 form，就不需要 quick-memo page 了 */}
-          <MemoList memos={memos} onDelete={onDelete} />
         </div>
       </section>
     </>

@@ -49,7 +49,7 @@ export const createQueryRecord = async ({ from, to, message }: { from: string; t
   const queryData = {
     from_id: from,
     to_id: to,
-    message_text: message
+    content: message
   };
   const { error, data } = await supabaseAdmin.from("queries").insert(queryData).select();
   if (error) throw error;

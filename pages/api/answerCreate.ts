@@ -17,7 +17,7 @@ export default async function answerCreate(req: NextApiRequest, res: NextApiResp
   const answerInsertInput = {
     from_id: avatar_id,
     to_id: user.id,
-    message_text: content
+    content: content
   };
 
   const { data, error } = await supabase.from("queries").insert(answerInsertInput).select("*").single();

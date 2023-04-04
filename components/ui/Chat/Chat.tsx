@@ -56,14 +56,14 @@ export function Chat({
       id: "query_" + crypto.randomUUID(),
       from_id: user?.id,
       to_id: avatar.id,
-      message_text: query
+      content: query
     };
 
     let resMessage = {
       id: "answer_" + crypto.randomUUID(),
       from_id: avatar.id,
       to_id: user?.id,
-      message_text: ""
+      content: ""
     };
     // @ts-ignore FIXME: fix this
     queryClient.setQueryData(["listMessages", avatar.id], (old: TQueryFnData) => ({
@@ -81,7 +81,7 @@ export function Chat({
         query,
         messages: (listMessages?.items.slice(-10) || []).map((m) => ({
           role: m.from_id === user?.id ? "user" : "assistant",
-          content: m.message_text
+          content: m.content
         }))
       })
     });
@@ -112,7 +112,7 @@ export function Chat({
       // @ts-ignore FIXME: fix this
       queryClient.setQueryData(["listMessages", avatar.id], (old: TQueryFnData) => {
         const listMessages = produce(old, (draft: any) => {
-          draft.items[draft.items.length - 1].message_text = answer;
+          draft.items[draft.items.length - 1].content = answer;
         });
         return listMessages;
       });

@@ -7,8 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import produce from "immer";
 
-import { Answer } from "~/components/ui/Answer/Answer";
-import { PGChunk } from "~/types";
+import { Message } from "~/types";
 
 export function Chat({
   avatar,
@@ -51,6 +50,7 @@ export function Chat({
   });
 
   const handleAnswer = async ({ query }: { query: string }) => {
+    const listMessages = queryClient.getQueryData<{ items: Message[] }>(["listMessages", avatar.id]);
     // Optimistically update to the new value
     let queryMessage = {
       id: "query_" + crypto.randomUUID(),
@@ -75,7 +75,15 @@ export function Chat({
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ queryFrom: user?.id, queryTo: avatar.id, query })
+      body: JSON.stringify({
+        queryFrom: user?.id,
+        queryTo: avatar.id,
+        query,
+        messages: (listMessages?.items.slice(-10) || []).map((m) => ({
+          role: m.from_id === user?.id ? "user" : "assistant",
+          content: m.message_text
+        }))
+      })
     });
 
     if (!answerResponse.ok) {

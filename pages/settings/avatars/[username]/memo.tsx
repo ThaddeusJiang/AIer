@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 import { GetServerSidePropsContext } from "next";
 
@@ -22,8 +23,6 @@ export default function MemoCreatePage({ avatar }: { avatar: Avatar }) {
     }
   });
 
-  const queryClient = useQueryClient();
-
   const memoCreateMutation = useMutation({
     mutationFn: async (data: { content: string; avatar_id: string }) => {
       const res = await fetch("/api/memoCreate", {
@@ -36,17 +35,20 @@ export default function MemoCreatePage({ avatar }: { avatar: Avatar }) {
       return res.json();
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (oldData: any) => {
-        return {
-          items: [data, ...oldData.items]
-        };
+      toast.success("Memo created", {
+        position: "bottom-center"
+      });
+      reset();
+    },
+    onError: (error) => {
+      toast.error("Memo creation failed", {
+        position: "bottom-center"
       });
     }
   });
 
   const onSubmit = (data: { content: string; avatar_id: string }) => {
     memoCreateMutation.mutate(data);
-    reset();
   };
 
   const content = watch("content");
@@ -56,6 +58,7 @@ export default function MemoCreatePage({ avatar }: { avatar: Avatar }) {
       <Header />
       <section className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
         <AvatarProfileHeader avatar={avatar} />
+        <AvatarProfileTabs avatar={avatar} />
         <div className="mt-4 px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
           <form onSubmit={handleSubmit(onSubmit)} className="w-full form-control">
             <input type="hidden" {...register("avatar_id")} />
@@ -73,7 +76,7 @@ export default function MemoCreatePage({ avatar }: { avatar: Avatar }) {
               className=" mt-4 btn btn-primary "
               type="submit"
             >
-              Save
+              Quick Memo
             </button>
           </form>
         </div>

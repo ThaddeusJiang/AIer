@@ -117,7 +117,7 @@ export type Message = {
   id: number;
   from_id: string | null;
   to_id: string | null;
-  message_text: string | null;
+  content: string | null;
 };
 
 export type Memo = {

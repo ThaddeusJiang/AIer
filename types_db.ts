@@ -282,24 +282,24 @@ export interface Database {
       }
       queries: {
         Row: {
+          content: string | null
           created_at: string
           from_id: string | null
           id: string
-          message_text: string | null
           to_id: string | null
         }
         Insert: {
+          content?: string | null
           created_at?: string
           from_id?: string | null
           id?: string
-          message_text?: string | null
           to_id?: string | null
         }
         Update: {
+          content?: string | null
           created_at?: string
           from_id?: string | null
           id?: string
-          message_text?: string | null
           to_id?: string | null
         }
       }

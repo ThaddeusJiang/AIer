@@ -35,24 +35,24 @@ export const getPublicAvatars = async (): Promise<Avatar[]> => {
   return (data as any) || [];
 };
 
-export const getAvatar = async (id: string): Promise<Avatar | null> => {
-  const { data, error } = await supabase.from("avatars").select().eq("id", id).single();
+export const getAvatar = async (id: string) => {
+  const { data, error } = await supabase.from("avatars").select().eq("id", id).maybeSingle();
 
   if (error) {
     console.error(error);
   }
 
-  return (data as any) || null;
+  return data;
 };
 
-export const getUserDetails = async (id: string): Promise<UserDetails | null> => {
-  const { data, error } = await supabase.from("users").select().eq("id", id).single();
+export const getUserDetails = async (id: string) => {
+  const { data, error } = await supabase.from("users").select().eq("id", id).maybeSingle();
 
   if (error) {
     console.error(error);
   }
 
-  return (data as any) || null;
+  return data;
 };
 
 export const updateUserName = async (user: User, name: string) => {

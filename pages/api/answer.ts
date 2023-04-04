@@ -1,5 +1,6 @@
 import endent from "endent";
 
+// import { encode } from "gpt-3-encoder";
 import { OpenAIStream } from "~/utils/openai";
 import { getAvatar, getUserDetails } from "~/utils/supabase-client";
 import { createQueryRecord, searchEmbeddings } from "~/utils/supabase-only";
@@ -22,10 +23,16 @@ async function readStream(stream: ReadableStream): Promise<string> {
 
 const handler = async (req: Request): Promise<Response> => {
   try {
-    const { queryFrom, queryTo, query } = (await req.json()) as {
+    const {
+      queryFrom,
+      queryTo,
+      query,
+      messages: prevMessages
+    } = (await req.json()) as {
       queryFrom: string;
       queryTo: string;
       query: string;
+      messages: { role: string; content: string }[];
     };
 
     const { data: chunks, error } = await searchEmbeddings({
@@ -38,8 +45,8 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response("Error", { status: 500 });
     }
 
-    const avatar = await getAvatar(queryTo);
     const user = await getUserDetails(queryFrom);
+    const avatar = await getAvatar(queryTo);
 
     await createQueryRecord({
       from: queryFrom,
@@ -47,37 +54,49 @@ const handler = async (req: Request): Promise<Response> => {
       message: query
     });
 
-    const messages = [
-      // MEMO: 调教 openAI
-      {
-        role: "system",
-        content: endent`
-        Please pretend to be a human named ${
-          avatar?.name
-        }, base on your past posts to imitate a similar style in communicating with ${user?.full_name ?? "guest"}.
+    let messages = [];
+
+    const user_full_name = user?.full_name ?? "user";
+    const avatar_name = avatar?.name ?? "avatar";
+    let content_token = 0;
+    for (let i = prevMessages.length - 1; i >= 0; i--) {
+      const message = prevMessages[i];
+      // content_token += encode(message.content).length;
+      content_token += message.content.length;
+      if (content_token < 2000) {
+        messages.push(message);
+      } else {
+        console.warn("content_token is over");
+        break;
+      }
+    }
+
+    messages = messages.reverse();
+
+    messages.push({
+      role: "system",
+      content: endent`
+        Please pretend to be a human named "${avatar_name}" and communicate with "${user_full_name}".
+        Please refer to your past posts and in the same style reply the ${user_full_name}'s message: ${query}
         Your past posts:
         ###
         ${chunks?.map((d: any) => d.content).join("\n\n")}
         ###
         `
-      },
-      {
-        role: "user",
-        content: query
-      }
-    ];
+    });
 
     const stream = await OpenAIStream({ messages });
 
     const [stream1, stream2] = stream.tee();
 
-    await readStream(stream2).then(async (message) => {
-      await createQueryRecord({
-        from: queryTo,
-        to: queryFrom,
-        message
-      });
-    });
+    // MEMO: 如果没有 Serverless Function 的 timeout 限制，可以这样做
+    // readStream(stream2).then(async (message) => {
+    //   await createQueryRecord({
+    //     from: queryTo,
+    //     to: queryFrom,
+    //     message
+    //   });
+    // });
 
     return new Response(stream1);
   } catch (error) {

@@ -1,13 +1,13 @@
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Tweet } from "react-tweet";
 
 import { User } from "@supabase/auth-helpers-react";
 import { IconArrowUp } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { Answer } from "~/components/ui/Answer/Answer";
-import { PGChunk } from "~/types";
+import produce from "immer";
+
+import { Message } from "~/types";
 
 export function Chat({
   avatar,
@@ -21,8 +21,6 @@ export function Chat({
   user: User | null;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [chunks, setChunks] = useState<PGChunk[]>([]);
-  const [answer, setAnswer] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
@@ -36,56 +34,56 @@ export function Chat({
     }
   });
 
+  const answerCreateMutation = useMutation({
+    mutationFn: async ({ avatar_id, content }: { avatar_id: string; content: string }) => {
+      return fetch("/api/answerCreate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          avatar_id,
+          content
+        })
+      }).then((res) => res.json());
+    }
+  });
+
   const handleAnswer = async ({ query }: { query: string }) => {
+    const listMessages = queryClient.getQueryData<{ items: Message[] }>(["listMessages", avatar.id]);
     // Optimistically update to the new value
     let queryMessage = {
-      id: "query_" + new Date().getTime(),
+      id: "query_" + crypto.randomUUID(),
       from_id: user?.id,
       to_id: avatar.id,
-      message_text: query
+      content: query
     };
 
     let resMessage = {
-      id: "answer_waiting",
+      id: "answer_" + crypto.randomUUID(),
       from_id: avatar.id,
       to_id: user?.id,
-      message_text: "..."
+      content: ""
     };
     // @ts-ignore FIXME: fix this
     queryClient.setQueryData(["listMessages", avatar.id], (old: TQueryFnData) => ({
       items: [...old.items, queryMessage, resMessage]
     }));
-    setAnswer("");
-    setChunks([]);
-
     setLoading(true);
-
-    const searchResponse = await fetch("/api/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        query,
-        queryTo: avatar.id
-      })
-    });
-
-    if (!searchResponse.ok) {
-      setLoading(false);
-      throw new Error(searchResponse.statusText);
-    }
-
-    const results: PGChunk[] = await searchResponse.json();
-
-    setChunks(results);
-
     const answerResponse = await fetch("/api/answer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ queryFrom: user?.id, queryTo: avatar.id, query })
+      body: JSON.stringify({
+        queryFrom: user?.id,
+        queryTo: avatar.id,
+        query,
+        messages: (listMessages?.items.slice(-10) || []).map((m) => ({
+          role: m.from_id === user?.id ? "user" : "assistant",
+          content: m.content
+        }))
+      })
     });
 
     if (!answerResponse.ok) {
@@ -104,15 +102,26 @@ export function Chat({
     const reader = data.getReader();
     const decoder = new TextDecoder();
     let done = false;
-
+    let answer = "";
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
-      setAnswer((prev) => prev + chunkValue);
+      answer += chunkValue;
+
+      // @ts-ignore FIXME: fix this
+      queryClient.setQueryData(["listMessages", avatar.id], (old: TQueryFnData) => {
+        const listMessages = produce(old, (draft: any) => {
+          draft.items[draft.items.length - 1].content = answer;
+        });
+        return listMessages;
+      });
     }
 
-    queryClient.refetchQueries(["listMessages", avatar.id]);
+    await answerCreateMutation.mutate({
+      avatar_id: avatar.id,
+      content: answer
+    });
 
     inputRef.current?.focus();
   };
@@ -139,55 +148,15 @@ export function Chat({
           />
         </div>
         {query ? (
-          <button className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle " type="submit">
+          <button
+            disabled={loading}
+            className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle "
+            type="submit"
+          >
             <IconArrowUp className="h-6 w-6" />
           </button>
         ) : null}
       </form>
-
-      {loading ? (
-        <div className="mt-6 w-full hidden">
-          <div className="font-bold text-2xl">Answer</div>
-          <div className="animate-pulse mt-2">
-            <div className="h-4 bg-gray-300 rounded"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-          </div>
-
-          <div className="font-bold text-2xl mt-6">Passages</div>
-          <div className="animate-pulse mt-2">
-            <div className="h-4 bg-gray-300 rounded"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-            <div className="h-4 bg-gray-300 rounded mt-2"></div>
-          </div>
-        </div>
-      ) : answer ? (
-        <div className="mt-6 w-full hidden">
-          <div className="font-bold text-2xl mb-2">Answer</div>
-          <Answer text={answer} />
-
-          <div className="mt-6 mb-16 ">
-            <div className="font-bold text-2xl">Passages</div>
-            {/* <div className="block lg:grid  lg:grid-cols-2 lg:gap-4"> */}
-            <div className="mx-auto w-full">
-              {chunks.map((chunk, index) => {
-                const { essay_url } = chunk;
-
-                const [tweetId] = /\/[0-9]+$/.exec(essay_url) || [];
-                return tweetId ? (
-                  <div key={index}>
-                    <Tweet id={(tweetId as string).slice(1)} />
-                  </div>
-                ) : null;
-              })}
-            </div>
-          </div>
-        </div>
-      ) : null}
     </>
   );
 }

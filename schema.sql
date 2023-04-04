@@ -179,7 +179,7 @@ create table queries (
   id uuid primary key NOT NULL DEFAULT uuid_generate_v4(),
   from_id text,
   to_id text,
-  message_text text,
+  content text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 

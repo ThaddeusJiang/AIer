@@ -119,7 +119,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase());
 
   if (error) {
-    console.debug(error);
     console.error(error);
     return {
       props: {
@@ -129,7 +128,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   if (data.length === 0) {
-    console.debug("not found");
     return {
       notFound: true
     };

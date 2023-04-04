@@ -23,9 +23,9 @@ const MessageItem = ({ message }: { message: Message }) => {
   const user = useUser();
   return (
     <div className={classNames("w-full flex", user?.id === message.from_id ? " justify-end" : " justify-start")}>
-      <div className="max-w-[90%] bg-blue-100 rounded-lg px-4 py-2 my-2">
-        <article className="prose prose-sm md:prose  ">
-          <ReactMarkdown children={message?.message_text ?? ""} remarkPlugins={[remarkGfm]} />
+      <div className="max-w-[90%] bg-blue-100  min-h-[2.5rem] rounded-lg px-4 py-2 my-2">
+        <article className="prose prose-sm md:prose ">
+          <ReactMarkdown children={message?.message_text ?? " "} remarkPlugins={[remarkGfm]} />
         </article>
       </div>
     </div>

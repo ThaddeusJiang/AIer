@@ -38,8 +38,8 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response("Error", { status: 500 });
     }
 
-    const avatar = await getAvatar(queryTo);
     const user = await getUserDetails(queryFrom);
+    const avatar = await getAvatar(queryTo);
 
     await createQueryRecord({
       from: queryFrom,
@@ -71,13 +71,14 @@ const handler = async (req: Request): Promise<Response> => {
 
     const [stream1, stream2] = stream.tee();
 
-    await readStream(stream2).then(async (message) => {
-      await createQueryRecord({
-        from: queryTo,
-        to: queryFrom,
-        message
-      });
-    });
+    // MEMO: 如果没有 Serverless Function 的 timeout 限制，可以这样做
+    // readStream(stream2).then(async (message) => {
+    //   await createQueryRecord({
+    //     from: queryTo,
+    //     to: queryFrom,
+    //     message
+    //   });
+    // });
 
     return new Response(stream1);
   } catch (error) {

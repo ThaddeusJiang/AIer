@@ -239,8 +239,31 @@ create table memos (
   updated_by uuid references auth.users,
   deleted_at timestamp with time zone,
   deleted_by uuid references auth.users,
-  embedded bool, -- TODO: embedding id or not
+  embeddings _text,
   primary key (id)
 );
 
 CREATE INDEX idx_memos_avatar_id ON memos (avatar_id);
+
+create table tokens (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  masked_token text,
+  avatar_id text references avatars,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  created_by uuid references auth.users,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_by uuid references auth.users,
+  primary key (id)
+)
+
+create unique index idx_tokens_avatar_id on tokens (avatar_id);
+
+create table token_usages (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  token_id uuid references tokens,
+  api text,
+  raw jsonb,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  created_by uuid references auth.users,
+  primary key (id)
+)

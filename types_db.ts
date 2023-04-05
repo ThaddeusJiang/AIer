@@ -183,7 +183,7 @@ export interface Database {
           created_by: string | null
           deleted_at: string | null
           deleted_by: string | null
-          embedded: boolean | null
+          embeddings: string[] | null
           id: string
           updated_at: string
           updated_by: string | null
@@ -195,7 +195,7 @@ export interface Database {
           created_by?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
-          embedded?: boolean | null
+          embeddings?: string[] | null
           id?: string
           updated_at?: string
           updated_by?: string | null
@@ -207,7 +207,7 @@ export interface Database {
           created_by?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
-          embedded?: boolean | null
+          embeddings?: string[] | null
           id?: string
           updated_at?: string
           updated_by?: string | null
@@ -354,6 +354,61 @@ export interface Database {
           trial_end?: string | null
           trial_start?: string | null
           user_id?: string
+        }
+      }
+      token_usages: {
+        Row: {
+          api: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          raw: Json | null
+          token_id: string | null
+        }
+        Insert: {
+          api?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          raw?: Json | null
+          token_id?: string | null
+        }
+        Update: {
+          api?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          raw?: Json | null
+          token_id?: string | null
+        }
+      }
+      tokens: {
+        Row: {
+          avatar_id: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          masked_token: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          avatar_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          masked_token?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          avatar_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          masked_token?: string | null
+          updated_at?: string
+          updated_by?: string | null
         }
       }
       users: {

@@ -8,7 +8,7 @@ import { Configuration, OpenAIApi } from "openai";
 import readline from "readline";
 import { Worker, isMainThread, workerData } from "worker_threads";
 
-import { PGEssay, PGJSON } from "~/types";
+import { PGEssay } from "~/types";
 
 loadEnvConfig("");
 
@@ -60,7 +60,7 @@ const generateEmbeddings = async (essays: PGEssay[], start: number, end: number,
   }
 };
 
-function tweet2essay({
+function tweet2essays({
   id,
   timestamp,
   username,
@@ -112,7 +112,8 @@ function tweet2essay({
     const [, id, timestamp, username, text] = regex.exec(line) || [];
     // 跳过空行
     if (text?.length > 1) {
-      const essay = tweet2essay({
+      // TODO: 优化，长文本分段
+      const essay = tweet2essays({
         id,
         timestamp,
         username,

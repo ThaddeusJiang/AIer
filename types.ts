@@ -81,11 +81,35 @@ export type PGEssay = {
   chunks: PGChunk[];
 };
 
+/**
+ * Content is a generic type for embedding
+ */
+export type Content = {
+  url: string;
+  date: string;
+  title?: string;
+  mentions: string[];
+  content: string;
+  length: number;
+  tokens: number;
+  chunks: Chunk[]; // TODO: refactor PGChunk to be more generic
+  avatar_id?: string;
+};
+
+export type Chunk = {
+  original_url: string;
+  original_date: string;
+  content: string;
+  content_length: number;
+  content_tokens: number;
+  embedding: number[];
+};
+
 export type PGChunk = {
-  essay_title: string;
+  essay_title: string; // FIXME: dont need title
   essay_url: string;
   essay_date: string;
-  essay_thanks: string;
+  essay_thanks: string; // FIXME: dont need thanks
   content: string;
   content_length: number;
   content_tokens: number;
@@ -127,5 +151,5 @@ export type Memo = {
   created_at: string;
   created_by: string;
   updated_at: string;
-  embedded?: boolean;
+  embeddings?: string[];
 };

@@ -52,6 +52,15 @@ export default async function memoCreateWebhook(req: NextApiRequest, res: NextAp
 
   const { content } = req.body as { content: string };
 
+  const tokenUsageInsertInput = {
+    token_id: data.id,
+    api: "/api/webhooks/memoCreate/[token]",
+    raw: req.body,
+    created_by: data.created_by
+  };
+
+  await supabase.from("token_usages").insert(tokenUsageInsertInput);
+
   const memoInsertInput = {
     content,
     avatar_id,

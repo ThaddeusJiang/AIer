@@ -257,3 +257,13 @@ create table tokens (
 )
 
 create unique index idx_tokens_avatar_id on tokens (avatar_id);
+
+create table token_usages (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  token_id uuid references tokens,
+  api text,
+  raw jsonb,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  created_by uuid references auth.users,
+  primary key (id)
+)

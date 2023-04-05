@@ -24,6 +24,14 @@ export const AvatarProfileTabs = ({ avatar, active = "memo" }: { avatar: Avatar;
         >
           Replies
         </Link>
+        <Link
+          href={`/settings/avatars/${avatar.username}/api`}
+          className={classNames("tab tab-lg flex-1 tab-bordered", {
+            "tab-active": active === "api"
+          })}
+        >
+          API
+        </Link>
       </nav>
     </>
   );

@@ -24,7 +24,7 @@ const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => vo
               <label tabIndex={0}>
                 <IconDots className="w-4 " />
               </label>
-              <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box ">
+              <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box ">
                 <li>
                   <a
                     className="text-sm"

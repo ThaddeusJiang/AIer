@@ -77,9 +77,17 @@ export default async function memoCreate(req: NextApiRequest, res: NextApiRespon
     embedding
   };
 
-  const { error: embeddingError } = await supabase.from("embeddings").insert(embeddingInsertInput);
+  const { data: embeddingsData, error: embeddingError } = await supabase
+    .from("embeddings")
+    .insert(embeddingInsertInput)
+    .select("*")
+    .single();
   if (!embeddingError) {
-    await supabase.from("memos").update({ embedded: true }).eq("id", data.id);
+    // TODO: embeddings
+    await supabase
+      .from("memos")
+      .update({ embeddings: [embeddingsData.id] })
+      .eq("id", data.id);
   }
 
   return res.status(200).json(data);

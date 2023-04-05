@@ -127,5 +127,5 @@ export type Memo = {
   created_at: string;
   created_by: string;
   updated_at: string;
-  embedded?: boolean;
+  embeddings?: string[];
 };

@@ -183,7 +183,7 @@ export interface Database {
           created_by: string | null
           deleted_at: string | null
           deleted_by: string | null
-          embedded: boolean | null
+          embeddings: string[] | null
           id: string
           updated_at: string
           updated_by: string | null
@@ -195,7 +195,7 @@ export interface Database {
           created_by?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
-          embedded?: boolean | null
+          embeddings?: string[] | null
           id?: string
           updated_at?: string
           updated_by?: string | null
@@ -207,7 +207,7 @@ export interface Database {
           created_by?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
-          embedded?: boolean | null
+          embeddings?: string[] | null
           id?: string
           updated_at?: string
           updated_by?: string | null

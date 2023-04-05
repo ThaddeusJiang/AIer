@@ -3,23 +3,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 import { encode } from "gpt-3-encoder";
-import { Configuration, OpenAIApi } from "openai";
 
-const createEmbedding = async ({ content }: { content: string }) => {
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
-  });
-  const openai = new OpenAIApi(configuration);
-
-  const embeddingResponse = await openai.createEmbedding({
-    model: "text-embedding-ada-002",
-    input: content
-  });
-
-  const [{ embedding }] = embeddingResponse.data.data;
-
-  return embedding;
-};
+import { generateEmbeddings } from "~/utils/embedding";
+import { createEmbedding } from "~/utils/openai";
 
 /**
  *
@@ -57,36 +43,28 @@ export default async function memoCreate(req: NextApiRequest, res: NextApiRespon
     return res.status(500).json({ error: error.message });
   }
 
-  /**
-   * TODO: 这段可以异步执行；
-   * 异步执行方式：
-   * 1. 去掉 await 但是 Serverless Function 会有 bug
-   * 2. server-side request internal API, rpc/MQ ect.
-   */
-  const embedding = await createEmbedding({ content });
-
-  const embeddingInsertInput = {
-    avatar_id,
-    essay_title: content,
-    essay_url: "",
-    essay_date: "",
-    essay_thanks: "",
+  const embeddingInsertInputs = await generateEmbeddings({
     content,
-    content_length: content.length,
-    content_tokens: encode(content).length,
-    embedding
-  };
+    date: new Date().toISOString(),
+    length: content.length,
+    tokens: encode(content).length,
+    chunks: [],
+    avatar_id,
+    url: "",
+    title: "",
+    mentions: []
+  });
 
   const { data: embeddingsData, error: embeddingError } = await supabase
     .from("embeddings")
-    .insert(embeddingInsertInput)
-    .select("*")
-    .single();
+    .insert(embeddingInsertInputs)
+    .select("id");
+
   if (!embeddingError) {
     // TODO: embeddings
     await supabase
       .from("memos")
-      .update({ embeddings: [embeddingsData.id] })
+      .update({ embeddings: embeddingsData.map((item) => item.id) })
       .eq("id", data.id);
   }
 

@@ -1,4 +1,5 @@
 import { ParsedEvent, ReconnectInterval, createParser } from "eventsource-parser";
+import { Configuration, OpenAIApi } from "openai";
 
 export enum OpenAIModel {
   GTP = "gpt-3.5-turbo"
@@ -67,4 +68,20 @@ export const OpenAIStream = async ({
   });
 
   return stream;
+};
+
+export const createEmbedding = async ({ content }: { content: string }) => {
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY
+  });
+  const openai = new OpenAIApi(configuration);
+
+  const embeddingResponse = await openai.createEmbedding({
+    model: "text-embedding-ada-002",
+    input: content
+  });
+
+  const [{ embedding }] = embeddingResponse.data.data;
+
+  return embedding;
 };

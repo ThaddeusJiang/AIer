@@ -18,7 +18,7 @@ import { getURL } from "~/utils/helpers";
 export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avatar; token: string }) {
   const [copied, setCopied] = useState(false);
 
-  const api = `${getURL()}api/webhooks/${avatar.username}/${token ?? "<token>"}`;
+  const api = `${getURL()}api/webhooks/memoCreate/${token ?? "<token>"}`;
 
   return (
     <>

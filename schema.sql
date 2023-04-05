@@ -244,3 +244,16 @@ create table memos (
 );
 
 CREATE INDEX idx_memos_avatar_id ON memos (avatar_id);
+
+create table tokens (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  masked_token text,
+  avatar_id text references avatars,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  created_by uuid references auth.users,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_by uuid references auth.users,
+  primary key (id)
+)
+
+create unique index idx_tokens_avatar_id on tokens (avatar_id);

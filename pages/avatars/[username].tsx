@@ -10,7 +10,7 @@ export default function AvatarPage({ avatar }: { avatar: Avatar }) {
   return (
     <>
       <Header />
-      <section className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+      <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
         <AvatarProfileHeader avatar={avatar} />
       </section>
     </>

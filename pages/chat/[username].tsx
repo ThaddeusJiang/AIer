@@ -50,11 +50,11 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex flex-col h-screen overflow-hidden ">
+      <div className="flex h-screen flex-col overflow-hidden ">
         <div className="flex-shrink-0 ">
           <Header />
-          <div className="w-full sm:max-w-screen-sm mx-auto px-2 py-2 flex justify-between items-center space-x-2">
-            <div className="flex space-x-2 items-center">
+          <div className="mx-auto flex w-full items-center justify-between space-x-2 px-2 py-2 sm:max-w-screen-sm">
+            <div className="flex items-center space-x-2">
               <Link href={`/avatars/${avatar.username}`}>
                 <MiniAvatar avatar={avatar} />
               </Link>
@@ -66,11 +66,11 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
 
             <div>
               {user?.id === avatar.owner_id ? (
-                <div className="dropdown dropdown-end">
-                  <label tabIndex={0} className="btn btn-xs btn-square btn-ghost">
+                <div className="dropdown-end dropdown">
+                  <label tabIndex={0} className="btn-ghost btn-square btn-xs btn">
                     <IconDots className="w-4 " />
                   </label>
-                  <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box ">
+                  <ul tabIndex={0} className="dropdown-content menu rounded-box bg-base-100 p-2 shadow ">
                     <li>
                       <a className="">
                         <Link href={`/settings/avatars/${avatar.username}`} className="flex gap-2 ">
@@ -85,12 +85,12 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
           </div>
         </div>
         <div className="overflow-hidden ">
-          <div ref={messageContainerRef} className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+          <div ref={messageContainerRef} className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
             {listMessagesQuery.isLoading ? <div className=" h-8 ">&nbsp;</div> : <MessageList messages={messages} />}
           </div>
         </div>
         <div className="flex-shrink-0 ">
-          <div className="w-full sm:max-w-screen-sm mx-auto py-2 px-2">
+          <div className="mx-auto w-full py-2 px-2 sm:max-w-screen-sm">
             <Chat avatar={avatar} user={user} />
           </div>
         </div>

@@ -19,12 +19,12 @@ export default function SettingsAvatarQueriesPage({
   return (
     <>
       <Header />
-      <section className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+      <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
         <AvatarProfileHeader avatar={avatar} />
         <AvatarProfileTabs avatar={avatar} active="replies" />
-        <div className="mt-4 px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <div className=" min-h-screen">
-            <div className="stats shadow w-full">
+            <div className="stats w-full shadow">
               {/* TODO: Total replies, Users, followers */}
               <div className="stat place-items-center">
                 <div className="stat-title">Replies</div>

@@ -85,21 +85,21 @@ export default function NewAvatarPage() {
       <Header />
       <div className="flex flex-col pb-60">
         <div className="flex-1 ">
-          <div className="mx-auto flex w-full sm:max-w-screen-sm flex-col items-center px-3 pt-4 sm:pt-8">
+          <div className="mx-auto flex w-full flex-col items-center px-3 pt-4 sm:max-w-screen-sm sm:pt-8">
             <div className="mx-auto max-w-2xl">
               <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                 Create an Avatar
               </h2>
             </div>
 
-            <form className="relative w-full mt-4 form-control" onSubmit={handleSubmit(onSubmit)}>
+            <form className="form-control relative mt-4 w-full" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label htmlFor="username" className=" label">
                   Username
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full"
+                  className="input-bordered input w-full"
                   placeholder="username"
                   {...register("username", { required: true })}
                 />
@@ -111,7 +111,7 @@ export default function NewAvatarPage() {
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full"
+                  className="input-bordered input w-full"
                   placeholder="Name"
                   {...register("name", { required: true })}
                 />
@@ -123,7 +123,7 @@ export default function NewAvatarPage() {
                   Source
                 </label>
                 <textarea
-                  className="textarea textarea-bordered w-full"
+                  className="textarea-bordered textarea w-full"
                   placeholder="Write your twitter ID here, e.g. @aierdotapp. I will initialize your avatar with your tweets."
                   {...register("source")}
                 />
@@ -136,7 +136,7 @@ export default function NewAvatarPage() {
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full"
+                  className="input-bordered input w-full"
                   placeholder="https://example.com/avatar.png"
                   {...register("avatar_url")}
                 />
@@ -146,14 +146,14 @@ export default function NewAvatarPage() {
                 <label htmlFor="bio" className=" label">
                   Bio
                 </label>
-                <textarea className="textarea textarea-bordered w-full" placeholder="Add a bio" {...register("bio")} />
+                <textarea className="textarea-bordered textarea w-full" placeholder="Add a bio" {...register("bio")} />
               </div>
 
               <div className="py-4">
                 <button
                   type="submit"
                   disabled={avatarCreateMutation.isLoading}
-                  className={classNames(" btn btn-primary w-full", {
+                  className={classNames(" btn-primary btn w-full", {
                     " loading": avatarCreateMutation.isLoading
                   })}
                 >

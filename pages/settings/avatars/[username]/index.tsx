@@ -99,15 +99,15 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   return (
     <>
       <Header />
-      <section className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+      <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
         <AvatarProfileHeader avatar={avatar} />
         <AvatarProfileTabs avatar={avatar} active="memos" />
-        <div className="mt-4 px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full form-control">
+        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
+          <form onSubmit={handleSubmit(onSubmit)} className="form-control w-full">
             <input type="hidden" {...register("avatar_id")} />
             <div id="content" className=" relative">
               <textarea
-                className="textarea text-base textarea-bordered focus:outline-none w-full text-gray-900 "
+                className="textarea-bordered textarea w-full text-base text-gray-900 focus:outline-none "
                 placeholder="What are you thinking?"
                 rows={2}
                 {...register("content", {
@@ -117,7 +117,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
 
               <button
                 disabled={!content || memoCreateMutation.isLoading}
-                className={classNames(" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle ", {
+                className={classNames(" btn-primary btn-sm btn-circle btn absolute  right-2 bottom-4 mt-4 ", {
                   " loading": memoCreateMutation.isLoading
                 })}
                 type="submit"

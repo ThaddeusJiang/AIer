@@ -12,7 +12,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@400;500&display=swap"
           />
         </Head>
-        <body className="loading flex flex-col min-h-screen ">
+        <body className="loading flex min-h-screen flex-col ">
           <Main />
           <NextScript />
         </body>

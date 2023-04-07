@@ -14,7 +14,7 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
           <Link
             type="button"
             href="/settings/avatars/new"
-            className=" h-full relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className=" relative block h-full w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             <IconPlus className="mx-auto h-12 w-12 text-gray-400" />
             <span className="mt-2 block text-sm font-semibold text-gray-900">Create a new avatar</span>
@@ -24,11 +24,11 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
       {avatars.map((avatar) => (
         <li
           key={avatar.id}
-          className=" divide-y divide-gray-200 rounded-lg bg-white shadow flex flex-col justify-between"
+          className=" flex flex-col justify-between divide-y divide-gray-200 rounded-lg bg-white shadow"
         >
           <div className="flex w-full items-center justify-between space-x-6 p-6">
             <div className="flex-1 truncate">
-              <div className="flex items-center  space-x-3 justify-between">
+              <div className="flex items-center  justify-between space-x-3">
                 <h3 className="truncate text-lg font-medium text-gray-900">{avatar.name}</h3>
                 {avatar.status !== "public" ? (
                   <span className="inline-block flex-shrink-0 rounded-full bg-slate-300 px-2 py-0.5 text-xs font-medium text-slate-800">
@@ -49,7 +49,7 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
                 <>
                   <div className="avatar">
                     <img
-                      className="!w-16 !h-16 rounded-full"
+                      className="!h-16 !w-16 rounded-full"
                       src={avatar.avatar_url}
                       alt={`Avatar of ${avatar.name}`}
                     />
@@ -57,8 +57,8 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
                 </>
               ) : (
                 <>
-                  <div className="avatar placeholder">
-                    <div className="!w-16 !h-16 bg-neutral-focus text-neutral-content rounded-full">
+                  <div className="placeholder avatar">
+                    <div className="!h-16 !w-16 rounded-full bg-neutral-focus text-neutral-content">
                       <span className="text-4xl">{avatar.name[0]}</span>
                     </div>
                   </div>

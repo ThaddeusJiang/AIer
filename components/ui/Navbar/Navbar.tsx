@@ -22,11 +22,11 @@ export const Navbar = () => {
         Skip to content
       </a>
       <div className="mx-auto max-w-6xl px-6">
-        <div className="flex justify-between align-center flex-row py-4 md:py-6 relative ">
+        <div className="align-center relative flex flex-row justify-between py-4 md:py-6 ">
           <div className="flex flex-1 items-center space-x-2">
             <Link
               href={user ? "/home" : "/"}
-              className="cursor-pointer transform duration-100 ease-in-out "
+              className="transform cursor-pointer duration-100 ease-in-out "
               aria-label="Logo"
             >
               <Logo />
@@ -60,11 +60,11 @@ export const Navbar = () => {
                     </button> */}
 
                   {/* Profile dropdown */}
-                  <Menu as="div" className="ml-4 relative flex-shrink-0">
+                  <Menu as="div" className="relative ml-4 flex-shrink-0">
                     {({ open: isUserMenuOpen }) => (
                       <>
                         <div>
-                          <Menu.Button className="bg-white rounded-full flex text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
+                          <Menu.Button className="flex rounded-full bg-white text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                             <span className="sr-only">Open user menu</span>
                             <img className="h-8 w-8 rounded-full" src={userDetails?.avatar_url} alt={"User"} />
                           </Menu.Button>
@@ -78,7 +78,7 @@ export const Navbar = () => {
                         >
                           <Menu.Items
                             static
-                            className="origin-top-right z-40 absolute -right-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            className="absolute -right-2 z-40 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                           >
                             <Menu.Item>
                               {({ active }) => (

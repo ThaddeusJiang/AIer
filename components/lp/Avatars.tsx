@@ -13,7 +13,7 @@ export function Avatars({ avatars }: { avatars: Avatar[] }) {
         </div>
         <ul
           role="list"
-          className="mx-auto mt-20 grid  place-content-around max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4"
+          className="mx-auto mt-20 grid  max-w-2xl grid-cols-1 place-content-around gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4"
         >
           {avatars.map((avatar) => (
             <li className="mx-auto" key={avatar.username}>

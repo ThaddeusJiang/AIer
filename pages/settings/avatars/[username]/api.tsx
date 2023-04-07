@@ -23,10 +23,10 @@ export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avata
   return (
     <>
       <Header />
-      <section className="px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+      <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
         <AvatarProfileHeader avatar={avatar} />
         <AvatarProfileTabs avatar={avatar} active="api" />
-        <div className="mt-4 px-2 w-full sm:max-w-screen-sm mx-auto max-h-full overflow-y-auto">
+        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <div className=" ">
             <>
               <div className="form-control">
@@ -38,7 +38,7 @@ export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avata
                   placeholder="API is only for Pro Plan"
                   id="token"
                   readOnly
-                  className="input input-bordered w-full "
+                  className="input-bordered input w-full "
                 />
 
                 {copied ? <label className="label text-primary">Copied</label> : null}
@@ -50,8 +50,8 @@ export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avata
               </div>
 
               {token ? null : (
-                <h2 className="text-lg font-bold text-center tracking-tight text-gray-700 ">
-                  <Link href={`/settings/profile`} className="link link-primary link-hover">
+                <h2 className="text-center text-lg font-bold tracking-tight text-gray-700 ">
+                  <Link href={`/settings/profile`} className="link-hover link-primary link">
                     Subscribe to Pro Plan
                   </Link>
                 </h2>

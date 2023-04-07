@@ -10,18 +10,18 @@ export default function HomePage({ yours, others }: { yours: Avatar[]; others: A
   return (
     <>
       <Header />
-      <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-20">
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
         <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900">Yours</h2>
-        <p className="text-center text-lg mb-8">Talking to them, train them, and they will learn to talk to you.</p>
+        <p className="mb-8 text-center text-lg">Talking to them, train them, and they will learn to talk to you.</p>
         <AvatarsGrid avatars={yours} />
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-20">
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
         {/* <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900 mb-8">Favorites</h2> */}
         {/* TODO: */}
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-20">
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
         {/* <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900 mb-8">Recommends</h2> */}
         {/* TODO: */}
       </section>

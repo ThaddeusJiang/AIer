@@ -152,7 +152,7 @@ export function Header() {
                 </button> */}
 
                   {/* Profile dropdown */}
-                  <Menu as="div" className="ml-4 relative flex-shrink-0">
+                  <Menu as="div" className="relative ml-4 flex-shrink-0">
                     {({ open: isUserMenuOpen }) => (
                       <>
                         <div>
@@ -186,7 +186,7 @@ export function Header() {
                         >
                           <Menu.Items
                             static
-                            className="origin-top-right z-40 absolute -right-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            className="absolute -right-2 z-40 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                           >
                             <Menu.Item>
                               {({ active }) => (

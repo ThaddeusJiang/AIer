@@ -138,10 +138,10 @@ export function Chat({
 
   return (
     <>
-      <form className="relative w-full sm:max-w-screen-sm form-control" onSubmit={handleSubmit(submit)}>
+      <form className="form-control relative w-full sm:max-w-screen-sm" onSubmit={handleSubmit(submit)}>
         <div className="relative">
           <textarea
-            className="textarea text-base textarea-bordered focus:outline-none w-full text-gray-900 "
+            className="textarea-bordered textarea w-full text-base text-gray-900 focus:outline-none "
             placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
             rows={2}
             {...register("query", { required: true })}
@@ -150,7 +150,7 @@ export function Chat({
         {query ? (
           <button
             disabled={loading}
-            className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle "
+            className=" btn-primary btn-sm btn-circle btn absolute  right-2 bottom-4 mt-4 "
             type="submit"
           >
             <IconArrowUp className="h-6 w-6" />

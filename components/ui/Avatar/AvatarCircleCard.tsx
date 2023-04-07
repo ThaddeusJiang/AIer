@@ -9,20 +9,20 @@ export const AvatarCircleCard = ({ avatar }: { avatar: Avatar }) => {
         {avatar.avatar_url ? (
           <>
             <div className="avatar">
-              <img className="!w-40 !h-40 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
+              <img className="!h-40 !w-40 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
             </div>
           </>
         ) : (
           <>
-            <div className="avatar placeholder">
-              <div className="!w-40 !h-40 bg-neutral-focus text-neutral-content rounded-full">
+            <div className="placeholder avatar">
+              <div className="!h-40 !w-40 rounded-full bg-neutral-focus text-neutral-content">
                 <span className="text-4xl">{avatar.name[0]}</span>
               </div>
             </div>
           </>
         )}
       </Link>
-      <div className="mt-4 flex justify-center items-center space-x-2">
+      <div className="mt-4 flex items-center justify-center space-x-2">
         <h3 className=" text-base font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name} </h3>
       </div>
 

@@ -11,9 +11,10 @@ module.exports = {
     "^(components|utils|data)/.*$",
     "^[./]"
   ],
-  plugins: [require("prettier-plugin-tailwindcss"), require("@trivago/prettier-plugin-sort-imports")],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
+  plugins: [require("@trivago/prettier-plugin-sort-imports"), require("prettier-plugin-tailwindcss")],
+  tailwindConfig: "./tailwind.config.js",
   "arrowParens": "always",
   "tabWidth": 2,
   "trailingComma": "none"

@@ -1,6 +1,6 @@
 export const AvatarsValuesMessage = () => {
   return (
-    <p className="mx-auto max-w-4xl text-slate-700 text-xl">
+    <p className="mx-auto max-w-4xl text-xl text-slate-700">
       Talking with&nbsp;
       <span className="relative whitespace-nowrap text-blue-600">
         <svg

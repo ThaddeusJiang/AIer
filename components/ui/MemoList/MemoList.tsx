@@ -16,15 +16,15 @@ const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => vo
   const createdAt = dayjs(memo.created_at).format("YYYY-MM-DD HH:mm");
   return (
     <div className={classNames("w-full")}>
-      <div className="rounded-lg px-4 py-2 my-2 hover:shadow bg-base-100 ">
+      <div className="my-2 rounded-lg bg-base-100 px-4 py-2 hover:shadow ">
         <div className="flex items-center justify-between">
           <p className="text-xs text-gray-600">{createdAt}</p>
           <div className="flex items-center space-x-1">
-            <div className="dropdown dropdown-end">
+            <div className="dropdown-end dropdown">
               <label tabIndex={0}>
                 <IconDots className="w-4 " />
               </label>
-              <ul tabIndex={0} className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box ">
+              <ul tabIndex={0} className="dropdown-content menu rounded-box menu-compact bg-base-100 p-2 shadow ">
                 <li>
                   <a
                     className="text-sm"
@@ -40,7 +40,7 @@ const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => vo
             </div>
           </div>
         </div>
-        <article className="prose prose-sm md:prose ">
+        <article className="prose-sm prose md:prose ">
           <ReactMarkdown children={memo?.content ?? ""} remarkPlugins={[remarkGfm]} />
         </article>
       </div>

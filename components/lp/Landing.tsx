@@ -31,7 +31,7 @@ export default function Landing({ avatars }: { avatars: Avatar[] }) {
         <Header />
         <Hero />
         <PrimaryFeatures />
-        {/* <SecondaryFeatures /> */}
+        <SecondaryFeatures />
         <CallToAction />
         {/* <Testimonials /> */}
         <Avatars avatars={avatars} />

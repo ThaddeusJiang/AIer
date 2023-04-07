@@ -6,6 +6,8 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { IconArrowUp } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import classNames from "classnames";
+
 import { Header } from "~/components/lp/Header";
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
 import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
@@ -106,6 +108,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
             <div id="content" className=" relative">
               <textarea
                 className="textarea text-base textarea-bordered focus:outline-none w-full text-gray-900 "
+                placeholder="What are you thinking?"
                 rows={2}
                 {...register("content", {
                   required: true
@@ -113,11 +116,13 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
               />
 
               <button
-                disabled={!content}
-                className=" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle "
+                disabled={!content || memoCreateMutation.isLoading}
+                className={classNames(" absolute right-2 bottom-4 mt-4 btn  btn-sm btn-primary btn-circle ", {
+                  " loading": memoCreateMutation.isLoading
+                })}
                 type="submit"
               >
-                <IconArrowUp className="h-6 w-6" />
+                {memoCreateMutation.isLoading ? null : <IconArrowUp className="h-6 w-6" />}
               </button>
             </div>
           </form>

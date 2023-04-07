@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 
+import classNames from "classnames";
 import * as yup from "yup";
 
 import { Header } from "~/components/lp/Header";
@@ -149,7 +150,13 @@ export default function NewAvatarPage() {
               </div>
 
               <div className="py-4">
-                <button type="submit" disabled={avatarCreateMutation.isLoading} className=" btn btn-primary w-full">
+                <button
+                  type="submit"
+                  disabled={avatarCreateMutation.isLoading}
+                  className={classNames(" btn btn-primary w-full", {
+                    " loading": avatarCreateMutation.isLoading
+                  })}
+                >
                   Submit
                 </button>
               </div>

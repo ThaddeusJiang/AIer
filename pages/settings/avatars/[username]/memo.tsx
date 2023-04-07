@@ -6,6 +6,8 @@ import { GetServerSidePropsContext } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import classNames from "classnames";
+
 import { Header } from "~/components/lp/Header";
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
 import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
@@ -65,6 +67,7 @@ export default function MemoCreatePage({ avatar }: { avatar: Avatar }) {
             <div id="content" className=" relative">
               <textarea
                 className="textarea text-base textarea-bordered focus:outline-none w-full text-gray-900 "
+                placeholder="What are you thinking?"
                 rows={5}
                 {...register("content", {
                   required: true
@@ -73,7 +76,9 @@ export default function MemoCreatePage({ avatar }: { avatar: Avatar }) {
             </div>
             <button
               disabled={!content || memoCreateMutation.isLoading}
-              className=" mt-4 btn btn-primary "
+              className={classNames(" mt-4 btn btn-primary ", {
+                " loading": memoCreateMutation.isLoading
+              })}
               type="submit"
             >
               Quick Memo

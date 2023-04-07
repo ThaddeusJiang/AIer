@@ -6,13 +6,17 @@ export const MiniAvatar = ({ avatar }: { avatar: Avatar }) => {
       {avatar?.avatar_url ? (
         <>
           <div className="avatar">
-            <img className="!w-16 !h-16 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
+            <img
+              className="!w-12 !h-12 sm:!w-16 sm:!h-16 rounded-full"
+              src={avatar.avatar_url}
+              alt={`Avatar of ${avatar.name}`}
+            />
           </div>
         </>
       ) : (
         <>
           <div className="avatar placeholder">
-            <div className="!w-16 !h-16 bg-neutral-focus text-neutral-content rounded-full">
+            <div className="!w-12 !h-12 sm:!w-16 sm:!h-16 rounded-full bg-neutral-focus text-neutral-content ">
               <span className="text-xl">{avatar.name[0]}</span>
             </div>
           </div>

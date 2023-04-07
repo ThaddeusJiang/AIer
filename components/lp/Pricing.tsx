@@ -120,6 +120,7 @@ export function Pricing({
             features={[
               "Create up to 3 avatars",
               "Send 1000 messages per month",
+              "Write 1000 memos per month",
               "Available when demand is low",
               "Standard response speed"
             ]}
@@ -128,12 +129,13 @@ export function Pricing({
             featured
             name="Plus"
             price="$6"
-            description="Copy your knowledge and experience at zero cost, share AI avatars and earn profits by helping others."
+            description="Unlimited features, amplify your potential infinitely."
             href="/signin"
             features={[
-              "Create up to unlimited avatars",
-              "Earn the revenue from your avatars",
-              "Send unlimited messages",
+              "Unlimited avatars",
+              "Unlimited messages",
+              "Unlimited memos",
+              "Pro API for integration",
               "Available even when demand is high",
               "Faster response speed"
             ]}

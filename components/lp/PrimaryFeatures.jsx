@@ -8,34 +8,31 @@ import clsx from "clsx";
 
 import { Container } from "~/components/lp/Container";
 import backgroundImage from "~/images/background-features.jpg";
-import screenshotExpenses from "~/images/screenshots/expenses.png";
-import screenshotPayroll from "~/images/screenshots/payroll.png";
-import screenshotReporting from "~/images/screenshots/reporting.png";
-import screenshotVatReturns from "~/images/screenshots/vat-returns.png";
+import screenshotChatAnything from "~/images/screenshots/chat_anything.png";
+import screenshotChatAnytime from "~/images/screenshots/chat_anytime.png";
+import screenshotChatAnywhere from "~/images/screenshots/chat_anywhere.png";
+import screenshotPublicAvatars from "~/images/screenshots/public_avatars.png";
 
 const features = [
   {
-    title: "Payroll",
-    description:
-      "Keep track of everyone's salaries and whether or not they've been paid. Direct deposit not supported.",
-    image: screenshotPayroll
+    title: "Anyone",
+    description: "Connect with experts and companions worldwide, regardless of location or background.",
+    image: screenshotPublicAvatars
   },
   {
-    title: "Claim expenses",
-    description: "All of your receipts organized into one place, as long as you don't mind typing in the data by hand.",
-    image: screenshotExpenses
+    title: "Anything",
+    description: "Unlimited Access to Expert Advice and Companionship, with No Pressure.",
+    image: screenshotChatAnything
   },
   {
-    title: "VAT handling",
-    description:
-      "We only sell our software to companies who don't deal with VAT at all, so technically we do all the VAT stuff they need.",
-    image: screenshotVatReturns
+    title: "Anytime",
+    description: "Disregarding time zones, day or night, and even when you're busy or sleeping.",
+    image: screenshotChatAnytime
   },
   {
-    title: "Reporting",
-    description:
-      "Easily export your data into an Excel spreadsheet where you can do whatever the hell you want with it.",
-    image: screenshotReporting
+    title: "Anywhere",
+    description: "Whether it's your mobile or PC, whether you're at home, in the office, on the go, or in transit.",
+    image: screenshotChatAnywhere
   }
 ];
 
@@ -74,10 +71,10 @@ export function PrimaryFeatures() {
       <Container className="relative">
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
-            Everything you need to run your books.
+            24/7 Assistance and Companionship
           </h2>
           <p className="mt-6 text-lg tracking-tight text-blue-100">
-            Well everything you need if you aren’t that picky about minor details like tax compliance.
+            Access expert help and companionship whenever and wherever you need it with our AI avatars.
           </p>
         </div>
         <Tab.Group

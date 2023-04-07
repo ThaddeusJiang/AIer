@@ -30,7 +30,7 @@ export default function Landing({ avatars }: { avatars: Avatar[] }) {
       <main>
         <Header />
         <Hero />
-        {/* <PrimaryFeatures /> */}
+        <PrimaryFeatures />
         {/* <SecondaryFeatures /> */}
         <CallToAction />
         {/* <Testimonials /> */}

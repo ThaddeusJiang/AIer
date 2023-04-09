@@ -157,7 +157,7 @@ export default function NewAvatarPage() {
                     " loading": avatarCreateMutation.isLoading
                   })}
                 >
-                  Submit
+                  Create
                 </button>
               </div>
             </form>

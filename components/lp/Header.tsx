@@ -81,6 +81,7 @@ function MobileNavigation() {
                 <MobileNavLink href="/avatars">Avatars</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <MobileNavLink href="/settings/profile">Your Profile</MobileNavLink>
+                <MobileNavLink href="/settings/avatars">Your Avatars</MobileNavLink>
                 <MobileNavLink href="/settings/pricing">Pricing</MobileNavLink>
                 <hr className="m-2 border-slate-300/40" />
                 <Popover.Button
@@ -212,6 +213,20 @@ export function Header() {
                                   )}
                                 >
                                   Your Avatars
+                                </Link>
+                              )}
+                            </Menu.Item>
+
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  href="/settings/pricing"
+                                  className={clsx(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-lg tracking-tight text-slate-900"
+                                  )}
+                                >
+                                  Pricing
                                 </Link>
                               )}
                             </Menu.Item>

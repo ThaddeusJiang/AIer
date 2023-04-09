@@ -13,7 +13,7 @@ export default function HomePage({ yours, others }: { yours: Avatar[]; others: A
       <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
         <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900">Yours</h2>
         <p className="mb-8 text-center text-lg">Talking to them, train them, and they will learn to talk to you.</p>
-        <AvatarsGrid avatars={yours} />
+        <AvatarsGrid withCreate avatars={yours} />
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
@@ -45,7 +45,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
-  const { data: avatars, error } = await supabase.from("avatars").select().eq("status", "public");
+  const { data: avatars, error } = await supabase.from("avatars").select();
 
   if (error) {
     console.error(error);

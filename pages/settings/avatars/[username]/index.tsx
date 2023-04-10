@@ -14,7 +14,7 @@ import produce from "immer";
 import { Header } from "~/components/lp/Header";
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
 import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
-import { MemoCard } from "~/components/ui/MemoCard/MemoCard";
+import { MemoCard } from "~/components/ui/MemoCard";
 import { Avatar } from "~/types";
 
 export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {

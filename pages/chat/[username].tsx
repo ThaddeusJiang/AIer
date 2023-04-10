@@ -10,8 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Header } from "~/components/lp/Header";
 import { MiniAvatar } from "~/components/ui/Avatar/MiniAvatar";
-import { Chat } from "~/components/ui/Chat/Chat";
-import { MessageList } from "~/components/ui/MessageList/MessageList";
+import { Chat } from "~/components/ui/Chat";
+import { MessageList } from "~/components/ui/MessageList";
 import { Avatar } from "~/types";
 import { useUser } from "~/utils/useUser";
 

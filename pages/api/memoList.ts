@@ -13,20 +13,27 @@ export default async function memoList(req: NextApiRequest, res: NextApiResponse
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { avatar_id } = req.body as { avatar_id: string };
+  const { avatar_id, cursor: from } = req.body as { avatar_id: string; cursor: number };
 
-  const { data, error } = await supabase
+  const PAGE_SIZE = 10;
+  const to = from + PAGE_SIZE - 1;
+
+  const { data, error, count } = await supabase
     .from("memos")
-    .select()
+    .select("*", { count: "exact" })
     .eq("avatar_id", avatar_id)
     .is("deleted_at", null)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (error) {
     return res.status(500).json({ error: error.message });
   }
 
+  const nextCursor = (count || 0) <= to ? undefined : to + 1;
+
   return res.status(200).json({
-    items: data
+    items: data,
+    nextCursor
   });
 }

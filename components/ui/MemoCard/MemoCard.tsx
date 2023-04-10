@@ -1,10 +1,6 @@
 import ReactMarkdown from "react-markdown";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { VariableSizeList as List } from "react-window";
 
-import { useUser } from "@supabase/auth-helpers-react";
 import { IconDots } from "@tabler/icons-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import classNames from "classnames";
 import dayjs from "dayjs";
@@ -12,7 +8,7 @@ import remarkGfm from "remark-gfm";
 
 import { Memo } from "~/types";
 
-const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => void }) => {
+export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => void }) => {
   const createdAt = dayjs(memo.created_at).format("YYYY-MM-DD HH:mm");
   return (
     <div className={classNames("w-full")}>
@@ -40,20 +36,10 @@ const MemoItem = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => vo
             </div>
           </div>
         </div>
-        <article className="prose-sm prose md:prose ">
+        <article className="prose md:prose ">
           <ReactMarkdown children={memo?.content ?? ""} remarkPlugins={[remarkGfm]} />
         </article>
       </div>
-    </div>
-  );
-};
-
-export const MemoList = ({ memos, onDelete }: { memos: Memo[]; onDelete: (id: string) => void }) => {
-  return (
-    <div className=" min-h-screen">
-      {memos.map((memo) => (
-        <MemoItem key={memo.id} memo={memo} onDelete={onDelete} />
-      ))}
     </div>
   );
 };

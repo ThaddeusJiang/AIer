@@ -28,7 +28,7 @@ const CreatePortalLink: NextApiHandler = async (req, res) => {
 
       return res.status(200).json({ url });
     } catch (err: any) {
-      console.log(err);
+      console.error(err);
       res.status(500).json({ error: { statusCode: 500, message: err.message } });
     }
   } else {

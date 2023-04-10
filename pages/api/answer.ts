@@ -56,6 +56,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     let messages = [];
 
+    // FIXME: user 一直是 null，因为 Postgres RLS 只允许 select * from users where id = current_user_id()
     const user_full_name = user?.full_name ?? "user";
     const avatar_name = avatar?.name ?? "avatar";
     let content_token = 0;

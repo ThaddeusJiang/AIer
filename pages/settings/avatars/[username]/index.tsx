@@ -1,17 +1,20 @@
+import { Fragment, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useInView } from "react-intersection-observer";
 
 import { GetServerSidePropsContext } from "next";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { IconArrowUp } from "@tabler/icons-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import classNames from "classnames";
+import produce from "immer";
 
 import { Header } from "~/components/lp/Header";
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
 import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
-import { MemoList } from "~/components/ui/MemoList/MemoList";
+import { MemoCard } from "~/components/ui/MemoCard";
 import { Avatar } from "~/types";
 
 export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
@@ -26,23 +29,32 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     }
   });
 
+  const { ref, inView } = useInView();
   const queryClient = useQueryClient();
 
-  const memoListQuery = useQuery({
+  const { status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["memoList", avatar.id],
-    queryFn: async () => {
+    queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch("/api/memoList", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          avatar_id: avatar.id
+          avatar_id: avatar.id,
+          cursor: pageParam
         })
       });
       return res.json();
-    }
+    },
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor
   });
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   const memoCreateMutation = useMutation({
     mutationFn: async (data: { content: string; avatar_id: string }) => {
@@ -56,10 +68,11 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       return res.json();
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (oldData: any) => {
-        return {
-          items: [data, ...oldData.items]
-        };
+      queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
+        const memoList = produce(old, (draft: any) => {
+          draft.pages[0].items.unshift(data);
+        });
+        return memoList;
       });
     }
   });
@@ -75,11 +88,17 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       }).then((res) => res.json());
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (oldData: any) => {
-        const items = oldData?.items?.filter((memo: { id: string }) => memo.id !== data.id);
-        return {
-          items
-        };
+      queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
+        const memoList = produce(old, (draft: any) => {
+          for (let i = 0; i < draft.pages.length; i++) {
+            const items = draft.pages[i].items.filter((memo: { id: string }) => memo.id !== data.id);
+            if (items.length !== draft.pages[i].items.length) {
+              draft.pages[i].items = items;
+              break;
+            }
+          }
+        });
+        return memoList;
       });
     }
   });
@@ -88,12 +107,11 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     memoDeleteMutation.mutate(id);
   };
 
-  const onSubmit = (data: { content: string; avatar_id: string }) => {
+  const onCreate = (data: { content: string; avatar_id: string }) => {
     memoCreateMutation.mutate(data);
     reset();
   };
 
-  const memos = memoListQuery.data?.items ?? [];
   const content = watch("content");
 
   return (
@@ -103,7 +121,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
         <AvatarProfileHeader avatar={avatar} />
         <AvatarProfileTabs avatar={avatar} active="memos" />
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-          <form onSubmit={handleSubmit(onSubmit)} className="form-control w-full">
+          <form onSubmit={handleSubmit(onCreate)} className="form-control w-full">
             <input type="hidden" {...register("avatar_id")} />
             <div id="content" className=" relative">
               <textarea
@@ -128,10 +146,35 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
           </form>
 
           {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}
-          {memoListQuery.isLoading ? <p className="text-center text-gray-500">loading...</p> : null}
 
-          {/* TODO: 如何 MemoList API 请求不影响 form，就不需要 quick-memo page 了 */}
-          <MemoList memos={memos} onDelete={onDelete} />
+          {data?.pages?.map(({ items, nextCursor }) => (
+            <Fragment key={nextCursor}>
+              {items?.map((project: any) => (
+                <MemoCard key={project.id} memo={project} onDelete={onDelete} />
+              ))}
+            </Fragment>
+          ))}
+
+          {status === "error" ? <p className="text-center text-red-500">error</p> : null}
+
+          <div ref={ref} className="pb-12 text-center text-gray-500">
+            {status === "loading"
+              ? "loading..."
+              : isFetchingNextPage
+              ? "load more..."
+              : hasNextPage
+              ? null
+              : (data?.pages?.length ?? 0) > 1
+              ? "no more"
+              : null}
+          </div>
+
+          {/* TODO: 学习一下这个状态是什么意思？ */}
+          {/* <div>
+            {isFetching && !isFetchingNextPage
+              ? 'Background Updating...'
+              : null}
+          </div> */}
         </div>
       </section>
     </>

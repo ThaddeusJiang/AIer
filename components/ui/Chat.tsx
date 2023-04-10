@@ -50,7 +50,7 @@ export function Chat({
   });
 
   const handleAnswer = async ({ query }: { query: string }) => {
-    const listMessages = queryClient.getQueryData<{ items: Message[] }>(["listMessages", avatar.id]);
+    const messageList = queryClient.getQueryData<{ items: Message[] }>(["messageList", avatar.id]);
     // Optimistically update to the new value
     let queryMessage = {
       id: "query_" + crypto.randomUUID(),
@@ -66,7 +66,7 @@ export function Chat({
       content: ""
     };
     // @ts-ignore FIXME: fix this
-    queryClient.setQueryData(["listMessages", avatar.id], (old: TQueryFnData) => ({
+    queryClient.setQueryData(["messageList", avatar.id], (old: TQueryFnData) => ({
       items: [...old.items, queryMessage, resMessage]
     }));
     setLoading(true);
@@ -79,7 +79,7 @@ export function Chat({
         queryFrom: user?.id,
         queryTo: avatar.id,
         query,
-        messages: (listMessages?.items.slice(-10) || []).map((m) => ({
+        messages: (messageList?.items.slice(-10) || []).map((m) => ({
           role: m.from_id === user?.id ? "user" : "assistant",
           content: m.content
         }))
@@ -110,11 +110,11 @@ export function Chat({
       answer += chunkValue;
 
       // @ts-ignore FIXME: fix this
-      queryClient.setQueryData(["listMessages", avatar.id], (old: TQueryFnData) => {
-        const listMessages = produce(old, (draft: any) => {
+      queryClient.setQueryData(["messageList", avatar.id], (old: TQueryFnData) => {
+        const messageList = produce(old, (draft: any) => {
           draft.items[draft.items.length - 1].content = answer;
         });
-        return listMessages;
+        return messageList;
       });
     }
 

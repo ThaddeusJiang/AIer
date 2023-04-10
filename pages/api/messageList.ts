@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
-export default async function listMessages(req: NextApiRequest, res: NextApiResponse) {
+export default async function messageList(req: NextApiRequest, res: NextApiResponse) {
   const supabase = createServerSupabaseClient({ req, res });
 
   const {

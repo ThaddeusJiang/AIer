@@ -90,7 +90,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     onSuccess: (data) => {
       queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
         const memoList = produce(old, (draft: any) => {
-          for(let i = 0; i < draft.pages.length; i++) {
+          for (let i = 0; i < draft.pages.length; i++) {
             const items = draft.pages[i].items.filter((memo: { id: string }) => memo.id !== data.id);
             if (items.length !== draft.pages[i].items.length) {
               draft.pages[i].items = items;

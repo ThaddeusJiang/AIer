@@ -88,11 +88,17 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       }).then((res) => res.json());
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (oldData: any) => {
-        const items = oldData?.items?.filter((memo: { id: string }) => memo.id !== data.id);
-        return {
-          items
-        };
+      queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
+        const memoList = produce(old, (draft: any) => {
+          for(let i = 0; i < draft.pages.length; i++) {
+            const items = draft.pages[i].items.filter((memo: { id: string }) => memo.id !== data.id);
+            if (items.length !== draft.pages[i].items.length) {
+              draft.pages[i].items = items;
+              break;
+            }
+          }
+        });
+        return memoList;
       });
     }
   });
@@ -101,7 +107,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     memoDeleteMutation.mutate(id);
   };
 
-  const onSubmit = (data: { content: string; avatar_id: string }) => {
+  const onCreate = (data: { content: string; avatar_id: string }) => {
     memoCreateMutation.mutate(data);
     reset();
   };
@@ -115,7 +121,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
         <AvatarProfileHeader avatar={avatar} />
         <AvatarProfileTabs avatar={avatar} active="memos" />
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-          <form onSubmit={handleSubmit(onSubmit)} className="form-control w-full">
+          <form onSubmit={handleSubmit(onCreate)} className="form-control w-full">
             <input type="hidden" {...register("avatar_id")} />
             <div id="content" className=" relative">
               <textarea
@@ -157,8 +163,10 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
               : isFetchingNextPage
               ? "load more..."
               : hasNextPage
-              ? "load newer"
-              : "no more"}
+              ? null
+              : (data?.pages?.length ?? 0) > 1
+              ? "no more"
+              : null}
           </div>
 
           {/* TODO: 学习一下这个状态是什么意思？ */}

@@ -18,10 +18,10 @@ import { useUser } from "~/utils/useUser";
 export default function ChatPage({ avatar }: { avatar: Avatar }) {
   const { user } = useUser();
   const messageContainerRef = useRef<HTMLDivElement>(null);
-  const listMessagesQuery = useQuery({
-    queryKey: ["listMessages", avatar?.id],
+  const messageListQuery = useQuery({
+    queryKey: ["messageList", avatar?.id],
     queryFn: async () => {
-      const res = await fetch("/api/messages.list", {
+      const res = await fetch("/api/messageList", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -34,7 +34,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
     }
   });
 
-  const messages = listMessagesQuery.data?.items ?? [];
+  const messages = messageListQuery.data?.items ?? [];
 
   useEffect(() => {
     const containerNode = messageContainerRef.current;
@@ -86,7 +86,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
         </div>
         <div className="overflow-hidden ">
           <div ref={messageContainerRef} className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-            {listMessagesQuery.isLoading ? <div className=" h-8 ">&nbsp;</div> : <MessageList messages={messages} />}
+            {messageListQuery.isLoading ? <div className=" h-8 ">&nbsp;</div> : <MessageList messages={messages} />}
           </div>
         </div>
         <div className="flex-shrink-0 ">

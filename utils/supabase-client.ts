@@ -45,17 +45,6 @@ export const getAvatar = async (id: string) => {
   return data;
 };
 
-export const getUserDetails = async (id: string) => {
-  // FIXME: postgreSQL RLS 只允许 select * from users where id = current_user_id()
-  const { data, error } = await supabase.from("users").select().eq("id", id).maybeSingle();
-
-  if (error) {
-    console.error(error);
-  }
-
-  return data;
-};
-
 export const updateUserName = async (user: User, name: string) => {
   await supabase
     .from("users")

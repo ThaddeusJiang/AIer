@@ -140,3 +140,14 @@ export const manageSubscriptionStatusChange = async (
     //@ts-ignore
     await copyBillingDetailsToCustomer(uuid, subscription.default_payment_method as Stripe.PaymentMethod);
 };
+
+export const getUserDetails = async (id: string) => {
+  // TODO: 最优雅的方式是在 Next.js Edge API 中 使用 supabase-js 的 auth.user() 方法获取用户信息
+  const { data, error } = await supabaseAdmin.from("users").select().eq("id", id).maybeSingle();
+
+  if (error) {
+    console.error(error);
+  }
+
+  return data;
+};

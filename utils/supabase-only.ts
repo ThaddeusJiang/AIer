@@ -121,3 +121,14 @@ export const searchMemos = async ({ query, limit = 100 }: { query: string; limit
   if (error) throw error;
   return data;
 };
+
+export const getUserDetails = async (id: string) => {
+  // TODO: 最优雅的方式是在 Next.js Edge API 中 使用 supabase-js 的 auth.user() 方法获取用户信息
+  const { data, error } = await supabaseAdmin.from("users").select().eq("id", id).maybeSingle();
+
+  if (error) {
+    console.error(error);
+  }
+
+  return data;
+};

@@ -2,9 +2,9 @@ import endent from "endent";
 
 // import { encode } from "gpt-3-encoder";
 import { OpenAIStream } from "~/utils/openai";
-import { getUserDetails } from "~/utils/supabase-admin";
+
 import { getAvatar } from "~/utils/supabase-client";
-import { createQueryRecord, searchEmbeddings } from "~/utils/supabase-only";
+import { createQueryRecord, getUserDetails, searchEmbeddings } from "~/utils/supabase-only";
 
 export const config = {
   runtime: "edge"

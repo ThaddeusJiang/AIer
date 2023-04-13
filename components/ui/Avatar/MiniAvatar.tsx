@@ -8,7 +8,7 @@ export const MiniAvatar = ({ avatar }: { avatar: Avatar }) => {
           <div className="avatar">
             <img
               className="!h-12 !w-12 rounded-full sm:!h-16 sm:!w-16"
-              src={avatar.avatar_url}
+              src={avatar?.avatar_url}
               alt={`Avatar of ${avatar.name}`}
             />
           </div>

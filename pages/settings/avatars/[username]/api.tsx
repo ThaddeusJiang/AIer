@@ -4,6 +4,7 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
@@ -16,6 +17,9 @@ import { Avatar } from "~/types";
 import { getURL } from "~/utils/helpers";
 
 export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avatar; token: string }) {
+  const router = useRouter();
+  const { username } = router.query as { username: string };
+
   const [copied, setCopied] = useState(false);
 
   const api = `${getURL()}api/webhooks/memoCreate/${token ?? "<token>"}`;
@@ -24,8 +28,8 @@ export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avata
     <>
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar} />
-        <AvatarProfileTabs avatar={avatar} active="api" />
+        <AvatarProfileHeader username={username} />
+        <AvatarProfileTabs username={username} active="api" />
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <div className=" ">
             <>

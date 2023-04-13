@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
@@ -16,12 +17,15 @@ export default function SettingsAvatarQueriesPage({
   replies: number;
   users: number;
 }) {
+  const router = useRouter();
+  const { username } = router.query as { username: string };
+
   return (
     <>
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar} />
-        <AvatarProfileTabs avatar={avatar} active="replies" />
+        <AvatarProfileHeader username={username} />
+        <AvatarProfileTabs username={username} active="replies" />
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <div className=" min-h-screen">
             <div className="stats w-full shadow">
@@ -55,10 +59,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const supabase = createServerSupabaseClient(context);
 
   const {
-    data: { session }
-  } = await supabase.auth.getSession();
+    data: { user }
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return {
       redirect: {
         destination: "/signin",

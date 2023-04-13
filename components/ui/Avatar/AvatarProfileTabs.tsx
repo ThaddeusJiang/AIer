@@ -2,14 +2,12 @@ import Link from "next/link";
 
 import classNames from "classnames";
 
-import { Avatar } from "~/types";
-
-export const AvatarProfileTabs = ({ avatar, active = "memo" }: { avatar: Avatar; active?: string }) => {
+export const AvatarProfileTabs = ({ username, active = "memo" }: { username: string; active?: string }) => {
   return (
     <>
       <nav className="tabs flex w-full  font-bold">
         <Link
-          href={`/settings/avatars/${avatar.username}`}
+          href={`/settings/avatars/${username}`}
           className={classNames("tab-bordered tab tab-lg flex-1", {
             "tab-active": active === "memos"
           })}
@@ -17,7 +15,7 @@ export const AvatarProfileTabs = ({ avatar, active = "memo" }: { avatar: Avatar;
           MEMO
         </Link>
         <Link
-          href={`/settings/avatars/${avatar.username}/replies`}
+          href={`/settings/avatars/${username}/replies`}
           className={classNames("tab-bordered tab tab-lg flex-1", {
             "tab-active": active === "replies"
           })}
@@ -25,7 +23,7 @@ export const AvatarProfileTabs = ({ avatar, active = "memo" }: { avatar: Avatar;
           Replies
         </Link>
         <Link
-          href={`/settings/avatars/${avatar.username}/api`}
+          href={`/settings/avatars/${username}/api`}
           className={classNames("tab-bordered tab tab-lg flex-1", {
             "tab-active": active === "api"
           })}

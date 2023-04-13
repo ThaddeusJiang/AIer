@@ -6,17 +6,17 @@ export const AvatarCircleCard = ({ avatar }: { avatar: Avatar }) => {
   return (
     <div className="w-40 text-center">
       <Link href={`/avatars/${avatar.username}`}>
-        {avatar.avatar_url ? (
+        {avatar?.avatar_url ? (
           <>
             <div className="avatar">
-              <img className="!h-40 !w-40 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
+              <img className="!h-40 !w-40 rounded-full" src={avatar?.avatar_url} alt={`Avatar of ${avatar.name}`} />
             </div>
           </>
         ) : (
           <>
             <div className="placeholder avatar">
               <div className="!h-40 !w-40 rounded-full bg-neutral-focus text-neutral-content">
-                <span className="text-4xl">{avatar.name[0]}</span>
+                <span className="text-4xl">{avatar?.name[0]}</span>
               </div>
             </div>
           </>

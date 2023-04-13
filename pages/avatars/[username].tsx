@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
@@ -7,11 +8,15 @@ import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { Avatar } from "~/types";
 
 export default function AvatarPage({ avatar }: { avatar: Avatar }) {
+  const router = useRouter();
+
+  const { username } = router.query as { username: string };
+
   return (
     <>
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar} />
+        <AvatarProfileHeader username={username} />
       </section>
     </>
   );

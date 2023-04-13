@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useInView } from "react-intersection-observer";
 
 import { GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { IconArrowUp } from "@tabler/icons-react";
@@ -18,14 +19,18 @@ import { MemoCard } from "~/components/ui/MemoCard";
 import { Avatar } from "~/types";
 
 export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
+  const router = useRouter();
+
+  const { username } = router.query as { username: string };
+
   const { register, control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
       content: "",
-      avatar_id: avatar.id
+      username
     },
     values: {
       content: "",
-      avatar_id: avatar.id
+      username
     }
   });
 
@@ -33,7 +38,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   const queryClient = useQueryClient();
 
   const { status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["memoList", avatar.id],
+    queryKey: ["memoList", username],
     queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch("/api/memoList", {
         method: "POST",
@@ -41,7 +46,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          avatar_id: avatar.id,
+          username,
           cursor: pageParam
         })
       });
@@ -57,7 +62,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   }, [inView]);
 
   const memoCreateMutation = useMutation({
-    mutationFn: async (data: { content: string; avatar_id: string }) => {
+    mutationFn: async (data: { content: string; username: string }) => {
       const res = await fetch("/api/memoCreate", {
         method: "POST",
         headers: {
@@ -68,7 +73,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       return res.json();
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
+      queryClient.setQueryData(["memoList", username], (old: any) => {
         const memoList = produce(old, (draft: any) => {
           draft.pages[0].items.unshift(data);
         });
@@ -88,7 +93,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       }).then((res) => res.json());
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
+      queryClient.setQueryData(["memoList", username], (old: any) => {
         const memoList = produce(old, (draft: any) => {
           for (let i = 0; i < draft.pages.length; i++) {
             const items = draft.pages[i].items.filter((memo: { id: string }) => memo.id !== data.id);
@@ -107,7 +112,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     memoDeleteMutation.mutate(id);
   };
 
-  const onCreate = (data: { content: string; avatar_id: string }) => {
+  const onCreate = (data: { content: string; username: string }) => {
     memoCreateMutation.mutate(data);
     reset();
   };
@@ -118,11 +123,11 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     <>
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar} />
-        <AvatarProfileTabs avatar={avatar} active="memos" />
+        <AvatarProfileHeader username={username} />
+        <AvatarProfileTabs username={username} active="memos" />
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <form onSubmit={handleSubmit(onCreate)} className="form-control w-full">
-            <input type="hidden" {...register("avatar_id")} />
+            <input type="hidden" {...register("username")} />
             <div id="content" className=" relative">
               <textarea
                 className="textarea-bordered textarea w-full text-base text-gray-900 focus:outline-none "

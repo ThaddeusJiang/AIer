@@ -33,12 +33,12 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
                 avatar.owner_id === user?.id ? `/settings/avatars/${avatar.username}` : `/avatars/${avatar.username}`
               }
             >
-              {avatar.avatar_url ? (
+              {avatar?.avatar_url ? (
                 <>
                   <div className="avatar">
                     <img
                       className="!h-16 !w-16 rounded-full"
-                      src={avatar.avatar_url}
+                      src={avatar?.avatar_url}
                       alt={`Avatar of ${avatar.name}`}
                     />
                   </div>
@@ -47,7 +47,7 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
                 <>
                   <div className="placeholder avatar">
                     <div className="!h-16 !w-16 rounded-full bg-neutral-focus text-neutral-content">
-                      <span className="text-4xl">{avatar.name[0]}</span>
+                      <span className="text-4xl">{avatar?.name[0]}</span>
                     </div>
                   </div>
                 </>

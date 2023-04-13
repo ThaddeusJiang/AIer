@@ -115,8 +115,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   const { username } = ctx.params as { username: string };
-  // MEMO: .single() 会抛出异常
-  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase());
+
+  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase()).maybeSingle();
 
   if (error) {
     console.error(error);
@@ -127,7 +127,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     };
   }
 
-  if (data.length === 0) {
+  if (!data || (data.status !== "public" && data.owner_id !== user?.id)) {
     return {
       notFound: true
     };
@@ -135,7 +135,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      avatar: data[0]
+      avatar: data
     }
   };
 };

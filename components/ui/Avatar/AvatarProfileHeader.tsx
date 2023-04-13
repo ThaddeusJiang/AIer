@@ -29,12 +29,10 @@ export const AvatarProfileHeader = ({ username }: { username: string }) => {
 
   const avatar = avatarReadQuery.data;
 
-  console.debug(avatar);
-
   const editable = user?.id === avatar?.owner_id;
 
   const changeStatusMutation = useMutation({
-    mutationFn: async (data: { status: string; avatar_id: string }) => {
+    mutationFn: async (data: { status: string; username: string }) => {
       const res = await fetch("/api/avatarUpdate", {
         method: "POST",
         headers: {
@@ -54,7 +52,7 @@ export const AvatarProfileHeader = ({ username }: { username: string }) => {
   });
 
   const changeStatus = () => {
-    changeStatusMutation.mutate({ status: avatar?.status !== "public" ? "public" : "private", avatar_id: avatar?.id });
+    changeStatusMutation.mutate({ status: avatar?.status !== "public" ? "public" : "private", username });
   };
 
   return (

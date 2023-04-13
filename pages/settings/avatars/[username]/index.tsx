@@ -153,9 +153,9 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
           {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}
 
           {data?.pages?.map(({ items, nextCursor }) => (
-            <Fragment key={nextCursor}>
-              {items?.map((project: any) => (
-                <MemoCard key={project.id} memo={project} onDelete={onDelete} />
+            <Fragment key={nextCursor ?? 0}>
+              {items?.map((memo: any) => (
+                <MemoCard key={memo.id} memo={memo} onDelete={onDelete} />
               ))}
             </Fragment>
           ))}

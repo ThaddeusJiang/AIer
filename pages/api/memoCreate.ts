@@ -29,7 +29,7 @@ export default async function memoCreate(req: NextApiRequest, res: NextApiRespon
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { avatar_id, content } = req.body as { avatar_id: string; content: string };
+  const { username: avatar_id, content } = req.body as { username: string; content: string };
 
   const memoInsertInput = {
     content,

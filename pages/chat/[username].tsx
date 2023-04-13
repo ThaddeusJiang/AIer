@@ -103,7 +103,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
   const {
     data: { user }
-  } = await supabase.auth.getUser(); // TODO: getUser vs. getSession 有什么区别？
+  } = await supabase.auth.getUser(); // TODO: getUser vs. getSession 有什么区别？ 虽然不太确定，但是先统一到 getUser() 吧
 
   if (!user) {
     return {

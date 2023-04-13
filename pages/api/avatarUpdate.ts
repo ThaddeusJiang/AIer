@@ -13,21 +13,20 @@ export default async function avatarUpdate(req: NextApiRequest, res: NextApiResp
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { status, avatar_id } = req.body as {
+  const { status, username } = req.body as {
     status: string;
-    avatar_id: string;
+    username: string;
   };
 
   const avatarUpdateInput = {
     status,
-    id: avatar_id,
     updated_at: new Date().toISOString()
   };
 
   const { data, error } = await supabase
     .from("avatars")
     .update(avatarUpdateInput)
-    .eq("id", avatar_id)
+    .eq("username", username)
     .select("*")
     .maybeSingle();
 

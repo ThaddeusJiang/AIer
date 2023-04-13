@@ -92,10 +92,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const supabase = createServerSupabaseClient(context);
 
   const {
-    data: { session }
-  } = await supabase.auth.getSession();
+    data: { user }
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return {
       redirect: {
         destination: "/signin",

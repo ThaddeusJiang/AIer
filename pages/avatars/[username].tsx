@@ -20,12 +20,16 @@ export default function AvatarPage({ avatar }: { avatar: Avatar }) {
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(context);
 
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
   const { username } = context.params as { username: string };
 
-  const { data, error: avatarError } = await supabase.from("avatars").select().eq("username", username.toLowerCase());
+  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase()).maybeSingle();
 
-  if (avatarError) {
-    console.error(avatarError);
+  if (error) {
+    console.error(error);
     return {
       props: {
         avatar: null
@@ -33,7 +37,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
-  if (data.length === 0) {
+  if (!data || (data.status !== "public" && data.owner_id !== user?.id)) {
     return {
       notFound: true
     };
@@ -41,7 +45,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   return {
     props: {
-      avatar: data[0]
+      avatar: data
     }
   };
 };

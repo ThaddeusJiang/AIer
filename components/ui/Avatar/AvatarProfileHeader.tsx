@@ -1,11 +1,47 @@
+import { toast } from "react-hot-toast";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { IconMessage } from "@tabler/icons-react";
+import { IconDots, IconMessage } from "@tabler/icons-react";
+import { useMutation } from "@tanstack/react-query";
 
 import { Avatar } from "~/types";
+import { useUser } from "~/utils/useUser";
 
-export const AvatarProfileHeader = ({ avatar, edit = false }: { avatar: Avatar; edit?: boolean }) => {
+export const AvatarProfileHeader = ({ avatar }: { avatar: Avatar }) => {
+  const { user } = useUser();
+  const router = useRouter();
+  const editable = user?.id === avatar?.owner_id;
+
+  const changeStatusMutation = useMutation({
+    mutationFn: async (data: { status: string; username: string }) => {
+      const res = await fetch("/api/avatarUpdate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      toast.success("Status changed");
+      router.push({
+        href: router.pathname,
+        query: router.query
+      });
+    }
+  });
+
+  const changeStatus = () => {
+    changeStatusMutation.mutate({
+      status: avatar?.status !== "public" ? "public" : "private",
+      username: avatar.username
+    });
+  };
+
   return (
     <>
       <header className="relative">
@@ -38,24 +74,39 @@ export const AvatarProfileHeader = ({ avatar, edit = false }: { avatar: Avatar; 
           </div>
 
           <div className=" absolute top-4 right-4">
-            <Link href={`/chat/${avatar.username}`} className="btn-primary btn gap-1 ">
-              <IconMessage className="h-5 w-5 " />
-              <span>Chat</span>
-            </Link>
-          </div>
+            <div className="flex w-1/2 items-center space-x-4">
+              {editable && (
+                <div className="dropdown-end dropdown">
+                  <label tabIndex={0} className="btn-outline btn-sm btn-circle  btn m-1">
+                    <IconDots className="h-5 w-5" />
+                  </label>
+                  <ul tabIndex={0} className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow">
+                    <li>
+                      <button onClick={changeStatus}>
+                        change to {avatar?.status !== "public" ? "public" : "private"}
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
 
-          {edit && (
-            <Link
-              href={`/settings/avatars/${avatar.username}/edit`}
-              className="btn-primary btn absolute -bottom-10 right-4"
-            >
-              Edit
-            </Link>
-          )}
+              <Link href={`/chat/${avatar.username}`} className="btn-primary btn gap-1 ">
+                <IconMessage className="h-5 w-5 " />
+                <span>Chat</span>
+              </Link>
+            </div>
+          </div>
         </div>
 
         <div className="ml-4 mt-14">
-          <h3 className=" text-2xl font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
+          <div className="flex items-center space-x-3">
+            <h3 className=" text-2xl font-semibold leading-7 tracking-tight text-gray-900">{avatar?.name}</h3>
+            {avatar?.status !== "public" ? (
+              <span className="inline-block flex-shrink-0 rounded-full bg-slate-300 px-2 py-0.5 text-xs font-medium text-slate-800">
+                {avatar?.status}
+              </span>
+            ) : null}
+          </div>
           <h4 className=" text-sm ">@{avatar.username}</h4>
           <p className="mt-2 text-sm leading-6 text-gray-600">{avatar.bio}</p>
         </div>

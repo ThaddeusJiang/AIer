@@ -1,3 +1,5 @@
+import { toast } from "react-hot-toast";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -25,6 +27,7 @@ export const AvatarProfileHeader = ({ avatar }: { avatar: Avatar }) => {
       return res.json();
     },
     onSuccess: () => {
+      toast.success("Status changed");
       router.push({
         href: router.pathname,
         query: router.query

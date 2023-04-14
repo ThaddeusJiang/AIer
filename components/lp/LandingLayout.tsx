@@ -14,9 +14,9 @@ interface Props extends PropsWithChildren {
 export default function LandingLayout({ children, meta: pageMeta }: Props) {
   const router = useRouter();
   const meta = {
-    title: "AIer",
+    title: "AIer: Seed. Train. Interact. For personalized and intelligent AI digital avatars",
     description:
-      "AIer is a service that helps you create and share your AI avatars. It's powered by AI and machine learning.",
+      "AIer is a service for creating, training, and interacting with AI digital avatars. Get help and companionship from AI digital avatars anytime, anywhere.",
     ...pageMeta
   };
 
@@ -24,9 +24,9 @@ export default function LandingLayout({ children, meta: pageMeta }: Props) {
     <>
       <Head>
         <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
         <meta name="robots" content="follow, index" />
         <link href="/favicon.ico" rel="shortcut icon" />
-        <meta content={meta.description} name="description" />
         <meta property="og:url" content={`https://aier.app${router.asPath}`} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={meta.title} />

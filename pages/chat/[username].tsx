@@ -41,11 +41,16 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
     containerNode!.scrollTop = containerNode?.scrollHeight ?? 0;
   }, [messages]);
 
+  const meta = {
+    title: `Talk with ${avatar?.name} in AIer.app`,
+    description: `Hello, I am ${avatar?.name}. Feel free to chat with me anytime, anywhere.`
+  };
+
   return (
     <>
       <Head>
-        {/* <title>Talk with {avatar?.name}</title> */}
-        <meta name="description" content={`Talk with ${avatar?.name} on the web. Ask me anything!`} />
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

@@ -13,19 +13,26 @@ export default async function messageList(req: NextApiRequest, res: NextApiRespo
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { avatar } = req.body as { avatar: string };
+  const { avatar, cursor: from = 0 } = req.body as { avatar: string; cursor: number };
 
-  const { data, error } = await supabase
+  const PAGE_SIZE = 10;
+  const to = from + PAGE_SIZE - 1;
+
+  const { data, error, count } = await supabase
     .from("queries")
-    .select("*")
+    .select("*", { count: "exact" })
     .or(`and(from_id.eq.${user.id},to_id.eq.${avatar}), and(from_id.eq.${avatar},to_id.eq.${user.id})`)
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (error) {
     return res.status(500).json({ error: error.message });
   }
 
+  const nextCursor = (count || 0) <= to ? undefined : to + 1;
+
   return res.status(200).json({
-    items: data
+    items: data,
+    nextCursor
   });
 }

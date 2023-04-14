@@ -17,14 +17,16 @@ import { Avatar } from "~/types";
 import { Avatars } from "./Avatars";
 
 export default function Landing({ avatars }: { avatars: Avatar[] }) {
+  const meta = {
+    title: "AIer: Seed. Train. Interact. For personalized and intelligent AI digital avatars",
+    description:
+      "AIer is a service for creating, training, and interacting with AI digital avatars. Get help and companionship from AI digital avatars anytime, anywhere."
+  };
   return (
     <>
       <Head>
-        <title>AIer - AI avatar and digital immortality</title>
-        <meta
-          name="description"
-          content="Break through time and physical limitations, achieve digital avatar and digital immortality. ~ powered by AI"
-        />
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
       </Head>
 
       <main>

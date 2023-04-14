@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from "next";
+import Head from "next/head";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
@@ -7,8 +8,17 @@ import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { Avatar } from "~/types";
 
 export default function AvatarPage({ avatar }: { avatar: Avatar }) {
+  const meta = {
+    title: `Talk with ${avatar?.name} in AIer.app`,
+    description: `Hello, I am ${avatar?.name}. Feel free to chat with me anytime, anywhere.`
+  };
   return (
     <>
+      <Head>
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
+      </Head>
+
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
         <AvatarProfileHeader avatar={avatar} />

@@ -13,7 +13,7 @@ export default async function memoList(req: NextApiRequest, res: NextApiResponse
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const { avatar_id, cursor: from } = req.body as { avatar_id: string; cursor: number };
+  const { avatar_id, cursor: from = 0 } = req.body as { avatar_id: string; cursor: number };
 
   const PAGE_SIZE = 10;
   const to = from + PAGE_SIZE - 1;

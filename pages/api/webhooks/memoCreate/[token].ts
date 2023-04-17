@@ -36,8 +36,6 @@ export default async function memoCreateWebhook(req: NextApiRequest, res: NextAp
 
   const { avatar_id, created_by } = data;
 
-  const { content } = req.body as { content: string };
-
   const tokenUsageInsertInput = {
     token_id: data.id,
     api: "/api/webhooks/memoCreate/[token]",
@@ -47,8 +45,12 @@ export default async function memoCreateWebhook(req: NextApiRequest, res: NextAp
 
   await supabase.from("token_usages").insert(tokenUsageInsertInput);
 
+  const { content, created_at, source_url } = req.body as { content: string; created_at?: string; source_url?: string };
+
   const memoInsertInput = {
     content,
+    created_at: created_at || new Date().toISOString(),
+    source_url: source_url,
     avatar_id,
     created_by
   };

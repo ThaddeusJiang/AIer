@@ -35,3 +35,37 @@ CREATE TABLE sns (
     user_id references auth.users
 );
 ```
+
+## Sync Tweets via RSSHub
+
+RSS Feed Read
+
+```json
+{
+  "creator": "AIer",
+  "title": "You can use #AIer as your Next-generation #PKM, which has several innovations: 1. Asking instead of keyword retrieval. AIer uses #GPT to understand qu...",
+  "link": "https://twitter.com/AIerdotapp/status/1645270406012755968",
+  "pubDate": "Mon, 10 Apr 2023 03:40:07 GMT",
+  "author": "AIer",
+  "content": "You can use #AIer as your Next-generation #PKM, which has several innovations:<br><br>1. Asking instead of keyword retrieval. <br><br>AIer uses #GPT to understand qustions, so we can ask more accurate questions instead of simply combining multiple keywords.<br><br>New 🆚 Old https://t.co/18lPlBM4Eh<br><img style=\"\" src=\"https://pbs.twimg.com/media/FtUovz3acAAc59i?format=png&amp;name=orig\" referrerpolicy=\"no-referrer\"><br><img style=\"\" src=\"https://pbs.twimg.com/media/FtUpkRHaUAEzn70?format=png&amp;name=orig\" referrerpolicy=\"no-referrer\">",
+  "contentSnippet": "You can use #AIer as your Next-generation #PKM, which has several innovations:\n1. Asking instead of keyword retrieval. \nAIer uses #GPT to understand qustions, so we can ask more accurate questions instead of simply combining multiple keywords.\nNew 🆚 Old https://t.co/18lPlBM4Eh",
+  "guid": "https://twitter.com/AIerdotapp/status/1645270406012755968",
+  "isoDate": "2023-04-10T03:40:07.000Z",
+  "latestRead": "2021-06-01"
+}
+````
+
+
+
+
+
+
+
+
+
+```
+content: {{ json.contentSnippet }}
+created_at: {{ json.link }}
+source_url: {{ json.isoDate }}
+```
+

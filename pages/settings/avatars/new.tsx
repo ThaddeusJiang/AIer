@@ -21,7 +21,7 @@ const schema = yup
       )
       .required(),
     name: yup.string().required(),
-    source: yup.string().required(),
+    source_twitter: yup.string().required(),
     bio: yup.string(),
     avatar_url: yup.string()
   })
@@ -39,7 +39,7 @@ export default function NewAvatarPage() {
     defaultValues: {
       username: "",
       name: "",
-      source: "",
+      source_twitter: "",
       bio: "",
       avatar_url: ""
     },
@@ -101,6 +101,7 @@ export default function NewAvatarPage() {
                   type="text"
                   className="input-bordered input w-full"
                   placeholder="username"
+                  id="username"
                   {...register("username", { required: true })}
                 />
                 {errors.username ? <span className="text-red-500">{errors.username.message}</span> : null}
@@ -113,21 +114,23 @@ export default function NewAvatarPage() {
                   type="text"
                   className="input-bordered input w-full"
                   placeholder="Name"
+                  id="name"
                   {...register("name", { required: true })}
                 />
                 {errors.name ? <span className="text-red-500">{errors.name.message}</span> : null}
               </div>
 
               <div>
-                <label htmlFor="source" className=" label">
-                  Source
+                <label htmlFor="source_twitter" className=" label">
+                  Source Twitter
                 </label>
-                <textarea
-                  className="textarea-bordered textarea w-full"
-                  placeholder="Write your twitter ID here, e.g. @aierdotapp. I will initialize your avatar with your tweets."
-                  {...register("source")}
+                <input
+                  className="input input-bordered w-full"
+                  placeholder="your twitter username, e.g. ThaddeusJiang"
+                  id="source_twitter"
+                  {...register("source_twitter")}
                 />
-                {errors.source ? <span className="text-red-500">{errors.source.message}</span> : null}
+                {errors.source_twitter ? <span className="text-red-500">{errors.source_twitter.message}</span> : null}
               </div>
 
               <div>
@@ -138,6 +141,7 @@ export default function NewAvatarPage() {
                   type="text"
                   className="input-bordered input w-full"
                   placeholder="https://example.com/avatar.png"
+                  id="avatar_url"
                   {...register("avatar_url")}
                 />
               </div>
@@ -146,7 +150,7 @@ export default function NewAvatarPage() {
                 <label htmlFor="bio" className=" label">
                   Bio
                 </label>
-                <textarea className="textarea-bordered textarea w-full" placeholder="Add a bio" {...register("bio")} />
+                <textarea id="bio" className="textarea-bordered textarea w-full" placeholder="Add a bio" {...register("bio")}  />
               </div>
 
               <div className="py-4">

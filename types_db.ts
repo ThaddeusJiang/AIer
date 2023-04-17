@@ -18,6 +18,7 @@ export interface Database {
           name: string
           owner_id: string | null
           source: string | null
+          source_twitter: string | null
           status: string | null
           updated_at: string
           username: string
@@ -31,6 +32,7 @@ export interface Database {
           name: string
           owner_id?: string | null
           source?: string | null
+          source_twitter?: string | null
           status?: string | null
           updated_at?: string
           username: string
@@ -44,6 +46,7 @@ export interface Database {
           name?: string
           owner_id?: string | null
           source?: string | null
+          source_twitter?: string | null
           status?: string | null
           updated_at?: string
           username?: string
@@ -70,7 +73,7 @@ export interface Database {
           content: string | null
           content_length: number | null
           content_tokens: number | null
-          embedding: unknown | null
+          embedding: string | null
           essay_date: string | null
           essay_thanks: string | null
           essay_title: string | null
@@ -82,7 +85,7 @@ export interface Database {
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
-          embedding?: unknown | null
+          embedding?: string | null
           essay_date?: string | null
           essay_thanks?: string | null
           essay_title?: string | null
@@ -94,7 +97,7 @@ export interface Database {
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
-          embedding?: unknown | null
+          embedding?: string | null
           essay_date?: string | null
           essay_thanks?: string | null
           essay_title?: string | null
@@ -107,7 +110,7 @@ export interface Database {
           content: string | null
           content_length: number | null
           content_tokens: number | null
-          embedding: unknown | null
+          embedding: string | null
           essay_date: string | null
           essay_thanks: string | null
           essay_title: string | null
@@ -118,7 +121,7 @@ export interface Database {
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
-          embedding?: unknown | null
+          embedding?: string | null
           essay_date?: string | null
           essay_thanks?: string | null
           essay_title?: string | null
@@ -129,7 +132,7 @@ export interface Database {
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
-          embedding?: unknown | null
+          embedding?: string | null
           essay_date?: string | null
           essay_thanks?: string | null
           essay_title?: string | null
@@ -143,7 +146,7 @@ export interface Database {
           content: string | null
           content_length: number | null
           content_tokens: number | null
-          embedding: unknown | null
+          embedding: string | null
           essay_date: string | null
           essay_thanks: string | null
           essay_title: string | null
@@ -155,7 +158,7 @@ export interface Database {
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
-          embedding?: unknown | null
+          embedding?: string | null
           essay_date?: string | null
           essay_thanks?: string | null
           essay_title?: string | null
@@ -167,7 +170,7 @@ export interface Database {
           content?: string | null
           content_length?: number | null
           content_tokens?: number | null
-          embedding?: unknown | null
+          embedding?: string | null
           essay_date?: string | null
           essay_thanks?: string | null
           essay_title?: string | null
@@ -185,6 +188,7 @@ export interface Database {
           deleted_by: string | null
           embeddings: string[] | null
           id: string
+          source_url: string | null
           updated_at: string
           updated_by: string | null
         }
@@ -197,6 +201,7 @@ export interface Database {
           deleted_by?: string | null
           embeddings?: string[] | null
           id?: string
+          source_url?: string | null
           updated_at?: string
           updated_by?: string | null
         }
@@ -209,6 +214,7 @@ export interface Database {
           deleted_by?: string | null
           embeddings?: string[] | null
           id?: string
+          source_url?: string | null
           updated_at?: string
           updated_by?: string | null
         }
@@ -441,7 +447,7 @@ export interface Database {
     Functions: {
       embeddings_search: {
         Args: {
-          query_embedding: unknown
+          query_embedding: string
           similarity_threshold: number
           match_count: number
           query_to: string
@@ -461,7 +467,7 @@ export interface Database {
       }
       inamori_search: {
         Args: {
-          query_embedding: unknown
+          query_embedding: string
           similarity_threshold: number
           match_count: number
         }
@@ -485,7 +491,7 @@ export interface Database {
       }
       pg_search: {
         Args: {
-          query_embedding: unknown
+          query_embedding: string
           similarity_threshold: number
           match_count: number
         }
@@ -503,7 +509,7 @@ export interface Database {
       }
       tj_search: {
         Args: {
-          query_embedding: unknown
+          query_embedding: string
           similarity_threshold: number
           match_count: number
         }
@@ -523,29 +529,29 @@ export interface Database {
         Args: {
           "": number[]
         }
-        Returns: unknown
+        Returns: string
       }
       vector_dims: {
         Args: {
-          "": unknown
+          "": string
         }
         Returns: number
       }
       vector_norm: {
         Args: {
-          "": unknown
+          "": string
         }
         Returns: number
       }
       vector_out: {
         Args: {
-          "": unknown
+          "": string
         }
         Returns: unknown
       }
       vector_send: {
         Args: {
-          "": unknown
+          "": string
         }
         Returns: string
       }

@@ -23,6 +23,7 @@ CREATE TABLE avatars (
   avatar_url text,
   status text,
   source text,
+  source_twitter text,
   bio text,
   welcome_message text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
@@ -239,6 +240,7 @@ create table memos (
   updated_by uuid references auth.users,
   deleted_at timestamp with time zone,
   deleted_by uuid references auth.users,
+  source_url text,
   embeddings _text,
   primary key (id)
 );

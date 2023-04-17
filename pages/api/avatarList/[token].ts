@@ -15,7 +15,7 @@ export default async function avatarList(req: NextApiRequest, res: NextApiRespon
     return res.status(400).json({ error: "Invalid token" });
   }
 
-  const { data, error } = await supabase.from("avatars").select().in("status", ["public", "private"]);
+  const { data, error } = await supabase.from("avatars").select("*, tokens (masked_token)").in("status", ["public", "private"]);
   if (error) {
     return res.status(500).json({ error: error.message });
   }

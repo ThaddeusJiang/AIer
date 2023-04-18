@@ -1,8 +1,8 @@
-import Image from "next/image";
+import Image from "next/image"
 
-import { Button } from "~/components/lp/Button";
-import { Container } from "~/components/lp/Container";
-import backgroundImage from "~/images/background-call-to-action.jpg";
+import { Button } from "~/components/lp/Button"
+import { Container } from "~/components/lp/Container"
+import backgroundImage from "~/images/background-call-to-action.jpg"
 
 export function CallToAction() {
   return (
@@ -28,5 +28,5 @@ export function CallToAction() {
         </div>
       </Container>
     </section>
-  );
+  )
 }

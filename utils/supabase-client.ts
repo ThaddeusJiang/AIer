@@ -1,9 +1,9 @@
-import { User, createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { User, createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { Avatar, ProductWithPrice, UserDetails } from "types";
-import type { Database } from "types_db";
+import { Avatar, ProductWithPrice, UserDetails } from "types"
+import type { Database } from "types_db"
 
-export const supabase = createBrowserSupabaseClient<Database>();
+export const supabase = createBrowserSupabaseClient<Database>()
 
 export const getActiveProductsWithPrices = async (): Promise<ProductWithPrice[]> => {
   const { data, error } = await supabase
@@ -12,38 +12,38 @@ export const getActiveProductsWithPrices = async (): Promise<ProductWithPrice[]>
     .eq("active", true)
     .eq("prices.active", true)
     .order("metadata->index")
-    .order("unit_amount", { foreignTable: "prices" });
+    .order("unit_amount", { foreignTable: "prices" })
 
   if (error) {
-    console.error(error.message);
+    console.error(error.message)
   }
   // TODO: improve the typing here.
-  return (data as any) || [];
-};
+  return (data as any) || []
+}
 
 export const getPublicAvatars = async (): Promise<Avatar[]> => {
   const { data, error } = await supabase
     .from("avatars")
     .select()
     .eq("status", "public")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
 
   if (error) {
-    console.error(error);
+    console.error(error)
   }
 
-  return (data as any) || [];
-};
+  return (data as any) || []
+}
 
 export const getAvatar = async (id: string) => {
-  const { data, error } = await supabase.from("avatars").select().eq("id", id).maybeSingle();
+  const { data, error } = await supabase.from("avatars").select().eq("id", id).maybeSingle()
 
   if (error) {
-    console.error(error);
+    console.error(error)
   }
 
-  return data;
-};
+  return data
+}
 
 export const updateUserName = async (user: User, name: string) => {
   await supabase
@@ -51,5 +51,5 @@ export const updateUserName = async (user: User, name: string) => {
     .update({
       full_name: name
     })
-    .eq("id", user.id);
-};
+    .eq("id", user.id)
+}

@@ -1,4 +1,4 @@
-import { Avatar } from "~/types";
+import { Avatar } from "~/types"
 
 export const MiniAvatar = ({ avatar }: { avatar: Avatar }) => {
   return (
@@ -23,5 +23,5 @@ export const MiniAvatar = ({ avatar }: { avatar: Avatar }) => {
         </>
       )}
     </div>
-  );
-};
+  )
+}

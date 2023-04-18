@@ -1,25 +1,25 @@
-import { Fragment } from "react";
+import { Fragment } from "react"
 
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Link from "next/link"
+import { useRouter } from "next/router"
 
-import { Menu, Popover, Transition } from "@headlessui/react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Menu, Popover, Transition } from "@headlessui/react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import { Button } from "~/components/lp/Button";
-import { Container } from "~/components/lp/Container";
-import { Logo } from "~/components/lp/Logo";
-import { NavLink } from "~/components/lp/NavLink";
-import { useUser } from "~/utils/useUser";
+import { Button } from "~/components/lp/Button"
+import { Container } from "~/components/lp/Container"
+import { Logo } from "~/components/lp/Logo"
+import { NavLink } from "~/components/lp/NavLink"
+import { useUser } from "~/utils/useUser"
 
 function MobileNavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Popover.Button as={Link} href={href} className="block w-full p-2">
       {children}
     </Popover.Button>
-  );
+  )
 }
 
 function MobileNavIcon({ open }: { open: boolean }) {
@@ -34,13 +34,13 @@ function MobileNavIcon({ open }: { open: boolean }) {
       <path d="M0 1H14M0 7H14M0 13H14" className={clsx("origin-center transition", open && "scale-90 opacity-0")} />
       <path d="M2 2L12 12M12 2L2 12" className={clsx("origin-center transition", !open && "scale-90 opacity-0")} />
     </svg>
-  );
+  )
 }
 
 function MobileNavigation() {
-  const router = useRouter();
-  const supabaseClient = useSupabaseClient();
-  const { user, userDetails } = useUser();
+  const router = useRouter()
+  const supabaseClient = useSupabaseClient()
+  const { user, userDetails } = useUser()
 
   return (
     <Popover>
@@ -86,9 +86,9 @@ function MobileNavigation() {
                 <hr className="m-2 border-slate-300/40" />
                 <Popover.Button
                   onClick={async (e) => {
-                    e.preventDefault();
-                    await supabaseClient.auth.signOut();
-                    router.push("/signin");
+                    e.preventDefault()
+                    await supabaseClient.auth.signOut()
+                    router.push("/signin")
                   }}
                   className="block w-full p-2"
                 >
@@ -109,13 +109,13 @@ function MobileNavigation() {
         </Transition.Child>
       </Transition.Root>
     </Popover>
-  );
+  )
 }
 
 export function Header() {
-  const router = useRouter();
-  const supabaseClient = useSupabaseClient();
-  const { user, userDetails } = useUser();
+  const router = useRouter()
+  const supabaseClient = useSupabaseClient()
+  const { user, userDetails } = useUser()
 
   return (
     <header className="py-2 sm:pt-8">
@@ -240,9 +240,9 @@ export function Header() {
                                     "block px-4 py-2 text-lg tracking-tight text-slate-900"
                                   )}
                                   onClick={async (e) => {
-                                    e.preventDefault();
-                                    await supabaseClient.auth.signOut();
-                                    router.push("/signin");
+                                    e.preventDefault()
+                                    await supabaseClient.auth.signOut()
+                                    router.push("/signin")
                                   }}
                                   aria-hidden="true"
                                 >
@@ -277,5 +277,5 @@ export function Header() {
         </nav>
       </Container>
     </header>
-  );
+  )
 }

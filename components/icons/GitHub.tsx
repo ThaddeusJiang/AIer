@@ -8,7 +8,7 @@ const GitHub = ({ ...props }) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default GitHub;
+export default GitHub

@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { encode } from "gpt-3-encoder";
+import { encode } from "gpt-3-encoder"
 
-import { generateEmbeddings } from "~/utils/embedding";
+import { generateEmbeddings } from "~/utils/embedding"
 
 /**
  *
@@ -23,25 +23,25 @@ import { generateEmbeddings } from "~/utils/embedding";
  *  }'
  */
 export default async function embeddingCreateWebhook(req: NextApiRequest, res: NextApiResponse) {
-  const supabase = createServerSupabaseClient({ req, res });
+  const supabase = createServerSupabaseClient({ req, res })
 
   const { token } = req.query as {
-    token: string;
-  };
-  const { data, error } = await supabase.from("tokens").select("*").eq("masked_token", token).single();
-  if (error) {
-    return res.status(401).json({ errorMessage: "The token is invalid." });
+    token: string
   }
-  const { avatar_id, created_by } = data;
+  const { data, error } = await supabase.from("tokens").select("*").eq("masked_token", token).single()
+  if (error) {
+    return res.status(401).json({ errorMessage: "The token is invalid." })
+  }
+  const { avatar_id, created_by } = data
   const tokenUsageInsertInput = {
     token_id: data.id,
-    api: "/api/webhooks/memoCreate/[token]",
+    api: req.url,
     raw: req.body,
     created_by
-  };
-  await supabase.from("token_usages").insert(tokenUsageInsertInput);
+  }
+  await supabase.from("token_usages").insert(tokenUsageInsertInput)
 
-  const { content, url, date } = req.body as { content: string; url?: string; date?: string };
+  const { content, url, date } = req.body as { content: string; url?: string; date?: string }
 
   const embeddingInsertInputs = await generateEmbeddings({
     content,
@@ -53,18 +53,18 @@ export default async function embeddingCreateWebhook(req: NextApiRequest, res: N
     avatar_id,
     title: "",
     mentions: []
-  });
+  })
 
   const { data: embeddings, error: embeddingError } = await supabase
     .from("embeddings")
     .insert(embeddingInsertInputs)
-    .select("id");
+    .select("id")
 
   if (embeddingError) {
-    return res.status(500).json({ error: embeddingError.message });
+    return res.status(500).json({ error: embeddingError.message })
   }
 
   return res.status(200).json({
     items: embeddings
-  });
+  })
 }

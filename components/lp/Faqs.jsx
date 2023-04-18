@@ -1,7 +1,7 @@
-import Image from "next/image";
+import Image from "next/image"
 
-import { Container } from "~/components/lp/Container";
-import backgroundImage from "~/images/background-faqs.jpg";
+import { Container } from "~/components/lp/Container"
+import backgroundImage from "~/images/background-faqs.jpg"
 
 const faqs = [
   [
@@ -50,7 +50,7 @@ const faqs = [
         "Send us an email and we will send you a copy of our latest password spreadsheet so you can find your information."
     }
   ]
-];
+]
 
 export function Faqs() {
   return (
@@ -89,5 +89,5 @@ export function Faqs() {
         </ul>
       </Container>
     </section>
-  );
+  )
 }

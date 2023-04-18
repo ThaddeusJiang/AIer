@@ -1,0 +1,6 @@
+.next
+.vercel
+.vscode
+node_modules
+types_db.ts
+n8n

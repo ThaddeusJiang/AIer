@@ -1,15 +1,15 @@
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from "react-markdown"
 
-import { IconDots } from "@tabler/icons-react";
+import { IconDots } from "@tabler/icons-react"
 
-import classNames from "classnames";
-import dayjs from "dayjs";
-import remarkGfm from "remark-gfm";
+import classNames from "classnames"
+import dayjs from "dayjs"
+import remarkGfm from "remark-gfm"
 
-import { Memo } from "~/types";
+import { Memo } from "~/types"
 
 export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => void }) => {
-  const createdAt = dayjs(memo.created_at).format("YYYY-MM-DD HH:mm");
+  const createdAt = dayjs(memo.created_at).format("YYYY-MM-DD HH:mm")
   return (
     <div className={classNames("w-full")}>
       <div className="my-2 rounded-lg bg-base-100 px-4 py-2 hover:shadow ">
@@ -25,8 +25,8 @@ export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string
                   <a
                     className="text-sm"
                     onClick={(e) => {
-                      e.preventDefault();
-                      onDelete(memo.id);
+                      e.preventDefault()
+                      onDelete(memo.id)
                     }}
                   >
                     delete
@@ -41,5 +41,5 @@ export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string
         </article>
       </div>
     </div>
-  );
-};
+  )
+}

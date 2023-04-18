@@ -1,4 +1,4 @@
-import { Header } from "~/components/lp/Header";
+import { Header } from "~/components/lp/Header"
 
 export default function NotFoundPage() {
   return (
@@ -32,5 +32,5 @@ export default function NotFoundPage() {
         </div>
       </main>
     </>
-  );
+  )
 }

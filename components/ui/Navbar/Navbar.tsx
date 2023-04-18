@@ -1,20 +1,20 @@
-import { Fragment } from "react";
+import { Fragment } from "react"
 
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Link from "next/link"
+import { useRouter } from "next/router"
 
-import { Menu, Transition } from "@headlessui/react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Menu, Transition } from "@headlessui/react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
-import classNames from "classnames";
+import classNames from "classnames"
 
-import { Logo } from "~/components/lp/Logo";
-import { useUser } from "~/utils/useUser";
+import { Logo } from "~/components/lp/Logo"
+import { useUser } from "~/utils/useUser"
 
 export const Navbar = () => {
-  const router = useRouter();
-  const supabaseClient = useSupabaseClient();
-  const { user, userDetails } = useUser();
+  const router = useRouter()
+  const supabaseClient = useSupabaseClient()
+  const { user, userDetails } = useUser()
 
   return (
     <nav className="transition-all duration-150">
@@ -120,9 +120,9 @@ export const Navbar = () => {
                                     "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                   onClick={async (e) => {
-                                    e.preventDefault();
-                                    await supabaseClient.auth.signOut();
-                                    router.push("/signin");
+                                    e.preventDefault()
+                                    await supabaseClient.auth.signOut()
+                                    router.push("/signin")
                                   }}
                                   aria-hidden="true"
                                 >
@@ -146,5 +146,5 @@ export const Navbar = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}

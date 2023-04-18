@@ -1,8 +1,8 @@
-import Link from "next/link";
+import Link from "next/link"
 
-import classNames from "classnames";
+import classNames from "classnames"
 
-import { Avatar } from "~/types";
+import { Avatar } from "~/types"
 
 export const AvatarProfileTabs = ({ avatar, active = "memo" }: { avatar: Avatar; active?: string }) => {
   return (
@@ -34,5 +34,5 @@ export const AvatarProfileTabs = ({ avatar, active = "memo" }: { avatar: Avatar;
         </Link>
       </nav>
     </>
-  );
-};
+  )
+}

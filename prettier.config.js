@@ -19,4 +19,4 @@ module.exports = {
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   tailwindConfig: "./tailwind.config.js"
-};
+}

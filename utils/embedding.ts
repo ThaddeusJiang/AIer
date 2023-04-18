@@ -1,42 +1,42 @@
-import { encode } from "gpt-3-encoder";
-import { Configuration, OpenAIApi } from "openai";
+import { encode } from "gpt-3-encoder"
+import { Configuration, OpenAIApi } from "openai"
 
-import { Chunk, Content } from "~/types";
+import { Chunk, Content } from "~/types"
 
-const CHUNK_SIZE = 200;
+const CHUNK_SIZE = 200
 
 const chunkContent = (data: Content) => {
-  const { content, url, date, mentions, ...rest } = data;
+  const { content, url, date, mentions, ...rest } = data
 
-  let chunks = [];
+  let chunks = []
 
   if (encode(content).length > CHUNK_SIZE) {
-    const strings = content.split(/\r?\n+/); // 暂时只处理换行符
-    let chunkText = "";
+    const strings = content.split(/\r?\n+/) // 暂时只处理换行符
+    let chunkText = ""
 
     strings.forEach((sentence) => {
-      const sentenceTokenLength = encode(sentence);
-      const chunkTextTokenLength = encode(chunkText).length;
+      const sentenceTokenLength = encode(sentence)
+      const chunkTextTokenLength = encode(chunkText).length
 
       if (chunkTextTokenLength + sentenceTokenLength.length > CHUNK_SIZE) {
-        chunks.push(chunkText);
-        chunkText = "";
+        chunks.push(chunkText)
+        chunkText = ""
       }
 
-      chunkText += sentence + "\n";
-    });
+      chunkText += sentence + "\n"
+    })
 
-    chunks.push(chunkText.trim());
+    chunks.push(chunkText.trim())
   } else {
-    chunks.push(content.trim());
+    chunks.push(content.trim())
   }
 
-  console.log("chunks", chunks);
+  console.log("chunks", chunks)
 
   const contentChunks = chunks
     .filter((text) => text.trim().length > 0)
     .map((text) => {
-      const trimmedText = text.trim();
+      const trimmedText = text.trim()
 
       const chunk: Chunk = {
         content: trimmedText,
@@ -45,22 +45,22 @@ const chunkContent = (data: Content) => {
         embedding: [],
         original_url: url,
         original_date: date
-      };
+      }
 
-      return chunk;
-    });
+      return chunk
+    })
 
   if (contentChunks.length > 1) {
     for (let i = 0; i < contentChunks.length; i++) {
-      const chunk = contentChunks[i];
-      const prevChunk = contentChunks[i - 1];
+      const chunk = contentChunks[i]
+      const prevChunk = contentChunks[i - 1]
 
       if (chunk.content_tokens < 100 && prevChunk) {
-        prevChunk.content += " " + chunk.content;
-        prevChunk.content_length += chunk.content_length;
-        prevChunk.content_tokens += chunk.content_tokens;
-        contentChunks.splice(i, 1);
-        i--;
+        prevChunk.content += " " + chunk.content
+        prevChunk.content_length += chunk.content_length
+        prevChunk.content_tokens += chunk.content_tokens
+        contentChunks.splice(i, 1)
+        i--
       }
     }
   }
@@ -68,27 +68,27 @@ const chunkContent = (data: Content) => {
   const chunkedSection: Content = {
     ...data,
     chunks: contentChunks
-  };
+  }
 
-  return chunkedSection;
-};
+  return chunkedSection
+}
 
 export const generateEmbeddings = async (content: Content) => {
-  const { chunks, ...rest } = chunkContent(content);
+  const { chunks, ...rest } = chunkContent(content)
 
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
-  });
-  const openai = new OpenAIApi(configuration);
+  })
+  const openai = new OpenAIApi(configuration)
 
   const embeddingInsertInputs = await Promise.all(
     chunks.map(async (chunk) => {
       const embeddingRes = await openai.createEmbedding({
         model: "text-embedding-ada-002",
         input: chunk.content
-      });
+      })
 
-      const [{ embedding }] = embeddingRes.data.data;
+      const [{ embedding }] = embeddingRes.data.data
 
       const embeddingInsertInput = {
         content: chunk.content,
@@ -101,14 +101,14 @@ export const generateEmbeddings = async (content: Content) => {
 
         embedding,
         avatar_id: content.avatar_id
-      };
+      }
 
-      return embeddingInsertInput;
+      return embeddingInsertInput
     })
-  );
+  )
 
-  return embeddingInsertInputs;
-};
+  return embeddingInsertInputs
+}
 
 /**
  *

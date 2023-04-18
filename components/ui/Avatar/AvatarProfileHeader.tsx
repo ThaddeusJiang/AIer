@@ -1,19 +1,19 @@
-import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast"
 
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/router"
 
-import { IconDots, IconMessage } from "@tabler/icons-react";
-import { useMutation } from "@tanstack/react-query";
+import { IconDots, IconMessage } from "@tabler/icons-react"
+import { useMutation } from "@tanstack/react-query"
 
-import { Avatar } from "~/types";
-import { useUser } from "~/utils/useUser";
+import { Avatar } from "~/types"
+import { useUser } from "~/utils/useUser"
 
 export const AvatarProfileHeader = ({ avatar }: { avatar: Avatar }) => {
-  const { user } = useUser();
-  const router = useRouter();
-  const editable = user?.id === avatar?.owner_id;
+  const { user } = useUser()
+  const router = useRouter()
+  const editable = user?.id === avatar?.owner_id
 
   const changeStatusMutation = useMutation({
     mutationFn: async (data: { status: string; username: string }) => {
@@ -23,24 +23,24 @@ export const AvatarProfileHeader = ({ avatar }: { avatar: Avatar }) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
-      });
-      return res.json();
+      })
+      return res.json()
     },
     onSuccess: () => {
-      toast.success("Status changed");
+      toast.success("Status changed")
       router.push({
         href: router.pathname,
         query: router.query
-      });
+      })
     }
-  });
+  })
 
   const changeStatus = () => {
     changeStatusMutation.mutate({
       status: avatar?.status !== "public" ? "public" : "private",
       username: avatar.username
-    });
-  };
+    })
+  }
 
   return (
     <>
@@ -112,5 +112,5 @@ export const AvatarProfileHeader = ({ avatar }: { avatar: Avatar }) => {
         </div>
       </header>
     </>
-  );
-};
+  )
+}

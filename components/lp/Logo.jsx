@@ -12,5 +12,5 @@ export function Logo(props) {
         fill="black"
       />
     </svg>
-  );
+  )
 }

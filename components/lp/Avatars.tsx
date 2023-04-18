@@ -1,7 +1,7 @@
-import { Avatar } from "~/types";
+import { Avatar } from "~/types"
 
-import { AvatarCircleCard } from "../ui/Avatar/AvatarCircleCard";
-import { AvatarsValuesMessage } from "./AvatarsValuesMessage";
+import { AvatarCircleCard } from "../ui/Avatar/AvatarCircleCard"
+import { AvatarsValuesMessage } from "./AvatarsValuesMessage"
 
 export function Avatars({ avatars }: { avatars: Avatar[] }) {
   return (
@@ -23,5 +23,5 @@ export function Avatars({ avatars }: { avatars: Avatar[] }) {
         </ul>
       </div>
     </section>
-  );
+  )
 }

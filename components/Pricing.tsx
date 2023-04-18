@@ -1,20 +1,20 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 
-import clsx from "clsx";
-import { Price, ProductWithPrice } from "types";
+import clsx from "clsx"
+import { Price, ProductWithPrice } from "types"
 
-import { postData } from "~/utils/helpers";
-import { getStripe } from "~/utils/stripe-client";
-import { useUser } from "~/utils/useUser";
+import { postData } from "~/utils/helpers"
+import { getStripe } from "~/utils/stripe-client"
+import { useUser } from "~/utils/useUser"
 
-import { Container } from "./lp/Container";
-import { SwirlyDoodle } from "./lp/Pricing";
+import { Container } from "./lp/Container"
+import { SwirlyDoodle } from "./lp/Pricing"
 
 interface Props {
-  products: ProductWithPrice[];
+  products: ProductWithPrice[]
 }
 
-const billingInterval = "month";
+const billingInterval = "month"
 
 function Plan({
   name,
@@ -24,12 +24,12 @@ function Plan({
   featured = false,
   children
 }: {
-  price: string;
-  name?: string;
-  description?: string;
-  features?: string[];
-  featured?: boolean;
-  children: React.ReactNode;
+  price: string
+  name?: string
+  description?: string
+  features?: string[]
+  featured?: boolean
+  children: React.ReactNode
 }) {
   return (
     <section
@@ -59,36 +59,36 @@ function Plan({
       </ul> */}
       {children}
     </section>
-  );
+  )
 }
 
 export default function Pricing({ products }: Props) {
-  const router = useRouter();
+  const router = useRouter()
 
-  const { user, isLoading, subscription } = useUser();
+  const { user, isLoading, subscription } = useUser()
 
   const handleCheckout = async (price: Price) => {
     if (!user) {
-      return router.push("/signin");
+      return router.push("/signin")
     }
     if (subscription) {
       // MEMO: 支付成功后，会自动跳转到 /home 页面
-      return router.push("/home");
+      return router.push("/home")
     }
 
     try {
       const { sessionId } = await postData({
         url: "/api/create-checkout-session",
         data: { price }
-      });
+      })
 
-      const stripe = await getStripe();
-      stripe?.redirectToCheckout({ sessionId });
+      const stripe = await getStripe()
+      stripe?.redirectToCheckout({ sessionId })
     } catch (error) {
-      return alert((error as Error)?.message);
+      return alert((error as Error)?.message)
     } finally {
     }
-  };
+  }
 
   return (
     <section id="pricing" aria-label="Pricing" className="bg-slate-900 py-20 sm:py-32">
@@ -107,15 +107,15 @@ export default function Pricing({ products }: Props) {
         </div>
         <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-2 xl:mx-0 xl:gap-x-8">
           {products.map((product, index) => {
-            const price = product?.prices?.find((price) => price.interval === billingInterval);
-            if (!price) return null;
+            const price = product?.prices?.find((price) => price.interval === billingInterval)
+            if (!price) return null
             const priceString = new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: price.currency,
               minimumFractionDigits: 0
-            }).format((price?.unit_amount || 0) / 100);
+            }).format((price?.unit_amount || 0) / 100)
 
-            const featured = index === 0;
+            const featured = index === 0
 
             return (
               <Plan
@@ -136,10 +136,10 @@ export default function Pricing({ products }: Props) {
                   {product.name === subscription?.prices?.products?.name ? "Manage" : "Subscribe"}
                 </button>
               </Plan>
-            );
+            )
           })}
         </div>
       </Container>
     </section>
-  );
+  )
 }

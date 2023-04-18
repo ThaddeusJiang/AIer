@@ -1,12 +1,12 @@
-import Link from "next/link";
+import Link from "next/link"
 
-import { useUser } from "@supabase/auth-helpers-react";
-import { IconDatabase, IconMessage, IconPlus } from "@tabler/icons-react";
+import { useUser } from "@supabase/auth-helpers-react"
+import { IconDatabase, IconMessage, IconPlus } from "@tabler/icons-react"
 
-import { Avatar } from "~/types";
+import { Avatar } from "~/types"
 
 export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCreate?: boolean }) {
-  const user = useUser();
+  const user = useUser()
   return (
     <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {avatars.map((avatar) => (
@@ -93,5 +93,5 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
         </li>
       ) : null}
     </ul>
-  );
+  )
 }

@@ -41,17 +41,17 @@ export default async function embeddingCreateWebhook(req: NextApiRequest, res: N
   }
   await supabase.from("token_usages").insert(tokenUsageInsertInput)
 
-  const { content, url, date } = req.body as { content: string; url?: string; date?: string }
+  const { content, url, date, title } = req.body as { content: string; url?: string; date?: string; title?: string }
 
   const embeddingInsertInputs = await generateEmbeddings({
     content,
-    url: url || "",
-    date: date,
+    url,
+    date,
+    title,
     length: content.length,
     tokens: encode(content).length,
     chunks: [],
     avatar_id,
-    title: "",
     mentions: []
   })
 

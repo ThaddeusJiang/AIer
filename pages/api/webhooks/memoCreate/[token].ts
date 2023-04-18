@@ -38,7 +38,7 @@ export default async function memoCreateWebhook(req: NextApiRequest, res: NextAp
 
   const tokenUsageInsertInput = {
     token_id: data.id,
-    api: "/api/webhooks/memoCreate/[token]",
+    api: req.url,
     raw: req.body,
     created_by: data.created_by
   }

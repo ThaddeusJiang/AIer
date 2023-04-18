@@ -1,14 +1,14 @@
-import Image from "next/image";
+import Image from "next/image"
 
-import { Tab } from "@headlessui/react";
-import { IconDatabase, IconMessage, IconTransform } from "@tabler/icons-react";
+import { Tab } from "@headlessui/react"
+import { IconDatabase, IconMessage, IconTransform } from "@tabler/icons-react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import { Container } from "~/components/lp/Container";
-import LogoOpenAI from "~/images/logos/openai.jpeg";
-import screenshotChat from "~/images/screenshots/chat.png";
-import screenshotMemo from "~/images/screenshots/memo.png";
+import { Container } from "~/components/lp/Container"
+import LogoOpenAI from "~/images/logos/openai.jpeg"
+import screenshotChat from "~/images/screenshots/chat.png"
+import screenshotMemo from "~/images/screenshots/memo.png"
 
 const features = [
   {
@@ -35,7 +35,7 @@ const features = [
     image: screenshotChat,
     icon: <IconMessage size={80} stroke={1} color="#fff" />
   }
-];
+]
 
 function Feature({ feature, isActive, className, ...props }) {
   return (
@@ -47,7 +47,7 @@ function Feature({ feature, isActive, className, ...props }) {
       <p className="mt-2 font-display text-lg text-slate-900">{feature.summary}</p>
       <p className="mt-4 text-sm text-slate-600">{feature.description}</p>
     </div>
-  );
+  )
 }
 
 function FeaturesMobile() {
@@ -65,7 +65,7 @@ function FeaturesMobile() {
         </div>
       ))}
     </div>
-  );
+  )
 }
 
 function FeaturesDesktop() {
@@ -115,7 +115,7 @@ function FeaturesDesktop() {
         </>
       )}
     </Tab.Group>
-  );
+  )
 }
 
 export function SecondaryFeatures() {
@@ -138,5 +138,5 @@ export function SecondaryFeatures() {
         <FeaturesDesktop />
       </Container>
     </section>
-  );
+  )
 }

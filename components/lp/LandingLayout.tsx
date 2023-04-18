@@ -1,24 +1,24 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react"
 
-import Head from "next/head";
-import { useRouter } from "next/router";
+import Head from "next/head"
+import { useRouter } from "next/router"
 
-import { getURL } from "~/utils/helpers";
+import { getURL } from "~/utils/helpers"
 
-import { PageMeta } from "../../types";
+import { PageMeta } from "../../types"
 
 interface Props extends PropsWithChildren {
-  meta?: PageMeta;
+  meta?: PageMeta
 }
 
 export default function LandingLayout({ children, meta: pageMeta }: Props) {
-  const router = useRouter();
+  const router = useRouter()
   const meta = {
     title: "AIer: Seed. Train. Interact. For personalized and intelligent AI digital avatars",
     description:
       "AIer is a service for creating, training, and interacting with AI digital avatars. Get help and companionship from AI digital avatars anytime, anywhere.",
     ...pageMeta
-  };
+  }
 
   return (
     <>
@@ -42,5 +42,5 @@ export default function LandingLayout({ children, meta: pageMeta }: Props) {
       </Head>
       <main id="skip">{children}</main>
     </>
-  );
+  )
 }

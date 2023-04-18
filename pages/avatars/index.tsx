@@ -1,11 +1,11 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { AvatarsValuesMessage } from "~/components/lp/AvatarsValuesMessage";
-import { Header } from "~/components/lp/Header";
-import { AvatarsGrid } from "~/components/ui/AvatarsGrid";
-import { Avatar } from "~/types";
+import { AvatarsValuesMessage } from "~/components/lp/AvatarsValuesMessage"
+import { Header } from "~/components/lp/Header"
+import { AvatarsGrid } from "~/components/ui/AvatarsGrid"
+import { Avatar } from "~/types"
 
 export default function AvatarsPage({ avatars }: { avatars: Avatar[] }) {
   return (
@@ -24,30 +24,30 @@ export default function AvatarsPage({ avatars }: { avatars: Avatar[] }) {
         </div>
       </section>
     </>
-  );
+  )
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(ctx);
+  const supabase = createServerSupabaseClient(ctx)
 
   const { data, error } = await supabase
     .from("avatars")
     .select()
     .eq("status", "public")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
 
   if (error) {
-    console.error(error);
+    console.error(error)
     return {
       props: {
         avatars: []
       }
-    };
+    }
   }
 
   return {
     props: {
       avatars: data
     }
-  };
-};
+  }
+}

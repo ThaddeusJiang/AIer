@@ -1,21 +1,21 @@
-import { Fragment, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useInView } from "react-intersection-observer";
+import { Fragment, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { useInView } from "react-intersection-observer"
 
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { IconArrowUp } from "@tabler/icons-react";
-import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { IconArrowUp } from "@tabler/icons-react"
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 
-import classNames from "classnames";
-import produce from "immer";
+import classNames from "classnames"
+import produce from "immer"
 
-import { Header } from "~/components/lp/Header";
-import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
-import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
-import { MemoCard } from "~/components/ui/MemoCard";
-import { Avatar } from "~/types";
+import { Header } from "~/components/lp/Header"
+import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
+import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs"
+import { MemoCard } from "~/components/ui/MemoCard"
+import { Avatar } from "~/types"
 
 export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   const { register, control, handleSubmit, reset, watch } = useForm({
@@ -27,10 +27,10 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       content: "",
       avatar_id: avatar.id
     }
-  });
+  })
 
-  const { ref, inView } = useInView();
-  const queryClient = useQueryClient();
+  const { ref, inView } = useInView()
+  const queryClient = useQueryClient()
 
   const { status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["memoList", avatar.id],
@@ -44,17 +44,17 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
           avatar_id: avatar.id,
           cursor: pageParam
         })
-      });
-      return res.json();
+      })
+      return res.json()
     },
     getNextPageParam: (lastPage, pages) => lastPage.nextCursor
-  });
+  })
 
   useEffect(() => {
     if (inView) {
-      fetchNextPage();
+      fetchNextPage()
     }
-  }, [inView]);
+  }, [inView])
 
   const memoCreateMutation = useMutation({
     mutationFn: async (data: { content: string; avatar_id: string }) => {
@@ -64,18 +64,18 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
-      });
-      return res.json();
+      })
+      return res.json()
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
         const memoList = produce(old, (draft: any) => {
-          draft.pages[0].items.unshift(data);
-        });
-        return memoList;
-      });
+          draft.pages[0].items.unshift(data)
+        })
+        return memoList
+      })
     }
-  });
+  })
 
   const memoDeleteMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -85,34 +85,34 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ id })
-      }).then((res) => res.json());
+      }).then((res) => res.json())
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
         const memoList = produce(old, (draft: any) => {
           for (let i = 0; i < draft.pages.length; i++) {
-            const items = draft.pages[i].items.filter((memo: { id: string }) => memo.id !== data.id);
+            const items = draft.pages[i].items.filter((memo: { id: string }) => memo.id !== data.id)
             if (items.length !== draft.pages[i].items.length) {
-              draft.pages[i].items = items;
-              break;
+              draft.pages[i].items = items
+              break
             }
           }
-        });
-        return memoList;
-      });
+        })
+        return memoList
+      })
     }
-  });
+  })
 
   const onDelete = (id: string) => {
-    memoDeleteMutation.mutate(id);
-  };
+    memoDeleteMutation.mutate(id)
+  }
 
   const onCreate = (data: { content: string; avatar_id: string }) => {
-    memoCreateMutation.mutate(data);
-    reset();
-  };
+    memoCreateMutation.mutate(data)
+    reset()
+  }
 
-  const content = watch("content");
+  const content = watch("content")
 
   return (
     <>
@@ -178,15 +178,15 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
         </div>
       </section>
     </>
-  );
+  )
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(context);
+  const supabase = createServerSupabaseClient(context)
 
   const {
     data: { user }
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   if (!user) {
     return {
@@ -194,38 +194,38 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         destination: "/signin",
         permanent: false
       }
-    };
+    }
   }
 
-  const { username } = context.params as { username: string };
+  const { username } = context.params as { username: string }
 
-  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase());
+  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase())
 
-  const avatar = data?.[0];
+  const avatar = data?.[0]
   if (avatar?.owner_id !== user.id) {
     return {
       notFound: true
-    };
+    }
   }
 
   if (error) {
-    console.error(error);
+    console.error(error)
     return {
       props: {
         avatar: null
       }
-    };
+    }
   }
 
   if (data.length === 0) {
     return {
       notFound: true
-    };
+    }
   }
 
   return {
     props: {
       avatar: data[0]
     }
-  };
-};
+  }
+}

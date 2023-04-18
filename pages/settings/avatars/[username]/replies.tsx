@@ -1,20 +1,20 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { Header } from "~/components/lp/Header";
-import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
-import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
-import { Avatar } from "~/types";
+import { Header } from "~/components/lp/Header"
+import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
+import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs"
+import { Avatar } from "~/types"
 
 export default function SettingsAvatarQueriesPage({
   avatar,
   replies,
   users
 }: {
-  avatar: Avatar;
-  replies: number;
-  users: number;
+  avatar: Avatar
+  replies: number
+  users: number
 }) {
   return (
     <>
@@ -48,15 +48,15 @@ export default function SettingsAvatarQueriesPage({
         </div>
       </section>
     </>
-  );
+  )
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(context);
+  const supabase = createServerSupabaseClient(context)
 
   const {
     data: { session }
-  } = await supabase.auth.getSession();
+  } = await supabase.auth.getSession()
 
   if (!session) {
     return {
@@ -64,26 +64,26 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         destination: "/signin",
         permanent: false
       }
-    };
+    }
   }
 
-  const { username } = context.params as { username: string };
+  const { username } = context.params as { username: string }
 
-  const { data, error: avatarError } = await supabase.from("avatars").select().eq("username", username.toLowerCase());
+  const { data, error: avatarError } = await supabase.from("avatars").select().eq("username", username.toLowerCase())
 
   if (avatarError) {
-    console.error(avatarError);
+    console.error(avatarError)
     return {
       props: {
         avatar: null
       }
-    };
+    }
   }
 
   if (data.length === 0) {
     return {
       notFound: true
-    };
+    }
   }
 
   /**
@@ -95,18 +95,18 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const { data: queries, error: repliesError } = await supabase
     .from("queries")
     .select("id, from_id")
-    .eq("to_id", data[0]?.id);
+    .eq("to_id", data[0]?.id)
 
-  const uniqueIds = new Set();
-  const uniqueFromIds = new Set();
+  const uniqueIds = new Set()
+  const uniqueFromIds = new Set()
 
   queries?.forEach((reply) => {
-    uniqueIds.add(reply.id);
-    uniqueFromIds.add(reply.from_id);
-  });
+    uniqueIds.add(reply.id)
+    uniqueFromIds.add(reply.from_id)
+  })
 
   if (repliesError) {
-    console.error(repliesError);
+    console.error(repliesError)
   }
 
   return {
@@ -115,5 +115,5 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       replies: uniqueIds.size ?? 0,
       users: uniqueFromIds.size ?? 0
     }
-  };
-};
+  }
+}

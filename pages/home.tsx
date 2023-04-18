@@ -1,10 +1,10 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { Header } from "~/components/lp/Header";
-import { AvatarsGrid } from "~/components/ui/AvatarsGrid";
-import { Avatar } from "~/types";
+import { Header } from "~/components/lp/Header"
+import { AvatarsGrid } from "~/components/ui/AvatarsGrid"
+import { Avatar } from "~/types"
 
 export default function HomePage({ yours, others }: { yours: Avatar[]; others: Avatar[] }) {
   return (
@@ -26,15 +26,15 @@ export default function HomePage({ yours, others }: { yours: Avatar[]; others: A
         {/* TODO: */}
       </section>
     </>
-  );
+  )
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(context);
+  const supabase = createServerSupabaseClient(context)
 
   const {
     data: { user }
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   if (!user) {
     return {
@@ -42,27 +42,27 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         destination: "/signin",
         permanent: false
       }
-    };
+    }
   }
 
-  const { data: avatars, error } = await supabase.from("avatars").select();
+  const { data: avatars, error } = await supabase.from("avatars").select()
 
   if (error) {
-    console.error(error);
+    console.error(error)
     return {
       props: {
         yours: []
       }
-    };
+    }
   }
 
-  const yours = avatars.filter((avatar) => avatar.owner_id === user.id);
-  const others = avatars.filter((avatar) => avatar.owner_id !== user.id);
+  const yours = avatars.filter((avatar) => avatar.owner_id === user.id)
+  const others = avatars.filter((avatar) => avatar.owner_id !== user.id)
 
   return {
     props: {
       yours,
       others
     }
-  };
-};
+  }
+}

@@ -15,5 +15,5 @@ export const AvatarsValuesMessage = () => {
       </span>
       &nbsp;at any time.
     </p>
-  );
-};
+  )
+}

@@ -1,43 +1,43 @@
-import { loadEnvConfig } from "@next/env";
-import { createClient } from "@supabase/supabase-js";
+import { loadEnvConfig } from "@next/env"
+import { createClient } from "@supabase/supabase-js"
 
-import events from "events";
-import fs from "fs";
-import { encode } from "gpt-3-encoder";
-import { Configuration, OpenAIApi } from "openai";
-import readline from "readline";
-import { Worker, isMainThread, workerData } from "worker_threads";
+import events from "events"
+import fs from "fs"
+import { encode } from "gpt-3-encoder"
+import { Configuration, OpenAIApi } from "openai"
+import readline from "readline"
+import { Worker, isMainThread, workerData } from "worker_threads"
 
-import { PGEssay } from "~/types";
+import { PGEssay } from "~/types"
 
-loadEnvConfig("");
+loadEnvConfig("")
 
-const avatar_id = process.env.AVATAR_ID;
-const source_file = process.env.SOURCE_FILE;
-const worker_count = process.env.WORKER_COUNT ?? 100;
+const avatar_id = process.env.AVATAR_ID
+const source_file = process.env.SOURCE_FILE
+const worker_count = process.env.WORKER_COUNT ?? 100
 
 const generateEmbeddings = async (essays: PGEssay[], start: number, end: number, avatar_id: string) => {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
-  });
-  const openai = new OpenAIApi(configuration);
+  })
+  const openai = new OpenAIApi(configuration)
 
-  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 
   for (let i = start; i < Math.min(end, essays.length); i++) {
-    const section = essays[i];
+    const section = essays[i]
 
     for (let j = 0; j < section.chunks.length; j++) {
-      const chunk = section.chunks[j];
+      const chunk = section.chunks[j]
 
-      const { essay_title, essay_url, essay_date, essay_thanks, content, content_length, content_tokens } = chunk;
+      const { essay_title, essay_url, essay_date, essay_thanks, content, content_length, content_tokens } = chunk
 
       const embeddingResponse = await openai.createEmbedding({
         model: "text-embedding-ada-002",
         input: content
-      });
+      })
 
-      const [{ embedding }] = embeddingResponse.data.data;
+      const [{ embedding }] = embeddingResponse.data.data
 
       const { error } = await supabase.from("embeddings").insert({
         avatar_id,
@@ -49,16 +49,16 @@ const generateEmbeddings = async (essays: PGEssay[], start: number, end: number,
         content_length,
         content_tokens,
         embedding
-      });
+      })
 
       if (error) {
-        console.error("error", error);
+        console.error("error", error)
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200))
     }
   }
-};
+}
 
 function tweet2essays({
   id,
@@ -66,10 +66,10 @@ function tweet2essays({
   username,
   text
 }: {
-  id: string;
-  timestamp: string;
-  username: string;
-  text: string;
+  id: string
+  timestamp: string
+  username: string
+  text: string
 }) {
   const essay = {
     title: text,
@@ -91,25 +91,25 @@ function tweet2essays({
         embedding: []
       }
     ]
-  };
+  }
 
-  return essay;
+  return essay
 }
 
-(async () => {
+;(async () => {
   if (!source_file || !avatar_id) {
-    console.error("params is invalid.");
-    return;
+    console.error("params is invalid.")
+    return
   }
   const rl = readline.createInterface({
     input: fs.createReadStream(source_file),
     crlfDelay: Infinity
-  });
+  })
 
-  const essays: PGEssay[] = [];
+  const essays: PGEssay[] = []
   rl.on("line", (line) => {
-    const regex = /^(\d+)\s(.+)\s<(.+)>\s(.+)$/g;
-    const [, id, timestamp, username, text] = regex.exec(line) || [];
+    const regex = /^(\d+)\s(.+)\s<(.+)>\s(.+)$/g
+    const [, id, timestamp, username, text] = regex.exec(line) || []
     // 跳过空行
     if (text?.length > 1) {
       // TODO: 优化，长文本分段
@@ -118,34 +118,34 @@ function tweet2essays({
         timestamp,
         username,
         text
-      });
-      essays.push(essay);
+      })
+      essays.push(essay)
     }
-  });
-  await events.once(rl, "close");
+  })
+  await events.once(rl, "close")
 
   if (isMainThread) {
-    const workerCount = Number(worker_count);
-    const totalCount = essays.length;
-    const tasksPerWorker = Math.ceil(totalCount / workerCount);
+    const workerCount = Number(worker_count)
+    const totalCount = essays.length
+    const tasksPerWorker = Math.ceil(totalCount / workerCount)
     console.log({
       total: totalCount,
       workers: workerCount,
       unit: tasksPerWorker
-    });
+    })
 
     for (let i = 0; i < workerCount; i++) {
-      const start = i * tasksPerWorker;
-      const end = Math.min(start + tasksPerWorker, totalCount);
+      const start = i * tasksPerWorker
+      const end = Math.min(start + tasksPerWorker, totalCount)
 
       new Worker(__filename, {
         workerData: { start, end }
-      });
+      })
     }
   } else {
-    const { start, end } = workerData as { start: number; end: number };
+    const { start, end } = workerData as { start: number; end: number }
 
-    console.log("start embedding", avatar_id, start, end);
-    await generateEmbeddings(essays, start, end, avatar_id);
+    console.log("start embedding", avatar_id, start, end)
+    await generateEmbeddings(essays, start, end, avatar_id)
   }
-})();
+})()

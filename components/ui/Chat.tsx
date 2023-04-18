@@ -1,29 +1,29 @@
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useRef, useState } from "react"
+import { useForm } from "react-hook-form"
 
-import { User } from "@supabase/auth-helpers-react";
-import { IconArrowUp } from "@tabler/icons-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { User } from "@supabase/auth-helpers-react"
+import { IconArrowUp } from "@tabler/icons-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import produce from "immer";
+import produce from "immer"
 
-import { Message } from "~/types";
+import { Message } from "~/types"
 
 export function Chat({
   avatar,
   user
 }: {
   avatar: {
-    id: string;
-    username: string;
-    name: string;
-  };
-  user: User | null;
+    id: string
+    username: string
+    name: string
+  }
+  user: User | null
 }) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   const { register, handleSubmit, watch, reset } = useForm({
     defaultValues: {
@@ -32,7 +32,7 @@ export function Chat({
     values: {
       query: ""
     }
-  });
+  })
 
   const answerCreateMutation = useMutation({
     mutationFn: async ({ avatar_id, content }: { avatar_id: string; content: string }) => {
@@ -45,31 +45,31 @@ export function Chat({
           avatar_id,
           content
         })
-      }).then((res) => res.json());
+      }).then((res) => res.json())
     }
-  });
+  })
 
   const handleAnswer = async ({ query }: { query: string }) => {
-    const messageList = queryClient.getQueryData<{ items: Message[] }>(["messageList", avatar.id]);
+    const messageList = queryClient.getQueryData<{ items: Message[] }>(["messageList", avatar.id])
     // Optimistically update to the new value
     let queryMessage = {
       id: "query_" + crypto.randomUUID(),
       from_id: user?.id,
       to_id: avatar.id,
       content: query
-    };
+    }
 
     let resMessage = {
       id: "answer_" + crypto.randomUUID(),
       from_id: avatar.id,
       to_id: user?.id,
       content: ""
-    };
+    }
     // @ts-ignore FIXME: fix this
     queryClient.setQueryData(["messageList", avatar.id], (old: TQueryFnData) => ({
       items: [...old.items, queryMessage, resMessage]
-    }));
-    setLoading(true);
+    }))
+    setLoading(true)
     const answerResponse = await fetch("/api/answer", {
       method: "POST",
       headers: {
@@ -84,57 +84,57 @@ export function Chat({
           content: m.content
         }))
       })
-    });
+    })
 
     if (!answerResponse.ok) {
-      setLoading(false);
-      throw new Error(answerResponse.statusText);
+      setLoading(false)
+      throw new Error(answerResponse.statusText)
     }
 
-    const data = answerResponse.body;
+    const data = answerResponse.body
 
     if (!data) {
-      return;
+      return
     }
 
-    setLoading(false);
+    setLoading(false)
 
-    const reader = data.getReader();
-    const decoder = new TextDecoder();
-    let done = false;
-    let answer = "";
+    const reader = data.getReader()
+    const decoder = new TextDecoder()
+    let done = false
+    let answer = ""
     while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-      answer += chunkValue;
+      const { value, done: doneReading } = await reader.read()
+      done = doneReading
+      const chunkValue = decoder.decode(value)
+      answer += chunkValue
 
       // @ts-ignore FIXME: fix this
       queryClient.setQueryData(["messageList", avatar.id], (old: TQueryFnData) => {
         const messageList = produce(old, (draft: any) => {
-          draft.items[draft.items.length - 1].content = answer;
-        });
-        return messageList;
-      });
+          draft.items[draft.items.length - 1].content = answer
+        })
+        return messageList
+      })
     }
 
     await answerCreateMutation.mutate({
       avatar_id: avatar.id,
       content: answer
-    });
+    })
 
-    inputRef.current?.focus();
-  };
+    inputRef.current?.focus()
+  }
 
   const submit = (data: any) => {
-    const query = data.query;
-    handleAnswer({ query });
+    const query = data.query
+    handleAnswer({ query })
     reset({
       query: ""
-    });
-  };
+    })
+  }
 
-  const query = watch("query");
+  const query = watch("query")
 
   return (
     <>
@@ -158,5 +158,5 @@ export function Chat({
         ) : null}
       </form>
     </>
-  );
+  )
 }

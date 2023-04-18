@@ -1,22 +1,22 @@
-import "styles/chrome-bug.css";
-import "styles/main.css";
+import "styles/chrome-bug.css"
+import "styles/main.css"
 
-import { useEffect, useState } from "react";
-import React from "react";
-import { Toaster } from "react-hot-toast";
+import { useEffect, useState } from "react"
+import React from "react"
+import { Toaster } from "react-hot-toast"
 
-import { AppProps } from "next/app";
-import Script from "next/script";
+import { AppProps } from "next/app"
+import Script from "next/script"
 
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { SessionContextProvider } from "@supabase/auth-helpers-react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
-import type { Database } from "types_db";
+import type { Database } from "types_db"
 
-import Layout from "~/components/lp/LandingLayout";
-import { MyUserContextProvider } from "~/utils/useUser";
+import Layout from "~/components/lp/LandingLayout"
+import { MyUserContextProvider } from "~/utils/useUser"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,13 +24,13 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false // default: true
     }
   }
-});
+})
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>());
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
   useEffect(() => {
-    document.body.classList?.remove("loading");
-  }, []);
+    document.body.classList?.remove("loading")
+  }, [])
 
   return (
     <div>
@@ -60,5 +60,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
       <Toaster />
     </div>
-  );
+  )
 }

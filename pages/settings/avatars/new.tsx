@@ -1,15 +1,15 @@
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"
 
-import Head from "next/head";
-import { useRouter } from "next/router";
+import Head from "next/head"
+import { useRouter } from "next/router"
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useMutation } from "@tanstack/react-query"
 
-import classNames from "classnames";
-import * as yup from "yup";
+import classNames from "classnames"
+import * as yup from "yup"
 
-import { Header } from "~/components/lp/Header";
+import { Header } from "~/components/lp/Header"
 
 const schema = yup
   .object({
@@ -25,11 +25,11 @@ const schema = yup
     bio: yup.string(),
     avatar_url: yup.string()
   })
-  .required();
-type FormData = yup.InferType<typeof schema>;
+  .required()
+type FormData = yup.InferType<typeof schema>
 
 export default function NewAvatarPage() {
-  const router = useRouter();
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -44,7 +44,7 @@ export default function NewAvatarPage() {
       avatar_url: ""
     },
     resolver: yupResolver(schema)
-  });
+  })
 
   const avatarCreateMutation = useMutation({
     mutationFn: async (data: FormData) => {
@@ -54,28 +54,28 @@ export default function NewAvatarPage() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
-      }).then((res) => res.json());
+      }).then((res) => res.json())
     },
     onSuccess: (data) => {
-      const { id, error } = data;
+      const { id, error } = data
       if (error) {
-        console.error(error);
+        console.error(error)
         setError(
           "username",
           { type: "custom", message: "the username is already taken. please choose another one." },
           {
             shouldFocus: true
           }
-        );
+        )
       } else {
-        router.push(`/settings/avatars/${id}`);
+        router.push(`/settings/avatars/${id}`)
       }
     }
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    avatarCreateMutation.mutate(data);
-  };
+    avatarCreateMutation.mutate(data)
+  }
 
   return (
     <>
@@ -125,7 +125,7 @@ export default function NewAvatarPage() {
                   Source Twitter
                 </label>
                 <input
-                  className="input input-bordered w-full"
+                  className="input-bordered input w-full"
                   placeholder="your twitter username, e.g. ThaddeusJiang"
                   id="source_twitter"
                   {...register("source_twitter")}
@@ -150,7 +150,12 @@ export default function NewAvatarPage() {
                 <label htmlFor="bio" className=" label">
                   Bio
                 </label>
-                <textarea id="bio" className="textarea-bordered textarea w-full" placeholder="Add a bio" {...register("bio")}  />
+                <textarea
+                  id="bio"
+                  className="textarea-bordered textarea w-full"
+                  placeholder="Add a bio"
+                  {...register("bio")}
+                />
               </div>
 
               <div className="py-4">
@@ -169,5 +174,5 @@ export default function NewAvatarPage() {
         </div>
       </div>
     </>
-  );
+  )
 }

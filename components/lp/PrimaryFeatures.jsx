@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import Image from "next/image";
+import Image from "next/image"
 
-import { Tab } from "@headlessui/react";
+import { Tab } from "@headlessui/react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import { Container } from "~/components/lp/Container";
-import backgroundImage from "~/images/background-features.jpg";
-import screenshotChatAnything from "~/images/screenshots/chat_anything.png";
-import screenshotChatAnytime from "~/images/screenshots/chat_anytime.png";
-import screenshotChatAnywhere from "~/images/screenshots/chat_anywhere.png";
-import screenshotPublicAvatars from "~/images/screenshots/public_avatars.png";
+import { Container } from "~/components/lp/Container"
+import backgroundImage from "~/images/background-features.jpg"
+import screenshotChatAnything from "~/images/screenshots/chat_anything.png"
+import screenshotChatAnytime from "~/images/screenshots/chat_anytime.png"
+import screenshotChatAnywhere from "~/images/screenshots/chat_anywhere.png"
+import screenshotPublicAvatars from "~/images/screenshots/public_avatars.png"
 
 const features = [
   {
@@ -34,25 +34,25 @@ const features = [
     description: "Whether it's your mobile or PC, whether you're at home, in the office, on the go, or in transit.",
     image: screenshotChatAnywhere
   }
-];
+]
 
 export function PrimaryFeatures() {
-  let [tabOrientation, setTabOrientation] = useState("horizontal");
+  let [tabOrientation, setTabOrientation] = useState("horizontal")
 
   useEffect(() => {
-    let lgMediaQuery = window.matchMedia("(min-width: 1024px)");
+    let lgMediaQuery = window.matchMedia("(min-width: 1024px)")
 
     function onMediaQueryChange({ matches }) {
-      setTabOrientation(matches ? "vertical" : "horizontal");
+      setTabOrientation(matches ? "vertical" : "horizontal")
     }
 
-    onMediaQueryChange(lgMediaQuery);
-    lgMediaQuery.addEventListener("change", onMediaQueryChange);
+    onMediaQueryChange(lgMediaQuery)
+    lgMediaQuery.addEventListener("change", onMediaQueryChange)
 
     return () => {
-      lgMediaQuery.removeEventListener("change", onMediaQueryChange);
-    };
-  }, []);
+      lgMediaQuery.removeEventListener("change", onMediaQueryChange)
+    }
+  }, [])
 
   return (
     <section
@@ -147,5 +147,5 @@ export function PrimaryFeatures() {
         </Tab.Group>
       </Container>
     </section>
-  );
+  )
 }

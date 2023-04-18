@@ -1,26 +1,26 @@
-import { useEffect } from "react";
+import { useEffect } from "react"
 
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Link from "next/link"
+import { useRouter } from "next/router"
 
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
+import { Auth } from "@supabase/auth-ui-react"
+import { ThemeSupa } from "@supabase/auth-ui-shared"
 
-import { Logo } from "~/components/lp/Logo";
-import LoadingDots from "~/components/ui/LoadingDots";
-import { getURL } from "~/utils/helpers";
+import { Logo } from "~/components/lp/Logo"
+import LoadingDots from "~/components/ui/LoadingDots"
+import { getURL } from "~/utils/helpers"
 
 const SignIn = () => {
-  const router = useRouter();
-  const user = useUser();
-  const supabaseClient = useSupabaseClient();
+  const router = useRouter()
+  const user = useUser()
+  const supabaseClient = useSupabaseClient()
 
   useEffect(() => {
     if (user) {
-      router.replace("/home");
+      router.replace("/home")
     }
-  }, [user]);
+  }, [user])
 
   if (!user)
     return (
@@ -53,13 +53,13 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-    );
+    )
 
   return (
     <div className="m-6">
       <LoadingDots />
     </div>
-  );
-};
+  )
+}
 
-export default SignIn;
+export default SignIn

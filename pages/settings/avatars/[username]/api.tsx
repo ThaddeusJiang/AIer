@@ -1,24 +1,24 @@
-import { useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { useState } from "react"
+import { CopyToClipboard } from "react-copy-to-clipboard"
+import { ReactMarkdown } from "react-markdown/lib/react-markdown"
 
-import { GetServerSidePropsContext } from "next";
-import Link from "next/link";
+import { GetServerSidePropsContext } from "next"
+import Link from "next/link"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import remarkGfm from "remark-gfm";
+import remarkGfm from "remark-gfm"
 
-import { Header } from "~/components/lp/Header";
-import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader";
-import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs";
-import { Avatar } from "~/types";
-import { getURL } from "~/utils/helpers";
+import { Header } from "~/components/lp/Header"
+import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
+import { AvatarProfileTabs } from "~/components/ui/Avatar/AvatarProfileTabs"
+import { Avatar } from "~/types"
+import { getURL } from "~/utils/helpers"
 
 export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avatar; token: string }) {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false)
 
-  const api = `${getURL()}api/webhooks/memoCreate/${token ?? "<token>"}`;
+  const api = `${getURL()}api/webhooks/memoCreate/${token ?? "<token>"}`
 
   return (
     <>
@@ -81,15 +81,15 @@ Content-type: application/json
         </div>
       </section>
     </>
-  );
+  )
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(context);
+  const supabase = createServerSupabaseClient(context)
 
   const {
     data: { session }
-  } = await supabase.auth.getSession();
+  } = await supabase.auth.getSession()
 
   if (!session) {
     return {
@@ -97,38 +97,38 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         destination: "/signin",
         permanent: false
       }
-    };
+    }
   }
 
-  const { username } = context.params as { username: string };
+  const { username } = context.params as { username: string }
 
   const { data: avatar, error: avatarError } = await supabase
     .from("avatars")
     .select()
     .eq("username", username.toLowerCase())
-    .single();
+    .single()
 
   if (avatarError) {
-    console.error(avatarError);
+    console.error(avatarError)
     return {
       props: {
         avatar: null
       }
-    };
+    }
   }
 
   if (!avatar) {
     return {
       notFound: true
-    };
+    }
   }
 
-  const { data: token, error } = await supabase.from("tokens").select().eq("avatar_id", avatar?.id).single();
+  const { data: token, error } = await supabase.from("tokens").select().eq("avatar_id", avatar?.id).single()
 
   return {
     props: {
       avatar,
       token: token?.masked_token ?? null
     }
-  };
-};
+  }
+}

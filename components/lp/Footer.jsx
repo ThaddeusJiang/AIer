@@ -1,8 +1,8 @@
-import Link from "next/link";
+import Link from "next/link"
 
-import { Container } from "~/components/lp/Container";
-import { Logo } from "~/components/lp/Logo";
-import { NavLink } from "~/components/lp/NavLink";
+import { Container } from "~/components/lp/Container"
+import { Logo } from "~/components/lp/Logo"
+import { NavLink } from "~/components/lp/NavLink"
 
 export function Footer() {
   return (
@@ -38,5 +38,5 @@ export function Footer() {
         </div>
       </Container>
     </footer>
-  );
+  )
 }

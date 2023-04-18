@@ -1,18 +1,18 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from "next/server"
 
-import { ImageResponse } from "@vercel/og";
+import { ImageResponse } from "@vercel/og"
 
 export const config = {
   runtime: "edge"
-};
+}
 
 export default function (req: NextRequest) {
   try {
   } catch (e: any) {
-    console.error(`${e.message}`);
+    console.error(`${e.message}`)
     return new Response(`Failed to generate the image`, {
       status: 500
-    });
+    })
   }
 
   return new ImageResponse(
@@ -48,5 +48,5 @@ export default function (req: NextRequest) {
       width: 1200,
       height: 600
     }
-  );
+  )
 }

@@ -53,19 +53,10 @@ RSS Feed Read
   "isoDate": "2023-04-10T03:40:07.000Z",
   "latestRead": "2021-06-01"
 }
-````
-
-
-
-
-
-
-
-
+```
 
 ```
 content: {{ json.contentSnippet }}
 created_at: {{ json.link }}
 source_url: {{ json.isoDate }}
 ```
-

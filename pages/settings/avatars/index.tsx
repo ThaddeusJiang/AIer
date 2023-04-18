@@ -1,10 +1,10 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { Header } from "~/components/lp/Header";
-import { AvatarsGrid } from "~/components/ui/AvatarsGrid";
-import { Avatar } from "~/types";
+import { Header } from "~/components/lp/Header"
+import { AvatarsGrid } from "~/components/ui/AvatarsGrid"
+import { Avatar } from "~/types"
 
 export default function SettingsAvatarsPage({ avatars }: { avatars: Avatar[] }) {
   return (
@@ -22,15 +22,15 @@ export default function SettingsAvatarsPage({ avatars }: { avatars: Avatar[] }) 
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(ctx);
+  const supabase = createServerSupabaseClient(ctx)
 
   const {
     data: { user }
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   if (!user) {
     return {
@@ -38,27 +38,27 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         destination: "/signin",
         permanent: false
       }
-    };
+    }
   }
 
   const { data, error } = await supabase
     .from("avatars")
     .select()
     .eq("owner_id", user.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
 
   if (error) {
-    console.error(error);
+    console.error(error)
     return {
       props: {
         avatars: []
       }
-    };
+    }
   }
 
   return {
     props: {
       avatars: data
     }
-  };
-};
+  }
+}

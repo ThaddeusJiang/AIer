@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from "next/link"
 
-import { Avatar } from "~/types";
+import { Avatar } from "~/types"
 
 export const AvatarCircleCard = ({ avatar }: { avatar: Avatar }) => {
   return (
@@ -55,5 +55,5 @@ export const AvatarCircleCard = ({ avatar }: { avatar: Avatar }) => {
         ) : null}
       </ul>
     </div>
-  );
-};
+  )
+}

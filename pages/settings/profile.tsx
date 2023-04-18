@@ -1,20 +1,20 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react"
 
-import { GetServerSidePropsContext } from "next";
-import Link from "next/link";
+import { GetServerSidePropsContext } from "next"
+import Link from "next/link"
 
-import { User, createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { User, createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { Header } from "~/components/lp/Header";
-import LoadingDots from "~/components/ui/LoadingDots";
-import { postData } from "~/utils/helpers";
-import { useUser } from "~/utils/useUser";
+import { Header } from "~/components/lp/Header"
+import LoadingDots from "~/components/ui/LoadingDots"
+import { postData } from "~/utils/helpers"
+import { useUser } from "~/utils/useUser"
 
 interface Props {
-  title: string;
-  description?: string;
-  footer?: ReactNode;
-  children: ReactNode;
+  title: string
+  description?: string
+  footer?: ReactNode
+  children: ReactNode
 }
 
 function Card({ title, description, footer, children }: Props) {
@@ -27,14 +27,14 @@ function Card({ title, description, footer, children }: Props) {
       </div>
       <div className="rounded-b-md border-t border-zinc-700 bg-zinc-200 p-4 text-zinc-700">{footer}</div>
     </div>
-  );
+  )
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(ctx);
+  const supabase = createServerSupabaseClient(ctx)
   const {
     data: { session }
-  } = await supabase.auth.getSession();
+  } = await supabase.auth.getSession()
 
   if (!session)
     return {
@@ -42,32 +42,32 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         destination: "/signin",
         permanent: false
       }
-    };
+    }
 
   return {
     props: {
       initialSession: session,
       user: session.user
     }
-  };
-};
+  }
+}
 
 export default function Account({ user }: { user: User }) {
-  const [loading, setLoading] = useState(false);
-  const { isLoading, subscription, userDetails } = useUser();
+  const [loading, setLoading] = useState(false)
+  const { isLoading, subscription, userDetails } = useUser()
 
   const redirectToCustomerPortal = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const { url, error } = await postData({
         url: "/api/create-portal-link"
-      });
-      window.location.assign(url);
+      })
+      window.location.assign(url)
     } catch (error) {
-      if (error) return alert((error as Error).message);
+      if (error) return alert((error as Error).message)
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const subscriptionPrice =
     subscription &&
@@ -75,7 +75,7 @@ export default function Account({ user }: { user: User }) {
       style: "currency",
       currency: subscription?.prices?.currency,
       minimumFractionDigits: 0
-    }).format((subscription?.prices?.unit_amount || 0) / 100);
+    }).format((subscription?.prices?.unit_amount || 0) / 100)
 
   return (
     <>
@@ -137,5 +137,5 @@ export default function Account({ user }: { user: User }) {
         </div>
       </section>
     </>
-  );
+  )
 }

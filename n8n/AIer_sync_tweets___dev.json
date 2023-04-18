@@ -7,7 +7,10 @@
       },
       "name": "RSS Feed Read",
       "type": "n8n-nodes-base.rssFeedRead",
-      "position": [-100, -220],
+      "position": [
+        -100,
+        -220
+      ],
       "typeVersion": 1,
       "id": "2595a314-2124-40e4-8db4-803d5b3ad496"
     },
@@ -17,7 +20,10 @@
       },
       "name": "Write Latest Read",
       "type": "n8n-nodes-base.function",
-      "position": [340, 80],
+      "position": [
+        340,
+        80
+      ],
       "typeVersion": 1,
       "id": "7ecbe0e1-cbe1-4555-be9a-f68dc1592934"
     },
@@ -25,7 +31,10 @@
       "parameters": {},
       "name": "NoOp",
       "type": "n8n-nodes-base.noOp",
-      "position": [320, 420],
+      "position": [
+        320,
+        420
+      ],
       "typeVersion": 1,
       "id": "e37c06aa-15a3-45c8-81f7-e812304765a7"
     },
@@ -34,14 +43,18 @@
         "triggerTimes": {
           "item": [
             {
-              "mode": "everyHour"
+              "mode": "everyX",
+              "value": 4
             }
           ]
         }
       },
       "name": "Cron",
       "type": "n8n-nodes-base.cron",
-      "position": [-1140, 320],
+      "position": [
+        -1140,
+        320
+      ],
       "typeVersion": 1,
       "id": "52aafebd-694d-4d41-8acf-22703aab4075",
       "alwaysOutputData": false
@@ -52,18 +65,24 @@
       "name": "No Operation, do nothing",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [1360, 840]
+      "position": [
+        1360,
+        840
+      ]
     },
     {
       "parameters": {
-        "url": "https://aier-thaddeusjiang.vercel.app/api/avatarList/s3cr3tdev",
+        "url": "https://aier-git-feat-ai-41-a-thaddeusjiang.vercel.app/api/avatarList/s3cr3tdev",
         "options": {}
       },
       "id": "13749c5c-3193-462b-abe5-fe887e2ffea6",
       "name": "query avatarList",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
-      "position": [-940, 320]
+      "position": [
+        -940,
+        320
+      ]
     },
     {
       "parameters": {
@@ -74,7 +93,10 @@
       "name": "Split In Batches",
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 2,
-      "position": [-400, -80]
+      "position": [
+        -400,
+        -80
+      ]
     },
     {
       "parameters": {
@@ -85,26 +107,10 @@
       "name": "tweet",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
-      "position": [680, 620]
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "boolean": [],
-          "dateTime": [
-            {
-              "value1": "={{ $now.minus(1, \"hour\") }}",
-              "operation": "before",
-              "value2": "={{ new Date($json.isoDate) }}"
-            }
-          ]
-        }
-      },
-      "name": "if_during_1_hour",
-      "type": "n8n-nodes-base.if",
-      "position": [0, 140],
-      "typeVersion": 1,
-      "id": "f5325043-8ed2-4d5b-89b6-200a1c123057"
+      "position": [
+        680,
+        620
+      ]
     },
     {
       "parameters": {
@@ -123,23 +129,29 @@
       "name": "merge_token_into_tweets",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 2,
-      "position": [940, 840],
+      "position": [
+        940,
+        840
+      ],
       "alwaysOutputData": false
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nlet avatars = []\nfor (const item of $input.all()) {\n  avatars = avatars.concat(item.json.items)\n}\n\navatars = avatars.filter(avatar => !!avatar.source_twitter).filter(avatar => avatar.tokens.length > 0)\n\nconst data = avatars.map(avatar => ({\n  json: { \n    username: avatar.username,\n    source_twitter: avatar.source_twitter.toLowerCase(),\n    token: avatar.tokens?.[0]?.masked_token ?? \"\" \n  }\n}))\n\nreturn data"
+        "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nlet avatars = []\nfor (const item of $input.all()) {\n  avatars = avatars.concat(item.json.items)\n}\n\navatars = avatars.filter(avatar => !!avatar.source_twitter).filter(avatar => avatar.tokens.length > 0)\n\nconst data = avatars.map(avatar => ({\n  json: { \n    avatar_username: avatar.username,\n    source_twitter: avatar.source_twitter.toLowerCase(),\n    avatar_token: avatar.tokens?.[0]?.masked_token ?? \"\" \n  }\n}))\n\nreturn data"
       },
       "id": "0b277a4e-c669-4224-a6f2-f140acb01b8f",
       "name": "filter_valid_twitter_username",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
-      "position": [-720, 320]
+      "position": [
+        -720,
+        320
+      ]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://aier-thaddeusjiang.vercel.app/api/webhooks/memoCreate/{{ $json.token }}",
+        "url": "=https://aier-git-feat-ai-41-a-thaddeusjiang.vercel.app/api/webhooks/embeddingCreate/{{ $json.avatar_token }}",
         "sendHeaders": true,
         "specifyHeaders": "json",
         "jsonHeaders": "{\n  \"Content-type\": \"application/json\"\n}",
@@ -151,12 +163,16 @@
               "value": "={{ $json.contentSnippet }}"
             },
             {
-              "name": "created_at",
+              "name": "date",
               "value": "={{ $json.isoDate }}"
             },
             {
-              "name": "source_url",
+              "name": "url",
               "value": "={{ $json.link }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $json.title }}"
             }
           ]
         },
@@ -166,7 +182,31 @@
       "name": "webhook_embedding_create",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
-      "position": [1140, 840]
+      "position": [
+        1140,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [],
+          "dateTime": [
+            {
+              "value1": "={{ new Date($json.isoDate) }}",
+              "value2": "={{ $now.minus(4, \"hour\") }}"
+            }
+          ]
+        }
+      },
+      "name": "if_during_4_hours",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        0,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "f5325043-8ed2-4d5b-89b6-200a1c123057"
     }
   ],
   "pinData": {},
@@ -226,7 +266,7 @@
         ],
         [
           {
-            "node": "if_during_1_hour",
+            "node": "if_during_4_hours",
             "type": "main",
             "index": 0
           }
@@ -238,24 +278,6 @@
         [
           {
             "node": "merge_token_into_tweets",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "if_during_1_hour": {
-      "main": [
-        [
-          {
-            "node": "Write Latest Read",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "NoOp",
             "type": "main",
             "index": 0
           }
@@ -299,6 +321,24 @@
           }
         ]
       ]
+    },
+    "if_during_4_hours": {
+      "main": [
+        [
+          {
+            "node": "Write Latest Read",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -307,7 +347,7 @@
     "saveManualExecutions": false,
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "478db635-e2a7-4145-b55f-0f97d9b2e99a",
+  "versionId": "736800f6-816d-4606-86a6-7b92937f5136",
   "id": "1",
   "meta": {
     "instanceId": "396cd4ca70c048b7827f43227a40ad7a9bcfd6d7d54c544b5d771d62f52f6224"

@@ -85,11 +85,11 @@ export type PGEssay = {
  * Content is a generic type for embedding
  */
 export type Content = {
-  url: string;
-  date: string;
-  title?: string;
-  mentions: string[];
   content: string;
+  url?: string;
+  date?: string;
+  title?: string;
+  mentions?: string[];
   length: number;
   tokens: number;
   chunks: Chunk[]; // TODO: refactor PGChunk to be more generic
@@ -97,11 +97,11 @@ export type Content = {
 };
 
 export type Chunk = {
-  original_url: string;
-  original_date: string;
   content: string;
   content_length: number;
   content_tokens: number;
+  original_url?: string;
+  original_date?: string;
   embedding: number[];
 };
 

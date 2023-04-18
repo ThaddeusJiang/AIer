@@ -30,13 +30,9 @@ export default async function avatarCreate(req: NextApiRequest, res: NextApiResp
     source_twitter,
     status: "requested",
     owner_id: user.id
-  }
+  };
 
-  const { data, error } = await supabase
-    .from("avatars")
-    .insert(avatarCreateInput)
-    .select("*")
-    .single();
+  const { data, error } = await supabase.from("avatars").insert(avatarCreateInput).select("*").single();
 
   if (error) {
     return res.status(500).json({ error: error.message });

@@ -125,7 +125,7 @@ export default function NewAvatarPage() {
                   Source Twitter
                 </label>
                 <input
-                  className="input input-bordered w-full"
+                  className="input-bordered input w-full"
                   placeholder="your twitter username, e.g. ThaddeusJiang"
                   id="source_twitter"
                   {...register("source_twitter")}
@@ -150,7 +150,12 @@ export default function NewAvatarPage() {
                 <label htmlFor="bio" className=" label">
                   Bio
                 </label>
-                <textarea id="bio" className="textarea-bordered textarea w-full" placeholder="Add a bio" {...register("bio")}  />
+                <textarea
+                  id="bio"
+                  className="textarea-bordered textarea w-full"
+                  placeholder="Add a bio"
+                  {...register("bio")}
+                />
               </div>
 
               <div className="py-4">

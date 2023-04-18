@@ -2,7 +2,6 @@ import endent from "endent";
 
 // import { encode } from "gpt-3-encoder";
 import { OpenAIStream } from "~/utils/openai";
-
 import { getAvatar } from "~/utils/supabase-client";
 import { createQueryRecord, getUserDetails, searchEmbeddings } from "~/utils/supabase-only";
 

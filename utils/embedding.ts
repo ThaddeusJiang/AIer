@@ -6,13 +6,12 @@ import { Chunk, Content } from "~/types";
 const CHUNK_SIZE = 200;
 
 const chunkContent = (data: Content) => {
-  const { url, date, mentions, content, ...rest } = data;
+  const { content, url, date, mentions, ...rest } = data;
 
   let chunks = [];
 
   if (encode(content).length > CHUNK_SIZE) {
-    const strings = content.split(/\r?\n/); // 暂时只处理换行符
-    // TODO: test content.split(String(["。", "？", "！"]))
+    const strings = content.split(/\r?\n+/); // 暂时只处理换行符
     let chunkText = "";
 
     strings.forEach((sentence) => {

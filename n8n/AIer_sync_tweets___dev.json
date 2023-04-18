@@ -1,0 +1,323 @@
+{
+  "name": "AIer sync tweets - dev",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://rsshub.app/twitter/user/{{ $json.source_twitter }}"
+      },
+      "name": "RSS Feed Read",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [-100, -220],
+      "typeVersion": 1,
+      "id": "2595a314-2124-40e4-8db4-803d5b3ad496"
+    },
+    {
+      "parameters": {
+        "functionCode": "const staticData = this.getWorkflowStaticData('global');\n\nif (items.length > 0) {\n  staticData.latestRead = items[0].json.isoDate || staticData.latestRead;\n}\n\n\nreturn items;"
+      },
+      "name": "Write Latest Read",
+      "type": "n8n-nodes-base.function",
+      "position": [340, 80],
+      "typeVersion": 1,
+      "id": "7ecbe0e1-cbe1-4555-be9a-f68dc1592934"
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "position": [320, 420],
+      "typeVersion": 1,
+      "id": "e37c06aa-15a3-45c8-81f7-e812304765a7"
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        }
+      },
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "position": [-1140, 320],
+      "typeVersion": 1,
+      "id": "52aafebd-694d-4d41-8acf-22703aab4075",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {},
+      "id": "dbdb95e0-dbe8-472d-8598-de88cc7a657b",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1360, 840]
+    },
+    {
+      "parameters": {
+        "url": "https://aier-thaddeusjiang.vercel.app/api/avatarList/s3cr3tdev",
+        "options": {}
+      },
+      "id": "13749c5c-3193-462b-abe5-fe887e2ffea6",
+      "name": "query avatarList",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [-940, 320]
+    },
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {}
+      },
+      "id": "0daafc9c-de0e-4b8b-9761-0aa82ffd4617",
+      "name": "Split In Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [-400, -80]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Add a new field called 'myNewField' to the\n// JSON of the item\nconst [, username] = item.json.link.match(/twitter\\.com\\/(.*)\\/status/)\n\nconst source_twitter = username.toLowerCase()\n\nreturn { json: { ...item.json, source_twitter } };"
+      },
+      "id": "d6a57b03-d7a3-43f4-b3c8-591829e8adab",
+      "name": "tweet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [680, 620]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [],
+          "dateTime": [
+            {
+              "value1": "={{ $now.minus(1, \"hour\") }}",
+              "operation": "before",
+              "value2": "={{ new Date($json.isoDate) }}"
+            }
+          ]
+        }
+      },
+      "name": "if_during_1_hour",
+      "type": "n8n-nodes-base.if",
+      "position": [0, 140],
+      "typeVersion": 1,
+      "id": "f5325043-8ed2-4d5b-89b6-200a1c123057"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "source_twitter",
+              "field2": "source_twitter"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1a32a513-7c87-4483-8961-81b6a28145be",
+      "name": "merge_token_into_tweets",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [940, 840],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field\n// called 'myNewField' to the JSON of each one\nlet avatars = []\nfor (const item of $input.all()) {\n  avatars = avatars.concat(item.json.items)\n}\n\navatars = avatars.filter(avatar => !!avatar.source_twitter).filter(avatar => avatar.tokens.length > 0)\n\nconst data = avatars.map(avatar => ({\n  json: { \n    username: avatar.username,\n    source_twitter: avatar.source_twitter.toLowerCase(),\n    token: avatar.tokens?.[0]?.masked_token ?? \"\" \n  }\n}))\n\nreturn data"
+      },
+      "id": "0b277a4e-c669-4224-a6f2-f140acb01b8f",
+      "name": "filter_valid_twitter_username",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [-720, 320]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://aier-thaddeusjiang.vercel.app/api/webhooks/memoCreate/{{ $json.token }}",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Content-type\": \"application/json\"\n}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.contentSnippet }}"
+            },
+            {
+              "name": "created_at",
+              "value": "={{ $json.isoDate }}"
+            },
+            {
+              "name": "source_url",
+              "value": "={{ $json.link }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8513bdd-b986-4b64-9946-8253186b7250",
+      "name": "webhook_embedding_create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1140, 840]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "query avatarList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Feed Read": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Latest Read": {
+      "main": [
+        [
+          {
+            "node": "tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "query avatarList": {
+      "main": [
+        [
+          {
+            "node": "filter_valid_twitter_username",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split In Batches": {
+      "main": [
+        [
+          {
+            "node": "RSS Feed Read",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "if_during_1_hour",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tweet": {
+      "main": [
+        [
+          {
+            "node": "merge_token_into_tweets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if_during_1_hour": {
+      "main": [
+        [
+          {
+            "node": "Write Latest Read",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge_token_into_tweets": {
+      "main": [
+        [
+          {
+            "node": "webhook_embedding_create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter_valid_twitter_username": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "merge_token_into_tweets",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "webhook_embedding_create": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "timezone": "Asia/Tokyo",
+    "saveManualExecutions": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "478db635-e2a7-4145-b55f-0f97d9b2e99a",
+  "id": "1",
+  "meta": {
+    "instanceId": "396cd4ca70c048b7827f43227a40ad7a9bcfd6d7d54c544b5d771d62f52f6224"
+  },
+  "tags": [
+    {
+      "createdAt": "2023-04-17T12:21:39.738Z",
+      "updatedAt": "2023-04-17T12:21:39.738Z",
+      "id": "1",
+      "name": "dev"
+    }
+  ]
+}

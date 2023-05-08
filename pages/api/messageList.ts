@@ -22,8 +22,8 @@ export default async function messageList(req: NextApiRequest, res: NextApiRespo
     .from("queries")
     .select("*", { count: "exact" })
     .or(`and(from_id.eq.${user.id},to_id.eq.${avatar}), and(from_id.eq.${avatar},to_id.eq.${user.id})`)
-    .order("created_at", { ascending: false })
-    .range(from, to)
+    .order("created_at", { ascending: true })
+  // .range(from, to)
 
   if (error) {
     return res.status(500).json({ error: error.message })

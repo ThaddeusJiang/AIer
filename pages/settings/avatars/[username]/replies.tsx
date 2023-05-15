@@ -20,7 +20,7 @@ export default function SettingsAvatarQueriesPage({
     <>
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar}  isSetting/>
+        <AvatarProfileHeader avatar={avatar}  isSetting={true}/>
 
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <div className=" min-h-screen">

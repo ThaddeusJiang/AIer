@@ -56,7 +56,7 @@ export default function AvatarExportPage({
     <>
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar} isSetting />
+        <AvatarProfileHeader avatar={avatar} isSetting={true} />
         <div>
           <div className="flex items-center justify-between py-2">
             <button className=" btn-primary btn" onClick={handleRequest}>

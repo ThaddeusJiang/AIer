@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query"
 import { Avatar } from "~/types"
 import { useUser } from "~/utils/useUser"
 
-export const AvatarProfileHeader = ({ avatar, isSetting = false }: { avatar: Avatar; isSetting: boolean }) => {
+export const AvatarProfileHeader = ({ avatar, isSetting = false }: { avatar: Avatar; isSetting?: boolean }) => {
   const { user } = useUser()
   const router = useRouter()
   const editable = user?.id === avatar?.owner_id

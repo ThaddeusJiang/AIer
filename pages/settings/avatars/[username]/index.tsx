@@ -12,7 +12,7 @@ export default function SettingsAvatarDetailPage({ avatar }: { avatar: Avatar })
     <>
       <Header />
       <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar} isSetting />
+        <AvatarProfileHeader avatar={avatar} isSetting={true} />
 
         <div className="grid grid-cols-2 gap-4 py-4">
           <Link href={`/settings/avatars/${avatar.username}/memos`} className=" link-hover card link shadow ">

@@ -245,6 +245,16 @@ create table memos (
   primary key (id)
 );
 
+create table archives (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  avatar_id text references avatars,
+  status text,
+  expired_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  storage text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  created_by uuid references auth.users
+);
+
 CREATE INDEX idx_memos_avatar_id ON memos (avatar_id);
 
 create table tokens (

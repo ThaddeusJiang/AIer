@@ -4,12 +4,15 @@ import classNames from "classnames"
 
 import { Avatar } from "~/types"
 
-export const AvatarProfileTabs = ({ avatar, active = "memo" }: { avatar: Avatar; active?: string }) => {
+/**
+ * @deprecated
+ */
+export const AvatarProfileTabs = ({ avatar, active = "memos" }: { avatar: Avatar; active?: string }) => {
   return (
     <>
       <nav className="tabs flex w-full  font-bold">
         <Link
-          href={`/settings/avatars/${avatar.username}`}
+          href={`/settings/avatars/${avatar.username}/memos`}
           className={classNames("tab-bordered tab tab-lg flex-1", {
             "tab-active": active === "memos"
           })}

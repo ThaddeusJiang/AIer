@@ -9,6 +9,35 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      archives: {
+        Row: {
+          avatar_id: string | null
+          created_at: string
+          created_by: string | null
+          expired_at: string
+          id: string
+          status: string | null
+          storage: string | null
+        }
+        Insert: {
+          avatar_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          expired_at?: string
+          id?: string
+          status?: string | null
+          storage?: string | null
+        }
+        Update: {
+          avatar_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          expired_at?: string
+          id?: string
+          status?: string | null
+          storage?: string | null
+        }
+      }
       avatars: {
         Row: {
           avatar_url: string | null

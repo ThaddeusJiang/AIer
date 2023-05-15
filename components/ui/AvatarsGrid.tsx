@@ -68,7 +68,7 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
               {avatar.owner_id === user?.id ? (
                 <div className="-ml-px flex w-0 flex-1">
                   <Link
-                    href={`/settings/avatars/${avatar.username}`}
+                    href={`/settings/avatars/${avatar.username}/memos`}
                     className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
                     <IconDatabase className="h-5 w-5 text-gray-400" aria-hidden="true" />

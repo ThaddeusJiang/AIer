@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query"
 import { Avatar } from "~/types"
 import { useUser } from "~/utils/useUser"
 
-export const AvatarProfileHeader = ({ avatar }: { avatar: Avatar }) => {
+export const AvatarProfileHeader = ({ avatar, isSetting = false }: { avatar: Avatar; isSetting?: boolean }) => {
   const { user } = useUser()
   const router = useRouter()
   const editable = user?.id === avatar?.owner_id
@@ -56,21 +56,27 @@ export const AvatarProfileHeader = ({ avatar }: { avatar: Avatar }) => {
         </div>
         <div className="relative">
           <div className=" absolute -bottom-14 left-4">
-            {avatar.avatar_url ? (
-              <>
-                <div className="avatar">
-                  <img className="!h-28 !w-28 rounded-full" src={avatar.avatar_url} alt={`Avatar of ${avatar.name}`} />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="placeholder avatar">
-                  <div className="!h-28 !w-28 rounded-full bg-neutral-focus text-neutral-content">
-                    <span className="text-4xl">{avatar.name[0]}</span>
+            <Link href={isSetting ? `/settings/avatars/${avatar.username}` : `/avatars/${avatar.username}`}>
+              {avatar.avatar_url ? (
+                <>
+                  <div className="avatar">
+                    <img
+                      className="!h-28 !w-28 rounded-full"
+                      src={avatar.avatar_url}
+                      alt={`Avatar of ${avatar.name}`}
+                    />
                   </div>
-                </div>
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <div className="placeholder avatar">
+                    <div className="!h-28 !w-28 rounded-full bg-neutral-focus text-neutral-content">
+                      <span className="text-4xl">{avatar.name[0]}</span>
+                    </div>
+                  </div>
+                </>
+              )}
+            </Link>
           </div>
 
           <div className=" absolute top-4 right-4">

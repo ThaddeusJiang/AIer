@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Header } from "~/components/lp/Header"
 import { MiniAvatar } from "~/components/ui/Avatar/MiniAvatar"
 import { Chat } from "~/components/ui/Chat"
+import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { MessageList } from "~/components/ui/MessageList"
 import { Avatar } from "~/types"
 import { useUser } from "~/utils/useUser"
@@ -72,7 +73,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
             <div>
               {user?.id === avatar.owner_id ? (
                 <div className="dropdown-end dropdown">
-                  <label tabIndex={0} className="btn-ghost btn-square btn-xs btn">
+                  <label tabIndex={0} className="btn-ghost btn-xs btn-square btn">
                     <IconDots className="w-4 " />
                   </label>
                   <ul tabIndex={0} className="dropdown-content menu rounded-box bg-base-100 p-2 shadow ">

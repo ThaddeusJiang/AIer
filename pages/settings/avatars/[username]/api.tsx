@@ -11,6 +11,7 @@ import remarkGfm from "remark-gfm"
 
 import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
+import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { Avatar } from "~/types"
 import { getURL } from "~/utils/helpers"
 
@@ -22,7 +23,7 @@ export default function SettingsAvatarAPIPage({ avatar, token }: { avatar: Avata
   return (
     <>
       <Header />
-      <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
+      <MainLayout>
         <AvatarProfileHeader avatar={avatar} isSetting={true} />
 
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
@@ -78,7 +79,7 @@ Content-type: application/json
             </>
           </div>
         </div>
-      </section>
+      </MainLayout>
     </>
   )
 }

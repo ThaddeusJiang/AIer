@@ -13,7 +13,7 @@ import produce from "immer"
 
 import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
-
+import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { MemoCard } from "~/components/ui/MemoCard"
 import { Avatar } from "~/types"
 
@@ -117,7 +117,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   return (
     <>
       <Header />
-      <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
+      <MainLayout>
         <AvatarProfileHeader avatar={avatar} isSetting={true} />
 
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
@@ -176,7 +176,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
               : null}
           </div> */}
         </div>
-      </section>
+      </MainLayout>
     </>
   )
 }

@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
 import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
-
+import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { Avatar } from "~/types"
 
 export default function SettingsAvatarQueriesPage({
@@ -19,8 +19,8 @@ export default function SettingsAvatarQueriesPage({
   return (
     <>
       <Header />
-      <section className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-        <AvatarProfileHeader avatar={avatar}  isSetting={true}/>
+      <MainLayout>
+        <AvatarProfileHeader avatar={avatar} isSetting={true} />
 
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <div className=" min-h-screen">
@@ -46,7 +46,7 @@ export default function SettingsAvatarQueriesPage({
             </div>
           </div>
         </div>
-      </section>
+      </MainLayout>
     </>
   )
 }

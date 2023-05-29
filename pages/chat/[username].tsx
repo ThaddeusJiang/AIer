@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+import { useInView } from "react-intersection-observer"
 
 import { GetServerSidePropsContext } from "next"
 import Head from "next/head"
@@ -6,41 +7,67 @@ import Link from "next/link"
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { IconDots, IconEdit } from "@tabler/icons-react"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 
 import { Header } from "~/components/lp/Header"
 import { MiniAvatar } from "~/components/ui/Avatar/MiniAvatar"
 import { Chat } from "~/components/ui/Chat"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
-import { MessageList } from "~/components/ui/MessageList"
+import { MessageItem } from "~/components/ui/MessageList"
 import { Avatar } from "~/types"
 import { useUser } from "~/utils/useUser"
 
 export default function ChatPage({ avatar }: { avatar: Avatar }) {
   const { user } = useUser()
   const messageContainerRef = useRef<HTMLDivElement>(null)
-  const messageListQuery = useQuery({
-    queryKey: ["messageList", avatar?.id],
-    queryFn: async () => {
+
+  const [lastLoadedMessageId, setLastLoadedMessageId] = useState("")
+
+  const { ref, inView } = useInView()
+
+  const { status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["messageList", avatar.id],
+    queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch("/api/messageList", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          avatar: avatar?.id
+          avatar: avatar?.id,
+          cursor: pageParam
         })
       })
       return res.json()
-    }
+    },
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+    onSuccess: (data) => {
+      const lastLoadedMessage = data?.pages?.[0]?.items?.[0]
+      setLastLoadedMessageId(lastLoadedMessage.id)
+    },
+    select: (data) => ({
+      pages: [...data.pages].reverse(),
+      pageParams: [...data.pageParams].reverse()
+    })
   })
 
-  const messages = messageListQuery.data?.items ?? []
+  useEffect(() => {
+    const targetElement = document.getElementById(lastLoadedMessageId)
+    targetElement?.scrollIntoView({
+      block: "start"
+    })
+  }, [lastLoadedMessageId])
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage()
+    }
+  }, [inView, fetchNextPage])
 
   useEffect(() => {
     const containerNode = messageContainerRef.current
     containerNode!.scrollTop = containerNode?.scrollHeight ?? 0
-  }, [messages])
+  }, [data?.pages])
 
   const meta = {
     title: `Talk with ${avatar?.name} in AIer.app`,
@@ -73,7 +100,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
             <div>
               {user?.id === avatar.owner_id ? (
                 <div className="dropdown-end dropdown">
-                  <label tabIndex={0} className="btn-ghost btn-xs btn-square btn">
+                  <label tabIndex={0} className="btn-ghost btn-square btn-xs btn">
                     <IconDots className="w-4 " />
                   </label>
                   <ul tabIndex={0} className="dropdown-content menu rounded-box bg-base-100 p-2 shadow ">
@@ -92,7 +119,20 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
         </div>
         <div className="overflow-hidden ">
           <div ref={messageContainerRef} className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-            {messageListQuery.isLoading ? <div className=" h-8 ">&nbsp;</div> : <MessageList messages={messages} />}
+            <div ref={ref} className="pb-12 text-center text-gray-500">
+              {status === "loading" ? "loading..." : hasNextPage ? null : "no more"}
+            </div>
+
+            {data?.pages.map(({ items, nextCursor }) => (
+              <div>
+                <div className=" flex flex-col-reverse" key={nextCursor}>
+                  {items.map((message: any) => (
+                    <MessageItem key={message.id} message={message} />
+                  ))}
+                </div>
+                <p id={lastLoadedMessageId}></p>
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex-shrink-0 ">

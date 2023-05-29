@@ -50,11 +50,26 @@ export function Chat({
   })
 
   const handleAnswer = async ({ query }: { query: string }) => {
-    const messageList = queryClient.getQueryData<{ items: Message[] }>(["messageList", avatar.id])
+    function updateMessagesCache(old: { pages: { items: Message[] }[] }, messages: Message[]) {
+      const { pages } = old
+      const newPages = [
+        {
+          items: messages.reverse()
+        },
+        ...pages
+      ]
+      return {
+        ...old,
+        pages: newPages
+      }
+    }
+
+    const messageListCache = queryClient.getQueryData<{ pages: { items: Message[] }[] }>(["messageList", avatar.id])
+
     // Optimistically update to the new value
-    let queryMessage = {
+    let queryMessage: Message = {
       id: "query_" + crypto.randomUUID(),
-      from_id: user?.id,
+      from_id: user!.id,
       to_id: avatar.id,
       content: query
     }
@@ -62,14 +77,19 @@ export function Chat({
     let resMessage = {
       id: "answer_" + crypto.randomUUID(),
       from_id: avatar.id,
-      to_id: user?.id,
+      to_id: user!.id,
       content: ""
     }
+
     // @ts-ignore FIXME: fix this
-    queryClient.setQueryData(["messageList", avatar.id], (old: TQueryFnData) => ({
-      items: [...old.items, queryMessage, resMessage]
-    }))
+    queryClient.setQueryData(["messageList", avatar.id], (old: TQueryFnData) => {
+      const newPages = updateMessagesCache(old, [queryMessage, resMessage])
+
+      return newPages
+    })
+
     setLoading(true)
+
     const answerResponse = await fetch("/api/answer", {
       method: "POST",
       headers: {
@@ -79,7 +99,7 @@ export function Chat({
         queryFrom: user?.id,
         queryTo: avatar.id,
         query,
-        messages: (messageList?.items.slice(-10) || []).map((m) => ({
+        messages: (messageListCache?.pages?.[0]?.items || []).slice(-10).map((m) => ({
           role: m.from_id === user?.id ? "user" : "assistant",
           content: m.content
         }))
@@ -112,7 +132,7 @@ export function Chat({
       // @ts-ignore FIXME: fix this
       queryClient.setQueryData(["messageList", avatar.id], (old: TQueryFnData) => {
         const messageList = produce(old, (draft: any) => {
-          draft.items[draft.items.length - 1].content = answer
+          draft.pages[0].items[0].content = answer
         })
         return messageList
       })

@@ -15,7 +15,7 @@ export default async function messageList(req: NextApiRequest, res: NextApiRespo
 
   const { avatar, cursor: from = 0 } = req.body as { avatar: string; cursor: number }
 
-  const PAGE_SIZE = 10
+  const PAGE_SIZE = 25
   const to = from + PAGE_SIZE - 1
 
   const { data, error, count } = await supabase

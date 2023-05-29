@@ -120,7 +120,13 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
         <div className="overflow-hidden ">
           <div ref={messageContainerRef} className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
             <div ref={ref} className="pb-12 text-center text-gray-500">
-              {status === "loading" ? "loading..." : hasNextPage ? null : "no more"}
+              {status === "loading"
+                ? "loading..."
+                : isFetchingNextPage
+                ? "load more..."
+                : hasNextPage
+                ? null
+                : "no more"}
             </div>
 
             {data?.pages.map(({ items, nextCursor }) => (

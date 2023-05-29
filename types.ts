@@ -138,7 +138,7 @@ export type Avatar = {
 }
 
 export type Message = {
-  id: number
+  id: string
   from_id: string | null
   to_id: string | null
   content: string | null

@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm"
 
 import { Message } from "~/types"
 
-const MessageItem = ({ message }: { message: Message }) => {
+export const MessageItem = ({ message }: { message: Message }) => {
   const user = useUser()
   return (
     <div className={classNames("flex w-full", user?.id === message.from_id ? " justify-end" : " justify-start")}>
@@ -17,15 +17,5 @@ const MessageItem = ({ message }: { message: Message }) => {
         </article>
       </div>
     </div>
-  )
-}
-
-export const MessageList = ({ messages }: { messages: Message[] }) => {
-  return (
-    <>
-      {messages.map((message) => (
-        <MessageItem key={message.id} message={message} />
-      ))}
-    </>
   )
 }

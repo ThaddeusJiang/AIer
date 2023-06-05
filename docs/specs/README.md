@@ -1,5 +1,14 @@
 # Specs
 
+# Integrate from Third-party
+
+* [x] twitter
+* [x] blog （网址）
+* [ ] markdown
+* [ ] flomo
+* [ ] logseq
+* [ ] notion
+
 ## User Data
 
 - [ ] 用户可以绑定多个 SNS 账号

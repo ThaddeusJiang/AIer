@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm"
 
 import { Message } from "~/types"
 
-export const MessageItem = ({ message }: { message: Message }) => {
+export const MessageBubble = ({ message }: { message: Message }) => {
   const user = useUser()
   return (
     <div className={classNames("flex w-full", user?.id === message.from_id ? " justify-end" : " justify-start")}>

@@ -6,14 +6,13 @@ import Head from "next/head"
 import Link from "next/link"
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
-import { IconDots, IconEdit } from "@tabler/icons-react"
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
+import { IconDots, IconSettings } from "@tabler/icons-react"
+import { useInfiniteQuery } from "@tanstack/react-query"
 
 import { Header } from "~/components/lp/Header"
 import { MiniAvatar } from "~/components/ui/Avatar/MiniAvatar"
 import { Chat } from "~/components/ui/Chat"
-import { MainLayout } from "~/components/ui/Layouts/MainLayout"
-import { MessageItem } from "~/components/ui/MessageList"
+import { MessageBubble } from "~/components/ui/MessageBubble"
 import { Avatar } from "~/types"
 import { useUser } from "~/utils/useUser"
 
@@ -43,7 +42,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
     getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
     onSuccess: (data) => {
       const lastLoadedMessage = data?.pages?.[0]?.items?.[0]
-      setLastLoadedMessageId(lastLoadedMessage.id)
+      setLastLoadedMessageId(lastLoadedMessage?.id)
     },
     select: (data) => ({
       pages: [...data.pages].reverse(),
@@ -105,11 +104,9 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
                   </label>
                   <ul tabIndex={0} className="dropdown-content menu rounded-box bg-base-100 p-2 shadow ">
                     <li>
-                      <a className="">
-                        <Link href={`/settings/avatars/${avatar.username}`} className="flex gap-2 ">
-                          <IconEdit /> Memo
-                        </Link>
-                      </a>
+                      <Link href={`/settings/avatars/${avatar.username}`} className="flex gap-2 ">
+                        <IconSettings /> Settings
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -130,10 +127,10 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
             </div>
 
             {data?.pages.map(({ items, nextCursor }) => (
-              <div>
-                <div className=" flex flex-col-reverse" key={nextCursor}>
+              <div key={nextCursor ?? "no-more"}>
+                <div className=" flex flex-col-reverse">
                   {items.map((message: any) => (
-                    <MessageItem key={message.id} message={message} />
+                    <MessageBubble key={message.id} message={message} />
                   ))}
                 </div>
                 <p id={lastLoadedMessageId}></p>
@@ -155,7 +152,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx)
   const {
     data: { user }
-  } = await supabase.auth.getUser() // TODO: getUser vs. getSession 有什么区别？
+  } = await supabase.auth.getUser()
 
   if (!user) {
     return {

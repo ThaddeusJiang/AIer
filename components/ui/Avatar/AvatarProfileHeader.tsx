@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 
-import { IconDots, IconMessage } from "@tabler/icons-react"
+import { IconLock, IconLockOpen, IconMessage, IconNotes } from "@tabler/icons-react"
 import { useMutation } from "@tanstack/react-query"
 
 import { Avatar } from "~/types"
@@ -47,7 +47,7 @@ export const AvatarProfileHeader = ({ avatar, isSetting = false }: { avatar: Ava
       <header className="relative">
         <div>
           <Image
-            src="https://source.unsplash.com/random/800x600?orientation=landscape&query=nature"
+            src="https://source.unsplash.com/random/800x600?orientation=landscape&query=robot"
             alt="avatar's profile background image"
             width={800}
             height={600}
@@ -80,25 +80,21 @@ export const AvatarProfileHeader = ({ avatar, isSetting = false }: { avatar: Ava
           </div>
 
           <div className=" absolute top-4 right-4">
-            <div className="flex w-1/2 items-center space-x-4">
+            <div className="flex w-1/2 items-center space-x-2">
               {editable && (
-                <div className="dropdown-end dropdown">
-                  <label tabIndex={0} className="btn-outline btn-sm btn-circle  btn m-1">
-                    <IconDots className="h-5 w-5" />
-                  </label>
-                  <ul tabIndex={0} className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow">
-                    <li>
-                      <button onClick={changeStatus}>
-                        change to {avatar?.status !== "public" ? "public" : "private"}
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                <label className="swap swap-rotate">
+                  {/* this hidden checkbox controls the state */}
+                  <input type="checkbox" checked={avatar.status === "public"} onChange={changeStatus} />
+
+                  {/* moon icon */}
+                  <IconLockOpen className="swap-on " />
+                  {/* sun icon */}
+                  <IconLock className="swap-off" />
+                </label>
               )}
 
-              <Link href={`/chat/${avatar.username}`} className="btn-primary btn gap-1 ">
-                <IconMessage className="h-5 w-5 " />
-                <span>Chat</span>
+              <Link href={`/chat/${avatar.username}`}>
+                <IconMessage />
               </Link>
             </div>
           </div>
@@ -115,6 +111,17 @@ export const AvatarProfileHeader = ({ avatar, isSetting = false }: { avatar: Ava
           </div>
           <h4 className=" text-sm ">@{avatar.username}</h4>
           <p className="mt-2 text-sm leading-6 text-gray-600">{avatar.bio}</p>
+
+          <div className="mt-2 flex gap-2 text-slate-600">
+            <div className="flex">
+              <IconNotes className="text-current" />
+              <span>{avatar?.essaysCount} essays</span>
+            </div>
+            <div className="flex">
+              <IconMessage />
+              <span className="ml-2">{avatar?.repliesCount} replies</span>
+            </div>
+          </div>
         </div>
       </header>
     </>

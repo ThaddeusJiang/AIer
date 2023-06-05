@@ -2,6 +2,12 @@
 
 AIer is a web application that allows you to create and share AI Avatars with your friends. It is built with Next.js, Supabase.
 
+## Memo
+
+2023-06-05: I have decided to use Next.js Page Router and client-side data fetching to build this app, I won't upgrate to Next.js App Router by myself.
+
+If you want to use Next.js App Router and server-side data fetching, pull request is welcome.
+
 ## Features
 
 - Secure user management and authentication with [Supabase](https://supabase.io/docs/guides/auth)

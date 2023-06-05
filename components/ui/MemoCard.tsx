@@ -22,7 +22,7 @@ export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string
               </label>
               <ul tabIndex={0} className="dropdown-content menu rounded-box menu-compact bg-base-100 p-2 shadow ">
                 <li>
-                  <a
+                  <button
                     className="text-sm"
                     onClick={(e) => {
                       e.preventDefault()
@@ -30,7 +30,7 @@ export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string
                     }}
                   >
                     delete
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>

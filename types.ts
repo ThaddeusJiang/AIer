@@ -135,6 +135,9 @@ export type Avatar = {
   linkedinUrl?: string
   status?: string
   owner_id?: string
+  // optional
+  essaysCount?: number
+  repliesCount?: number
 }
 
 export type Message = {

@@ -165,7 +165,7 @@ create extension vector;
 -- RUN 2nd
 create table embeddings (
   id uuid primary key NOT NULL DEFAULT uuid_generate_v4(),
-  avatar_id text,
+  avatar_id text references avatars,
   essay_title text,
   essay_url text,
   essay_date text,

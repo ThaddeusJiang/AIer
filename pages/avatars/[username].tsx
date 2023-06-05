@@ -37,7 +37,16 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const { username } = context.params as { username: string }
 
-  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase()).maybeSingle()
+  const { data, error } = await supabase
+    .from("avatars")
+    .select("*, embeddings(count)")
+    .eq("username", username.toLowerCase())
+    .maybeSingle()
+
+  const { count: queriesCountQueryData, error: queriesCountQueryError } = await supabase
+    .from("queries")
+    .select("*", { count: "exact", head: true })
+    .eq("from_id", username.toLowerCase())
 
   if (error) {
     console.error(error)
@@ -54,9 +63,18 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
   }
 
+  const {
+    embeddings: [{ count: essaysCount }],
+    ...rest
+  } = data
+
   return {
     props: {
-      avatar: data
+      avatar: {
+        ...rest,
+        essaysCount,
+        repliesCount: queriesCountQueryData || 0
+      }
     }
   }
 }

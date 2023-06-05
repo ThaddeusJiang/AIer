@@ -52,12 +52,10 @@ export function Chat({
   const handleAnswer = async ({ query }: { query: string }) => {
     function updateMessagesCache(old: { pages: { items: Message[] }[] }, messages: Message[]) {
       const { pages } = old
-      const newPages = [
-        {
-          items: messages.reverse()
-        },
-        ...pages
-      ]
+      const newPages = produce(pages, (draft) => {
+        draft[0].items = [...messages.reverse(), ...draft[0].items]
+      })
+
       return {
         ...old,
         pages: newPages
@@ -146,7 +144,7 @@ export function Chat({
     inputRef.current?.focus()
   }
 
-  const submit = (data: any) => {
+  const onSubmit = (data: any) => {
     const query = data.query
     handleAnswer({ query })
     reset({
@@ -158,7 +156,7 @@ export function Chat({
 
   return (
     <>
-      <form className="form-control relative w-full sm:max-w-screen-sm" onSubmit={handleSubmit(submit)}>
+      <form className="form-control relative w-full sm:max-w-screen-sm" onSubmit={handleSubmit(onSubmit)}>
         <div className="relative">
           <textarea
             className="textarea-bordered textarea w-full text-base text-gray-900 focus:outline-none "

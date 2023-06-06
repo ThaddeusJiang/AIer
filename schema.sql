@@ -31,6 +31,33 @@ CREATE TABLE avatars (
   owner_id uuid references auth.users
 );
 
+CREATE OR REPLACE FUNCTION public.list_avatars_with_embeddings_count()
+  RETURNS TABLE (
+    id text,
+    username text,
+    name text,
+    avatar_url text,
+    status text,
+    source text,
+    source_twitter text,
+    bio text,
+    welcome_message text,
+    owner_id uuid,
+    count bigint
+  ) AS
+$$
+BEGIN
+  RETURN QUERY
+  SELECT avatars.id, avatars.username, avatars.name, avatars.avatar_url, avatars.status, avatars.source, avatars.source_twitter, avatars.bio, avatars.welcome_message, avatars.owner_id, COUNT(*) AS count
+  FROM avatars
+  LEFT JOIN embeddings ON avatars.id = embeddings.avatar_id
+  WHERE avatars.status = 'public'
+  GROUP BY avatars.id
+  ORDER BY count DESC;
+END;
+$$
+LANGUAGE plpgsql;
+
 /**
 * This trigger automatically creates a user entry when a new user signs up via Supabase Auth.
 */

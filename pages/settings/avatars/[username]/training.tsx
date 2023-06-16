@@ -22,7 +22,7 @@ const schema = yup.object({
   url: yup.string().url()
 })
 
-export default function TrainingPage({ embeddingsCount }: { embeddingsCount: number }) {
+export default function TrainingPage({ essaysCount }: { essaysCount: number }) {
   const router = useRouter()
   const { username } = router.query as { username: string }
 
@@ -79,8 +79,8 @@ export default function TrainingPage({ embeddingsCount }: { embeddingsCount: num
               <Flex justifyContent="start" className="space-x-4">
                 <Icon icon={IconCash} variant="light" size="xl" color={"indigo"} />
                 <div className="truncate">
-                  <Text className=" capitalize">{"embeddings"}</Text>
-                  <Metric className="truncate">{embeddingsCount.toLocaleString("en")}</Metric>
+                  <Text className=" capitalize">essays</Text>
+                  <Metric className="truncate">{essaysCount.toLocaleString("en")}</Metric>
                 </div>
               </Flex>
             </Card>
@@ -137,14 +137,14 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const avatar_username = username.toLowerCase()
 
   // get embedding amount
-  const { count: embeddingsCount, error: _ } = await supabase
+  const { count: essaysCount, error: _ } = await supabase
     .from("embeddings")
     .select("*", { count: "exact", head: true })
     .eq("avatar_id", avatar_username)
 
   return {
     props: {
-      embeddingsCount: embeddingsCount
+      essaysCount
     }
   }
 }

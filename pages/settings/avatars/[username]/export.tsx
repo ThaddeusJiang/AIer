@@ -106,11 +106,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   const { username } = context.params as { username: string }
-  const avatar_id = username.toLowerCase()
+  const avatar_username = username.toLowerCase()
+
   const { data, error } = await supabase
     .from("archives")
     .select("*")
-    .eq("avatar_id", avatar_id)
+    .eq("avatar_id", avatar_username)
     .order("created_at", { ascending: false })
 
   if (error) {

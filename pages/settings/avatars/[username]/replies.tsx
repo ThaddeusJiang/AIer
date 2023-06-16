@@ -64,6 +64,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   const { username } = context.params as { username: string }
+  const avatar_username = username?.toLocaleLowerCase()
 
   /**
    * TODO: supabase 可以直接查询出 replies 和 users 的数量吗？
@@ -74,7 +75,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const { data: queries, error: repliesError } = await supabase
     .from("queries")
     .select("id, from_id")
-    .eq("to_id", username)
+    .eq("to_id", avatar_username)
 
   const uniqueIds = new Set()
   const uniqueFromIds = new Set()

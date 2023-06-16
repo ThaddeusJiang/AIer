@@ -109,8 +109,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   const { username } = context.params as { username: string }
+  const avatar_username = username?.toLocaleLowerCase()
 
-  const { data: token, error } = await supabase.from("tokens").select().eq("avatar_id", username).single()
+  const { data: token, error } = await supabase.from("tokens").select().eq("avatar_id", avatar_username).single()
 
   if (error) {
     console.error(error)

@@ -22,17 +22,13 @@ export const getActiveProductsWithPrices = async (): Promise<ProductWithPrice[]>
 }
 
 export const getPublicAvatars = async (): Promise<Avatar[]> => {
-  const { data, error } = await supabase
-    .from("avatars")
-    .select()
-    .eq("status", "public")
-    .order("created_at", { ascending: false })
+  const { data, error } = await supabase.rpc("list_avatars_with_embeddings_count")
 
   if (error) {
     console.error(error)
   }
 
-  return (data as any) || []
+  return data || []
 }
 
 export const getAvatar = async (id: string) => {

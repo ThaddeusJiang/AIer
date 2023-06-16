@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer"
 import { GetServerSidePropsContext } from "next"
 import Head from "next/head"
 import Link from "next/link"
+import { useRouter } from "next/router"
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { IconDots, IconSettings } from "@tabler/icons-react"
@@ -17,6 +18,8 @@ import { Avatar } from "~/types"
 import { useUser } from "~/utils/useUser"
 
 export default function ChatPage({ avatar }: { avatar: Avatar }) {
+  const router = useRouter()
+  const { username } = router.query as { username: string }
   const { user } = useUser()
   const messageContainerRef = useRef<HTMLDivElement>(null)
 

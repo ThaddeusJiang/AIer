@@ -47,7 +47,7 @@ export function AvatarsGrid({ avatars, withCreate }: { avatars: Avatar[]; withCr
                 <>
                   <div className="placeholder avatar">
                     <div className="!h-16 !w-16 rounded-full bg-neutral-focus text-neutral-content">
-                      <span className="text-4xl">{avatar.name[0]}</span>
+                      <span className="text-4xl">{avatar?.name?.[0]}</span>
                     </div>
                   </div>
                 </>

@@ -8,18 +8,7 @@ export default async function avatarRead(req: NextApiRequest, res: NextApiRespon
     res
   })
 
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    return res.status(401).json({ error: "Unauthorized" })
-  }
-
-  const { username } = req.body as {
-    username: string
-  }
-
+  const { username } = req.body as { username: string }
   const avatar_username = username?.toLocaleLowerCase()
 
   const { data, error } = await supabase

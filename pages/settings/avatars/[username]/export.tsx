@@ -5,7 +5,7 @@ import toast from "react-hot-toast"
 
 import { GetServerSidePropsContext } from "next"
 import Link from "next/link"
-import router from "next/router"
+import { useRouter } from "next/router"
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useMutation } from "@tanstack/react-query"
@@ -19,15 +19,10 @@ import { Avatar } from "~/types"
 
 dayjs.extend(relativeTime)
 
-export default function AvatarExportPage({
-  username,
-  archives,
-  avatar
-}: {
-  username: string
-  archives: any[]
-  avatar: Avatar
-}) {
+export default function AvatarExportPage({ archives }: { archives: any[] }) {
+  const router = useRouter()
+  const { username } = router.query as { username: string }
+
   const dataRequestMutation = useMutation({
     mutationFn: async () => {
       return fetch("/api/dataRequest", {
@@ -57,7 +52,7 @@ export default function AvatarExportPage({
     <>
       <Header />
       <MainLayout>
-        <AvatarProfileHeader avatar={avatar} isSetting={true} />
+        <AvatarProfileHeader username={username} isSetting={true} />
         <div>
           <div className="flex items-center justify-between py-2">
             <button className=" btn-primary btn" onClick={handleRequest}>
@@ -111,25 +106,18 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   const { username } = context.params as { username: string }
-  const avatar_id = username.toLowerCase()
+  const avatar_username = username.toLowerCase()
+
   const { data, error } = await supabase
     .from("archives")
     .select("*")
-    .eq("avatar_id", avatar_id)
+    .eq("avatar_id", avatar_username)
     .order("created_at", { ascending: false })
-
-  const { data: avatar, error: avatarError } = await supabase
-    .from("avatars")
-    .select()
-    .eq("username", avatar_id)
-    .single()
 
   if (error) {
     console.error(error)
     return {
       props: {
-        username,
-        avatar,
         archives: []
       }
     }
@@ -137,8 +125,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   return {
     props: {
-      username,
-      avatar,
       archives: data
     }
   }

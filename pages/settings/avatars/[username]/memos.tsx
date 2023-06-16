@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { useInView } from "react-intersection-observer"
 
 import { GetServerSidePropsContext } from "next"
+import { useRouter } from "next/router"
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { IconArrowUp } from "@tabler/icons-react"
@@ -18,6 +19,9 @@ import { MemoCard } from "~/components/ui/MemoCard"
 import { Avatar } from "~/types"
 
 export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
+  const router = useRouter()
+  const { username } = router.query as { username: string }
+
   const { register, control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
       content: "",
@@ -118,7 +122,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     <>
       <Header />
       <MainLayout>
-        <AvatarProfileHeader avatar={avatar} isSetting={true} />
+        <AvatarProfileHeader username={username} isSetting={true} />
 
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <form onSubmit={handleSubmit(onCreate)} className="form-control w-full">
@@ -198,8 +202,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   const { username } = context.params as { username: string }
+  const avatar_username = username?.toLocaleLowerCase()
 
-  const { data, error } = await supabase.from("avatars").select().eq("username", username.toLowerCase())
+  const { data, error } = await supabase.from("avatars").select().eq("username", avatar_username)
 
   const avatar = data?.[0]
   if (avatar?.owner_id !== user.id) {

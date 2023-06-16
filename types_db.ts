@@ -37,6 +37,20 @@ export interface Database {
           status?: string | null
           storage?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "archives_avatar_id_fkey"
+            columns: ["avatar_id"]
+            referencedRelation: "avatars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archives_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       avatars: {
         Row: {
@@ -81,6 +95,14 @@ export interface Database {
           username?: string
           welcome_message?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "avatars_owner_id_fkey"
+            columns: ["owner_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       customers: {
         Row: {
@@ -95,6 +117,14 @@ export interface Database {
           id?: string
           stripe_customer_id?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "customers_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       embedding_inamori_website: {
         Row: {
@@ -133,6 +163,7 @@ export interface Database {
           essay_url?: string | null
           id?: string
         }
+        Relationships: []
       }
       embedding_tj: {
         Row: {
@@ -168,6 +199,7 @@ export interface Database {
           essay_url?: string | null
           id?: number
         }
+        Relationships: []
       }
       embeddings: {
         Row: {
@@ -206,6 +238,14 @@ export interface Database {
           essay_url?: string | null
           id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "embeddings_avatar_id_fkey"
+            columns: ["avatar_id"]
+            referencedRelation: "avatars"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       memos: {
         Row: {
@@ -247,6 +287,38 @@ export interface Database {
           updated_at?: string
           updated_by?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "avatar_id"
+            columns: ["avatar_id"]
+            referencedRelation: "avatars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memos_avatar_id_fkey"
+            columns: ["avatar_id"]
+            referencedRelation: "avatars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memos_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memos_deleted_by_fkey"
+            columns: ["deleted_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memos_updated_by_fkey"
+            columns: ["updated_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       prices: {
         Row: {
@@ -288,6 +360,14 @@ export interface Database {
           type?: Database["public"]["Enums"]["pricing_type"] | null
           unit_amount?: number | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "prices_product_id_fkey"
+            columns: ["product_id"]
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       products: {
         Row: {
@@ -314,6 +394,7 @@ export interface Database {
           metadata?: Json | null
           name?: string | null
         }
+        Relationships: []
       }
       queries: {
         Row: {
@@ -337,6 +418,7 @@ export interface Database {
           id?: string
           to_id?: string | null
         }
+        Relationships: []
       }
       subscriptions: {
         Row: {
@@ -390,6 +472,20 @@ export interface Database {
           trial_start?: string | null
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_price_id_fkey"
+            columns: ["price_id"]
+            referencedRelation: "prices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       token_usages: {
         Row: {
@@ -416,6 +512,20 @@ export interface Database {
           raw?: Json | null
           token_id?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "token_usages_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "token_usages_token_id_fkey"
+            columns: ["token_id"]
+            referencedRelation: "tokens"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       tokens: {
         Row: {
@@ -445,6 +555,26 @@ export interface Database {
           updated_at?: string
           updated_by?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "tokens_avatar_id_fkey"
+            columns: ["avatar_id"]
+            referencedRelation: "avatars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tokens_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tokens_updated_by_fkey"
+            columns: ["updated_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       users: {
         Row: {
@@ -468,6 +598,14 @@ export interface Database {
           id?: string
           payment_method?: Json | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
@@ -517,6 +655,22 @@ export interface Database {
           "": unknown
         }
         Returns: unknown
+      }
+      list_avatars_with_embeddings_count: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          username: string
+          name: string
+          avatar_url: string
+          status: string
+          source: string
+          source_twitter: string
+          bio: string
+          welcome_message: string
+          owner_id: string
+          count: number
+        }[]
       }
       pg_search: {
         Args: {

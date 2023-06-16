@@ -30,28 +30,6 @@ function Card({ title, description, footer, children }: Props) {
   )
 }
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const supabase = createServerSupabaseClient(ctx)
-  const {
-    data: { session }
-  } = await supabase.auth.getSession()
-
-  if (!session)
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false
-      }
-    }
-
-  return {
-    props: {
-      initialSession: session,
-      user: session.user
-    }
-  }
-}
-
 export default function Account({ user }: { user: User }) {
   const [loading, setLoading] = useState(false)
   const { isLoading, subscription, userDetails } = useUser()
@@ -138,4 +116,25 @@ export default function Account({ user }: { user: User }) {
       </section>
     </>
   )
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const supabase = createServerSupabaseClient(ctx)
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  if (!user)
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false
+      }
+    }
+
+  return {
+    props: {
+      user
+    }
+  }
 }

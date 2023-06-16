@@ -7,6 +7,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "stripe:listen": "stripe listen --forward-to=localhost:3000/api/webhooks --project-name=aier",
     "scrape": "tsx scripts/scrape.ts",
     "embed:t": "tsx scripts/embed_tweets.ts",
@@ -18,8 +19,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "dependencies": {

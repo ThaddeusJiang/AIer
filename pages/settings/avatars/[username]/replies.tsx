@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from "next"
+import { useRouter } from "next/router"
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
@@ -7,20 +8,15 @@ import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { Avatar } from "~/types"
 
-export default function SettingsAvatarQueriesPage({
-  avatar,
-  replies,
-  users
-}: {
-  avatar: Avatar
-  replies: number
-  users: number
-}) {
+export default function SettingsAvatarQueriesPage({ replies, users }: { replies: number; users: number }) {
+  const router = useRouter()
+  const { username } = router.query as { username: string }
+
   return (
     <>
       <Header />
       <MainLayout>
-        <AvatarProfileHeader avatar={avatar} isSetting={true} />
+        <AvatarProfileHeader username={username} isSetting={true} />
 
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
           <div className=" min-h-screen">
@@ -68,23 +64,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   const { username } = context.params as { username: string }
-
-  const { data, error: avatarError } = await supabase.from("avatars").select().eq("username", username.toLowerCase())
-
-  if (avatarError) {
-    console.error(avatarError)
-    return {
-      props: {
-        avatar: null
-      }
-    }
-  }
-
-  if (data.length === 0) {
-    return {
-      notFound: true
-    }
-  }
+  const avatar_username = username?.toLocaleLowerCase()
 
   /**
    * TODO: supabase 可以直接查询出 replies 和 users 的数量吗？
@@ -95,7 +75,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const { data: queries, error: repliesError } = await supabase
     .from("queries")
     .select("id, from_id")
-    .eq("to_id", data[0]?.id)
+    .eq("to_id", avatar_username)
 
   const uniqueIds = new Set()
   const uniqueFromIds = new Set()
@@ -111,7 +91,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   return {
     props: {
-      avatar: data[0],
       replies: uniqueIds.size ?? 0,
       users: uniqueFromIds.size ?? 0
     }

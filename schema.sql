@@ -293,7 +293,7 @@ create table tokens (
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_by uuid references auth.users,
   primary key (id)
-)
+);
 
 create unique index idx_tokens_avatar_id on tokens (avatar_id);
 
@@ -305,4 +305,4 @@ create table token_usages (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   created_by uuid references auth.users,
   primary key (id)
-)
+);

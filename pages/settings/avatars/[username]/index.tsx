@@ -19,19 +19,19 @@ export default function SettingsAvatarDetailPage() {
         <AvatarProfileHeader username={username} isSetting={true} />
 
         <div className="grid grid-cols-2 gap-4 py-4">
-          <Link href={`/settings/avatars/${username}/memos`} className=" link-hover card link shadow ">
+          <Link href={`/settings/avatars/${username}/memos`} className=" link-hover card link bg-white shadow ">
             <div className="card-body">Memos</div>
           </Link>
-          <Link href={`/settings/avatars/${username}/training`} className=" link-hover card link shadow ">
+          <Link href={`/settings/avatars/${username}/training`} className=" link-hover card link bg-white shadow ">
             <div className="card-body">Training</div>
           </Link>
-          <Link href={`/settings/avatars/${username}/export`} className=" link-hover card link shadow ">
+          <Link href={`/settings/avatars/${username}/export`} className=" link-hover card link bg-white shadow ">
             <div className="card-body">Export</div>
           </Link>
-          <Link href={`/settings/avatars/${username}/api`} className=" link-hover card link shadow ">
+          <Link href={`/settings/avatars/${username}/api`} className=" link-hover card link bg-white shadow ">
             <div className="card-body">API</div>
           </Link>
-          <Link href={`/settings/avatars/${username}/replies`} className=" link-hover card link shadow ">
+          <Link href={`/settings/avatars/${username}/replies`} className=" link-hover card link bg-white shadow ">
             <div className="card-body">Replies</div>
           </Link>
         </div>

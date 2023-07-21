@@ -1,5 +1,6 @@
 import { Fragment, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useHotkeys } from "react-hotkeys-hook"
 import { useInView } from "react-intersection-observer"
 
 import { GetServerSidePropsContext } from "next"
@@ -111,6 +112,16 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
     memoDeleteMutation.mutate(id)
   }
 
+  useHotkeys(
+    "mod+return",
+    () => {
+      handleSubmit(onCreate)()
+    },
+    {
+      enableOnFormTags: ["TEXTAREA"]
+    }
+  )
+
   const onCreate = (data: { content: string; avatar_id: string }) => {
     memoCreateMutation.mutate(data)
     reset()
@@ -124,12 +135,12 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting={true} />
 
-        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
-          <form onSubmit={handleSubmit(onCreate)} className="form-control w-full">
+        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto sm:max-w-screen-sm">
+          <form onSubmit={handleSubmit(onCreate)} className="form-control w-full py-1">
             <input type="hidden" {...register("avatar_id")} />
             <div id="content" className=" relative">
               <textarea
-                className="textarea-bordered textarea w-full text-base text-gray-900 focus:outline-none "
+                className="textarea-bordered textarea w-full text-base text-gray-900 focus:shadow focus:outline-none"
                 placeholder="What are you thinking?"
                 rows={2}
                 {...register("content", {
@@ -137,16 +148,26 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
                 })}
               />
 
-              <button
-                disabled={!content || memoCreateMutation.isLoading}
-                className={classNames(" btn-primary btn-sm btn-circle btn absolute  right-2 bottom-4 mt-4 ", {
-                  " loading": memoCreateMutation.isLoading
-                })}
-                type="submit"
-              >
-                {memoCreateMutation.isLoading ? null : <IconArrowUp className="h-6 w-6" />}
-              </button>
+              {content ? (
+                <button
+                  disabled={memoCreateMutation.isLoading}
+                  className={classNames(" btn-primary btn-sm btn-circle btn absolute  right-2 bottom-4 mt-4 ", {
+                    " loading": memoCreateMutation.isLoading
+                  })}
+                  type="submit"
+                >
+                  {memoCreateMutation.isLoading ? null : <IconArrowUp className="h-6 w-6" />}
+                </button>
+              ) : null}
             </div>
+            {content ? (
+              <div className=" flex justify-end text-xs opacity-70">
+                <p>
+                  Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
+                  <kbd className=" kbd kbd-xs">return</kbd> to save memo
+                </p>
+              </div>
+            ) : null}
           </form>
 
           {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}

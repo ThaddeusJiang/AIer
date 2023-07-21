@@ -1,5 +1,6 @@
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useHotkeys } from "react-hotkeys-hook"
 
 import { User } from "@supabase/auth-helpers-react"
 import { IconArrowUp } from "@tabler/icons-react"
@@ -20,7 +21,6 @@ export function Chat({
   }
   user: User | null
 }) {
-  const inputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
   const queryClient = useQueryClient()
@@ -140,9 +140,17 @@ export function Chat({
       avatar_id: avatar.id,
       content: answer
     })
-
-    inputRef.current?.focus()
   }
+
+  useHotkeys(
+    "mod+return",
+    () => {
+      handleSubmit(onSubmit)()
+    },
+    {
+      enableOnFormTags: ["TEXTAREA"]
+    }
+  )
 
   const onSubmit = (data: any) => {
     const query = data.query
@@ -159,7 +167,7 @@ export function Chat({
       <form className="form-control relative w-full sm:max-w-screen-sm" onSubmit={handleSubmit(onSubmit)}>
         <div className="relative">
           <textarea
-            className="textarea-bordered textarea w-full text-base text-gray-900 focus:outline-none "
+            className="textarea-bordered textarea w-full text-base text-gray-900"
             placeholder={`Hi, I am ${avatar?.name}.\nAsk me anything!`}
             rows={2}
             {...register("query", { required: true })}
@@ -175,6 +183,14 @@ export function Chat({
           </button>
         ) : null}
       </form>
+      {query ? (
+        <div className=" flex justify-end text-xs opacity-70">
+          <p>
+            Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
+            <kbd className=" kbd kbd-xs">return</kbd> to send message
+          </p>
+        </div>
+      ) : null}
     </>
   )
 }

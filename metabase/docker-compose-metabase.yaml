@@ -1,0 +1,17 @@
+version: "3.1"
+
+# setup self-hosted metabase
+services:
+  metabase:
+    image: metabase/metabase
+    container_name: metabase
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./metabase-data:/metabase-data
+    environment:
+      - MB_DB_FILE=/metabase-data/metabase.db
+      - MB_DB_TYPE=h2
+      - MB_JETTY_PORT=3000
+      - MB_JETTY_HOST=

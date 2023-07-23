@@ -39,3 +39,4 @@ yarn-error.log*
 
 # data
 *.csv
+metabase-data

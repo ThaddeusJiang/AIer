@@ -2,7 +2,7 @@ import { ParsedEvent, ReconnectInterval, createParser } from "eventsource-parser
 import { Configuration, OpenAIApi } from "openai"
 
 export enum OpenAIModel {
-  GTP = "gpt-3.5-turbo"
+  GTP = "gpt-4"
 }
 
 const apiKey = process.env.OPENAI_API_KEY

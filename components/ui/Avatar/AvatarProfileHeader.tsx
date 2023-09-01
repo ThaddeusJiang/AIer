@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 
-import { IconLock, IconLockOpen, IconMessage, IconNotes } from "@tabler/icons-react"
+import { IconBookmark, IconLock, IconLockOpen, IconMessage, IconNotes } from "@tabler/icons-react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
 import { Avatar } from "~/types"
@@ -12,9 +12,12 @@ import { useUser } from "~/utils/useUser"
 
 export const AvatarProfileHeader = ({ username, isSetting = false }: { username: string; isSetting?: boolean }) => {
   const { user } = useUser()
-  const router = useRouter()
 
-  const avatarQuery = useQuery<Avatar>({
+  const avatarQuery = useQuery<
+    Avatar & {
+      marked: { id: string }[]
+    }
+  >({
     queryKey: ["avatars", username],
     queryFn: async () => {
       return fetch(`/api/avatarRead`, {
@@ -55,6 +58,40 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
       username
     })
   }
+
+  const router = useRouter()
+
+  const markAvatarMutation = useMutation({
+    mutationFn: async (data: { avatar_username: string }) => {
+      const res = await fetch("/api/avatarMark", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      return res.json()
+    },
+    onSuccess: () => {
+      router.reload()
+    }
+  })
+
+  const unMarkAvatarMutation = useMutation({
+    mutationFn: async (data: { avatar_username: string }) => {
+      const res = await fetch("/api/avatarUnMark", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      return res.json()
+    },
+    onSuccess: () => {
+      router.reload()
+    }
+  })
 
   if (avatarQuery.isLoading) {
     return <AvatarProfileHeaderSkeleton />
@@ -116,6 +153,24 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
                   {/* sun icon */}
                   <IconLock className="swap-off" />
                 </label>
+              )}
+
+              {avatar.marked.map(({ id }: { id: string }) => id).includes(user?.id ?? "") ? (
+                <button
+                  onClick={() => {
+                    unMarkAvatarMutation.mutate({ avatar_username: avatar.username })
+                  }}
+                >
+                  <IconBookmark className="h-5 w-5 fill-blue-500 text-blue-500" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    markAvatarMutation.mutate({ avatar_username: avatar.username })
+                  }}
+                >
+                  <IconBookmark className="h-5 w-5 text-gray-400" />
+                </button>
               )}
 
               <Link href={`/chat/${avatar?.username}`}>

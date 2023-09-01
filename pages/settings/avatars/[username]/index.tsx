@@ -2,8 +2,6 @@ import { GetServerSidePropsContext } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
-
 import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"

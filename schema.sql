@@ -31,6 +31,17 @@ CREATE TABLE avatars (
   owner_id uuid references auth.users
 );
 
+CREATE TABLE users_mark_avatars (
+  user_id uuid not null references users ,
+  avatar_id text not null references avatars,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+
+  CONSTRAINT "users_mark_avatars_pkey" primary key (user_id, avatar_id)
+);
+
+ALTER TABLE users_mark_avatars ADD CONSTRAINT "users_mark_avatars_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE users_mark_avatars ADD CONSTRAINT "users_mark_avatars_avatar_id_fkey" FOREIGN KEY (avatar_id) REFERENCES avatars(id);
+
 CREATE OR REPLACE FUNCTION public.list_avatars_with_embeddings_count()
   RETURNS TABLE (
     id text,

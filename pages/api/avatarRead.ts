@@ -13,7 +13,7 @@ export default async function avatarRead(req: NextApiRequest, res: NextApiRespon
 
   const { data, error } = await supabase
     .from("avatars")
-    .select("*, embeddings(count)")
+    .select("*, embeddings(count), marked:users(id)")
     .eq("username", avatar_username)
     .maybeSingle()
 

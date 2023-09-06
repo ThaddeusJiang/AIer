@@ -5,13 +5,16 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 import { IconBookmark, IconLock, IconLockOpen, IconMessage, IconNotes } from "@tabler/icons-react"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { Avatar } from "~/types"
 import { useUser } from "~/utils/useUser"
 
 export const AvatarProfileHeader = ({ username, isSetting = false }: { username: string; isSetting?: boolean }) => {
   const { user } = useUser()
+  const router = useRouter()
+
+  const queryClient = useQueryClient()
 
   const avatarQuery = useQuery<
     Avatar & {
@@ -59,8 +62,6 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
     })
   }
 
-  const router = useRouter()
-
   const markAvatarMutation = useMutation({
     mutationFn: async (data: { avatar_username: string }) => {
       const res = await fetch("/api/avatarMark", {
@@ -73,7 +74,8 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
       return res.json()
     },
     onSuccess: () => {
-      router.replace(router.asPath)
+      toast.success("Avatar marked")
+      queryClient.refetchQueries(["avatars", username])
     }
   })
 
@@ -89,7 +91,8 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
       return res.json()
     },
     onSuccess: () => {
-      router.replace(router.asPath)
+      toast.success("Avatar unmarked")
+      queryClient.refetchQueries(["avatars", username])
     }
   })
 

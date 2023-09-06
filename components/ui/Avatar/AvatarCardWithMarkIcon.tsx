@@ -1,3 +1,5 @@
+import { toast } from "react-hot-toast"
+
 import Link from "next/link"
 import { useRouter } from "next/router"
 
@@ -23,6 +25,7 @@ export function AvatarCardWithMarkIcon({ avatar }: { avatar: Avatar & { isMarked
       return res.json()
     },
     onSuccess: () => {
+      toast.success("Marked")
       router.replace(router.asPath)
     }
   })
@@ -39,6 +42,7 @@ export function AvatarCardWithMarkIcon({ avatar }: { avatar: Avatar & { isMarked
       return res.json()
     },
     onSuccess: () => {
+      toast.success("Unmarked")
       router.replace(router.asPath)
     }
   })

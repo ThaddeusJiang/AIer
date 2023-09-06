@@ -48,10 +48,7 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
     },
     onSuccess: () => {
       toast.success("Status changed")
-      router.push({
-        href: router.pathname,
-        query: router.query
-      })
+      router.replace(router.asPath)
     }
   })
 

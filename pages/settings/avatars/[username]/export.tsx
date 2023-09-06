@@ -37,10 +37,7 @@ export default function AvatarExportPage({ archives }: { archives: any[] }) {
     },
     onSuccess: () => {
       toast.success("Request sent")
-      router.push({
-        href: router.pathname,
-        query: router.query
-      })
+      router.replace(router.asPath)
     }
   })
 

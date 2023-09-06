@@ -73,7 +73,7 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
       return res.json()
     },
     onSuccess: () => {
-      router.reload()
+      router.replace(router.asPath)
     }
   })
 
@@ -89,7 +89,7 @@ export const AvatarProfileHeader = ({ username, isSetting = false }: { username:
       return res.json()
     },
     onSuccess: () => {
-      router.reload()
+      router.replace(router.asPath)
     }
   })
 

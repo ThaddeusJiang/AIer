@@ -23,7 +23,7 @@ export function AvatarCardWithMarkIcon({ avatar }: { avatar: Avatar & { isMarked
       return res.json()
     },
     onSuccess: () => {
-      router.reload()
+      router.replace(router.asPath)
     }
   })
 
@@ -39,7 +39,7 @@ export function AvatarCardWithMarkIcon({ avatar }: { avatar: Avatar & { isMarked
       return res.json()
     },
     onSuccess: () => {
-      router.reload()
+      router.replace(router.asPath)
     }
   })
 

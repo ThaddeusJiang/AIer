@@ -10,7 +10,6 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
 import remarkGfm from "remark-gfm"
 
-import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { getURL } from "~/utils/helpers"
@@ -25,7 +24,6 @@ export default function SettingsAvatarAPIPage({ token }: { token: string }) {
 
   return (
     <>
-      <Header />
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting />
 

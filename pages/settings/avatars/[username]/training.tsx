@@ -13,7 +13,6 @@ import { Card, Flex, Grid, Icon, Metric, ProgressBar, Text } from "@tremor/react
 import axios from "axios"
 import * as yup from "yup"
 
-import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { ContentLayout } from "~/components/ui/Layouts/ContentLayout"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
@@ -68,7 +67,6 @@ export default function TrainingPage({ essaysCount }: { essaysCount: number }) {
 
   return (
     <>
-      <Header />
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting={true} />
         <ContentLayout>

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import ReactMarkdown from "react-markdown"
 
 import { IconDots } from "@tabler/icons-react"
@@ -8,8 +9,25 @@ import remarkGfm from "remark-gfm"
 
 import { Memo } from "~/types"
 
-export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string) => void }) => {
+export const MemoCard = (props: { memo: Memo; onDelete: (id: string) => void; highlight: string }) => {
+  const { memo, onDelete, highlight } = props
   const createdAt = dayjs(memo.created_at).format("YYYY-MM-DD HH:mm")
+
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const words = highlight.trim().split(" ").filter(Boolean)
+    words.forEach((word) => {
+      let reg = new RegExp(word, "gi")
+
+      if (ref.current && ref.current instanceof HTMLElement) {
+        ref.current.innerHTML = ref.current.innerHTML.replace(
+          reg,
+          (match) => `<span class="bg-yellow-300 text-black">${match}</span>`
+        )
+      }
+    })
+  }, [highlight])
+
   return (
     <div className={classNames("w-full")}>
       <div className="my-2 rounded-lg bg-base-100 px-4 py-2 hover:shadow ">
@@ -36,7 +54,7 @@ export const MemoCard = ({ memo, onDelete }: { memo: Memo; onDelete: (id: string
             </div>
           </div>
         </div>
-        <article className="prose md:prose ">
+        <article ref={ref} className="prose md:prose ">
           <ReactMarkdown children={memo?.content ?? ""} remarkPlugins={[remarkGfm]} />
         </article>
       </div>

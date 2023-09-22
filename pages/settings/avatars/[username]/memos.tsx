@@ -186,24 +186,23 @@ export default function SettingsAvatarMemoPage({ avatar }: { avatar: Avatar }) {
 
           {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}
 
-          <div className="text-sm opacity-70">
-            <p>Find {count} memos</p>
-          </div>
+          {status === "loading" ? (
+            <p className=" text-gray-500">Loading...</p>
+          ) : (
+            <p className=" text-gray-500">Find {count} memos</p>
+          )}
+          {status === "error" ? <p className="text-center text-red-500">error</p> : null}
 
           {data?.pages?.map(({ items, nextCursor }) => (
             <Fragment key={nextCursor ?? "no-more"}>
               {items?.map((project: any) => (
-                <MemoCard key={project.id} memo={project} onDelete={onDelete} />
+                <MemoCard key={project.id} memo={project} onDelete={onDelete} highlight={q} />
               ))}
             </Fragment>
           ))}
 
-          {status === "error" ? <p className="text-center text-red-500">error</p> : null}
-
           <div ref={ref} className="pb-12 text-center text-gray-500">
-            {status === "loading"
-              ? "loading..."
-              : isFetchingNextPage
+            {isFetchingNextPage
               ? "load more..."
               : hasNextPage
               ? null

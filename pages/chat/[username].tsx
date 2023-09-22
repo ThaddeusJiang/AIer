@@ -86,7 +86,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
       </Head>
 
       <div className="flex h-screen flex-col overflow-hidden ">
-        <div className="flex-shrink-0 ">
+        <div className="flex-0 ">
           <Header />
           <div className="mx-auto flex w-full items-center justify-between space-x-2 px-2 py-2 sm:max-w-screen-sm">
             <div className="flex items-center space-x-2">
@@ -117,7 +117,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
             </div>
           </div>
         </div>
-        <div className="overflow-hidden ">
+        <div className="grow overflow-hidden">
           <div ref={messageContainerRef} className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
             <div ref={ref} className="pb-12 text-center text-gray-500">
               {status === "loading"
@@ -131,7 +131,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
 
             {data?.pages.map(({ items, nextCursor }) => (
               <div key={nextCursor ?? "no-more"}>
-                <div className=" flex flex-col-reverse">
+                <div className="flex flex-col-reverse">
                   {items.map((message: any) => (
                     <MessageBubble key={message.id} message={message} />
                   ))}
@@ -141,7 +141,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
             ))}
           </div>
         </div>
-        <div className="flex-shrink-0 ">
+        <div className="flex-0">
           <div className="mx-auto w-full py-2 px-2 sm:max-w-screen-sm">
             <Chat avatar={avatar} user={user} />
           </div>

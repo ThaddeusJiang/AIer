@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useInView } from "react-intersection-observer"
@@ -17,11 +17,14 @@ import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { MemoCard } from "~/components/ui/MemoCard"
+import { MemoSearchForm } from "~/components/ui/MemoSearchForm"
 import { Avatar } from "~/types"
 
-export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
+export default function SettingsAvatarMemoPage({ avatar }: { avatar: Avatar }) {
   const router = useRouter()
   const { username } = router.query as { username: string }
+
+  const [q, setQ] = useState("")
 
   const { register, control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
@@ -38,7 +41,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   const queryClient = useQueryClient()
 
   const { status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["memoList", avatar.id],
+    queryKey: ["memoList", avatar.id, q],
     queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch("/api/memoList", {
         method: "POST",
@@ -47,9 +50,11 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
         },
         body: JSON.stringify({
           avatar_id: avatar.id,
-          cursor: pageParam
+          cursor: pageParam,
+          q
         })
       })
+
       return res.json()
     },
     getNextPageParam: (lastPage, pages) => lastPage.nextCursor
@@ -73,9 +78,10 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       return res.json()
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
+      queryClient.setQueryData(["memoList", avatar.id, q], (old: any) => {
         const memoList = produce(old, (draft: any) => {
           draft.pages[0].items.unshift(data)
+          draft.pages[0].count += 1
         })
         return memoList
       })
@@ -93,7 +99,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
       }).then((res) => res.json())
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["memoList", avatar.id], (old: any) => {
+      queryClient.setQueryData(["memoList", avatar.id, q], (old: any) => {
         const memoList = produce(old, (draft: any) => {
           for (let i = 0; i < draft.pages.length; i++) {
             const items = draft.pages[i].items.filter((memo: { id: string }) => memo.id !== data.id)
@@ -102,7 +108,9 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
               break
             }
           }
+          draft.pages[0].count -= 1
         })
+
         return memoList
       })
     }
@@ -128,6 +136,7 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
   }
 
   const content = watch("content")
+  const count = data?.pages?.[0]?.count ?? 0
 
   return (
     <>
@@ -136,6 +145,8 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
         <AvatarProfileHeader username={username} isSetting={true} />
 
         <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto sm:max-w-screen-sm">
+          <MemoSearchForm text={q} onSearch={setQ} />
+
           <form onSubmit={handleSubmit(onCreate)} className="form-control w-full py-1">
             <input type="hidden" {...register("avatar_id")} />
             <div id="content" className=" relative">
@@ -160,17 +171,24 @@ export default function SettingsAvatarPage({ avatar }: { avatar: Avatar }) {
                 </button>
               ) : null}
             </div>
-            {content ? (
-              <div className=" flex justify-end text-xs opacity-70">
-                <p>
-                  Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
-                  <kbd className=" kbd kbd-xs">return</kbd> to save memo
-                </p>
-              </div>
-            ) : null}
+
+            <div
+              className={classNames(" flex justify-end text-xs opacity-0", {
+                "  opacity-70 ": content
+              })}
+            >
+              <p>
+                Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
+                <kbd className=" kbd kbd-xs">return</kbd> to save memo
+              </p>
+            </div>
           </form>
 
           {memoCreateMutation.isLoading ? <p className="text-center text-gray-500">creating...</p> : null}
+
+          <div className="text-sm opacity-70">
+            <p>Find {count} memos</p>
+          </div>
 
           {data?.pages?.map(({ items, nextCursor }) => (
             <Fragment key={nextCursor ?? "no-more"}>

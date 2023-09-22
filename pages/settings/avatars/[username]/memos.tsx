@@ -13,7 +13,6 @@ import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-q
 import classNames from "classnames"
 import produce from "immer"
 
-import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { MemoCard } from "~/components/ui/MemoCard"
@@ -140,7 +139,6 @@ export default function SettingsAvatarMemoPage({ avatar }: { avatar: Avatar }) {
 
   return (
     <>
-      <Header />
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting={true} />
 

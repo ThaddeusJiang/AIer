@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 import { Avatar } from "~/types"
@@ -14,7 +13,6 @@ export default function SettingsAvatarQueriesPage({ replies, users }: { replies:
 
   return (
     <>
-      <Header />
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting={true} />
 

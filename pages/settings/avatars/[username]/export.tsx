@@ -12,7 +12,6 @@ import { useMutation } from "@tanstack/react-query"
 
 import dayjs from "dayjs"
 
-import { Header } from "~/components/lp/Header"
 import { AvatarProfileHeader } from "~/components/ui/Avatar/AvatarProfileHeader"
 import { MainLayout } from "~/components/ui/Layouts/MainLayout"
 
@@ -46,7 +45,6 @@ export default function AvatarExportPage({ archives }: { archives: any[] }) {
 
   return (
     <>
-      <Header />
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting={true} />
         <div>

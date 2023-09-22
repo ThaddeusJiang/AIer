@@ -6,6 +6,7 @@ import { User } from "@supabase/auth-helpers-react"
 import { IconArrowUp } from "@tabler/icons-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import classNames from "classnames"
 import produce from "immer"
 
 import { Message } from "~/types"
@@ -183,14 +184,17 @@ export function Chat({
           </button>
         ) : null}
       </form>
-      {query ? (
-        <div className=" flex justify-end text-xs opacity-70">
-          <p>
-            Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
-            <kbd className=" kbd kbd-xs">return</kbd> to send message
-          </p>
-        </div>
-      ) : null}
+
+      <div
+        className={classNames(" flex justify-end text-xs opacity-0", {
+          "  opacity-70 ": query
+        })}
+      >
+        <p>
+          Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
+          <kbd className=" kbd kbd-xs">return</kbd> to send message
+        </p>
+      </div>
     </>
   )
 }

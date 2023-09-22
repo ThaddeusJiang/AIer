@@ -13,12 +13,12 @@ export default async function memoList(req: NextApiRequest, res: NextApiResponse
     return res.status(401).json({ error: "Unauthorized" })
   }
 
-  const { avatar_id, cursor: from = 0 } = req.body as { avatar_id: string; cursor: number }
+  const { avatar_id, cursor: from = 0, q } = req.body as { avatar_id: string; cursor: number; q?: string }
 
   const PAGE_SIZE = 10
   const to = from + PAGE_SIZE - 1
 
-  const { data, error, count } = await supabase
+  let query = supabase
     .from("memos")
     .select("*", { count: "exact" })
     .eq("avatar_id", avatar_id)
@@ -26,14 +26,24 @@ export default async function memoList(req: NextApiRequest, res: NextApiResponse
     .order("created_at", { ascending: false })
     .range(from, to)
 
+  if (q) {
+    query = query.textSearch("content", `'${q}'`)
+  }
+
+  const { data, error, count: _count } = await query
+
+  const count = _count || 0
+
   if (error) {
     return res.status(500).json({ error: error.message })
   }
 
-  const nextCursor = (count || 0) <= to ? undefined : to + 1
+  const nextCursor = count <= to ? undefined : to + 1
 
+  // memo: better to use header content-range, but it's harder than JSON response
   return res.status(200).json({
     items: data,
-    nextCursor
+    nextCursor,
+    count
   })
 }

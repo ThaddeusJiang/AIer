@@ -196,7 +196,7 @@ export default function SettingsAvatarMemoPage({ avatar }: { avatar: Avatar }) {
           {data?.pages?.map(({ items, nextCursor }) => (
             <Fragment key={nextCursor ?? "no-more"}>
               {items?.map((project: any) => (
-                <MemoCard key={project.id} memo={project} onDelete={onDelete} />
+                <MemoCard key={project.id} memo={project} onDelete={onDelete} highlight={q} />
               ))}
             </Fragment>
           ))}

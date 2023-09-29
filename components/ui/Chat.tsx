@@ -190,7 +190,7 @@ export function Chat({
           "  opacity-70 ": query
         })}
       >
-        <p>
+        <p className=" hidden md:block">
           Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
           <kbd className=" kbd kbd-xs">return</kbd> to send message
         </p>

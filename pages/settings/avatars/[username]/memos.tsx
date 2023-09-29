@@ -175,7 +175,7 @@ export default function SettingsAvatarMemoPage({ avatar }: { avatar: Avatar }) {
                 "  opacity-70 ": content
               })}
             >
-              <p>
+              <p className=" hidden md:block">
                 Return to add a new line, <kbd className=" kbd kbd-xs">cmd / ctrl</kbd> +&nbsp;
                 <kbd className=" kbd kbd-xs">return</kbd> to save memo
               </p>

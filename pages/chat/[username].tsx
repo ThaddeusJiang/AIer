@@ -88,7 +88,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
       <div className="flex h-screen flex-col overflow-hidden ">
         <div className="flex-0 ">
           <Header />
-          <div className="mx-auto flex w-full items-center justify-between space-x-2 px-2 py-2 sm:max-w-screen-sm">
+          <div className="mx-auto flex w-full items-center justify-between space-x-2 px-2 py-2 md:max-w-screen-md">
             <div className="flex items-center space-x-2">
               <Link href={`/avatars/${avatar.username}`}>
                 <MiniAvatar avatar={avatar} />
@@ -118,7 +118,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
           </div>
         </div>
         <div className="grow overflow-hidden">
-          <div ref={messageContainerRef} className="mx-auto max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
+          <div ref={messageContainerRef} className="mx-auto max-h-full w-full overflow-y-auto px-2 md:max-w-screen-md">
             <div ref={ref} className="pb-12 text-center text-gray-500">
               {status === "loading"
                 ? "loading..."
@@ -142,7 +142,7 @@ export default function ChatPage({ avatar }: { avatar: Avatar }) {
           </div>
         </div>
         <div className="flex-0">
-          <div className="mx-auto w-full py-2 px-2 sm:max-w-screen-sm">
+          <div className="mx-auto w-full py-2 px-2 md:max-w-screen-md">
             <Chat avatar={avatar} user={user} />
           </div>
         </div>

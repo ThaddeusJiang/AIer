@@ -16,7 +16,7 @@ export default function SettingsAvatarQueriesPage({ replies, users }: { replies:
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting={true} />
 
-        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 sm:max-w-screen-sm">
+        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto px-2 md:max-w-screen-md">
           <div className=" min-h-screen">
             <div className="stats w-full shadow">
               {/* TODO: Total replies, Users, followers */}

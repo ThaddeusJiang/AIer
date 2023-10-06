@@ -142,7 +142,7 @@ export default function SettingsAvatarMemoPage({ avatar }: { avatar: Avatar }) {
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting={true} />
 
-        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto sm:max-w-screen-sm">
+        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto md:max-w-screen-md">
           <MemoSearchForm text={q} onSearch={setQ} />
 
           <form onSubmit={handleSubmit(onCreate)} className="form-control w-full py-1">

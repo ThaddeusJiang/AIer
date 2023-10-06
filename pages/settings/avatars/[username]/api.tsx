@@ -27,7 +27,7 @@ export default function SettingsAvatarAPIPage({ token }: { token: string }) {
       <MainLayout>
         <AvatarProfileHeader username={username} isSetting />
 
-        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto rounded-lg bg-white px-2 sm:max-w-screen-sm">
+        <div className="mx-auto mt-4 max-h-full w-full overflow-y-auto rounded-lg bg-white px-2 md:max-w-screen-md">
           <>
             {token ? (
               <>

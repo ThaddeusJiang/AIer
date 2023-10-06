@@ -165,7 +165,7 @@ export function Chat({
 
   return (
     <>
-      <form className="form-control relative w-full sm:max-w-screen-sm" onSubmit={handleSubmit(onSubmit)}>
+      <form className="form-control relative w-full md:max-w-screen-md" onSubmit={handleSubmit(onSubmit)}>
         <div className="relative">
           <textarea
             className="textarea-bordered textarea w-full text-base text-gray-900"

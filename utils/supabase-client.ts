@@ -32,7 +32,7 @@ export const getPublicAvatars = async (): Promise<Avatar[]> => {
 }
 
 export const getAvatar = async (id: string) => {
-  const { data, error } = await supabase.from("avatars").select().eq("id", id).maybeSingle()
+  const { data, error } = await supabase.from("avatars").select().eq("id", id).single()
 
   if (error) {
     console.error(error)

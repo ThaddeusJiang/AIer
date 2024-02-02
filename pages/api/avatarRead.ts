@@ -15,7 +15,7 @@ export default async function avatarRead(req: NextApiRequest, res: NextApiRespon
     .from("avatars")
     .select("*, embeddings(count), marked:users(id)")
     .eq("username", avatar_username)
-    .maybeSingle()
+    .single()
 
   const { count: repliesCount } = await supabase
     .from("queries")

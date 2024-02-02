@@ -169,7 +169,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { username } = ctx.params as { username: string }
   const avatar_username = username?.toLocaleLowerCase()
 
-  const { data, error } = await supabase.from("avatars").select().eq("username", avatar_username).maybeSingle()
+  const { data, error } = await supabase.from("avatars").select().eq("username", avatar_username).single()
 
   if (error) {
     console.error(error)

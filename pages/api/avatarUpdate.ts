@@ -30,7 +30,7 @@ export default async function avatarUpdate(req: NextApiRequest, res: NextApiResp
     .update(avatarUpdateInput)
     .eq("username", username)
     .select("*")
-    .maybeSingle()
+    .single()
 
   if (error) {
     return res.status(500).json({ error: error.message })

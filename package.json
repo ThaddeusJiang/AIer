@@ -66,7 +66,7 @@
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
     "@next/env": "^13.2.4",
-    "@supabase/supabase-js": "^2.11.0",
+    "@supabase/supabase-js": "^2.39.0",
     "@tailwindcss/typography": "^0.5.9",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/node": "^18.14.4",

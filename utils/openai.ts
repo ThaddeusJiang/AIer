@@ -14,8 +14,6 @@ export const OpenAIStream = async (data: { prompt: OpenAIMessage[]; messages: Op
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
 
-  console.debug("OpenAIStream", [...prompt, ...messages, { role: "user", content: data.query }])
-
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: {
       "Content-Type": "application/json",

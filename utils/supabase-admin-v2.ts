@@ -20,6 +20,7 @@ export const searchEmbeddings = async ({
 }) => {
   const input = query.replace(/\n/g, " ")
 
+  console.log("request openai embedding", input)
   const embeddingsJson = await fetch("https://api.openai.com/v1/embeddings", {
     headers: {
       "Content-Type": "application/json",
@@ -34,6 +35,7 @@ export const searchEmbeddings = async ({
 
   const json = await embeddingsJson.json()
   const embedding = json.data[0].embedding
+  console.log("received openai embedding", embedding)
 
   const { data, error } = await supabaseAdmin.rpc("embeddings_search", {
     query_embedding: embedding,

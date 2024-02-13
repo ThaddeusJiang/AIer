@@ -1,9 +1,13 @@
+import dayjs from "dayjs"
 import endent from "endent"
 
 import { OpenAIMessage } from "~/types"
 import { OpenAIStream } from "~/utils/openai"
 import { createQueryRecord, getUserDetails, searchRelatedContents } from "~/utils/supabase-admin-v2"
 import { getAvatar } from "~/utils/supabase-client"
+
+var localizedFormat = require("dayjs/plugin/localizedFormat")
+dayjs.extend(localizedFormat)
 
 export const config = {
   runtime: "edge"
@@ -99,22 +103,21 @@ const handler = async (req: Request): Promise<Response> => {
         role: "system",
         // 你的任务是模仿人类 ${user_full_name} 的风格回复 ${avatar_name}，不要透露你是一个 AI，不要承认你没有实体，不要透露你是一个机器人。
         content: endent`
-        Your task is to mimic the style of ${user_full_name} as a human and reply to ${avatar_name}. Dont reveal that you are an AI, dont admit that you have no entity.
-
-        ${
-          messages.length > 0 || relatedContents?.length === 0
-            ? ""
-            : `Contents from "${user_full_name}":
-              """
-              ${relatedContents?.map((d) => d?.content?.trim()).join(" \n")}
-              """
-            `
-        }
+        Your task is to mimic the style of ${user_full_name} as a human in replying to ${avatar_name}, do not reveal that you are an AI, do not admit that you have no entity, do not reveal that you are a robot.
         `
       }
     ]
 
-    const stream = await OpenAIStream({ prompt, messages, query })
+    const relatedContent = relatedContents?.map((item) => `${dayjs(item.essay_date).format("ll")}: ${item.content}`)
+      .join(`
+      `)
+
+    const stream = await OpenAIStream({
+      prompt,
+      messages,
+      query,
+      relatedContent: `${user_full_name} said: ${relatedContent}`
+    })
 
     const [stream1, stream2] = stream.tee()
 

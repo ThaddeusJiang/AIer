@@ -9,7 +9,12 @@ export enum OpenAIModel {
 
 const apiKey = process.env.OPENAI_API_KEY
 
-export const OpenAIStream = async (data: { prompt: OpenAIMessage[]; messages: OpenAIMessage[]; query: string }) => {
+export const OpenAIStream = async (data: {
+  prompt: OpenAIMessage[]
+  messages: OpenAIMessage[]
+  query: string
+  relatedContent?: string
+}) => {
   const { prompt, messages } = data
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
@@ -22,7 +27,17 @@ export const OpenAIStream = async (data: { prompt: OpenAIMessage[]; messages: Op
     method: "POST",
     body: JSON.stringify({
       model: OpenAIModel.GTP,
-      messages: [...prompt, ...messages, { role: "user", content: data.query }],
+      messages: [
+        ...prompt,
+        ...messages,
+        data.relatedContent
+          ? {
+              role: "system",
+              content: data.relatedContent
+            }
+          : undefined,
+        { role: "user", content: data.query }
+      ],
       max_tokens: 300,
       temperature: 0.0,
       stream: true

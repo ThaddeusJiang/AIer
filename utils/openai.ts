@@ -1,20 +1,21 @@
 import { ParsedEvent, ReconnectInterval, createParser } from "eventsource-parser"
 import { Configuration, OpenAIApi } from "openai"
 
+import { OpenAIMessage } from "~/types"
+
 export enum OpenAIModel {
   GTP = "gpt-4"
 }
 
 const apiKey = process.env.OPENAI_API_KEY
 
-export const OpenAIStream = async ({
-  messages
-}: {
-  messages: {
-    role: string
-    content: string
-  }[]
+export const OpenAIStream = async (data: {
+  prompt: OpenAIMessage[]
+  messages: OpenAIMessage[]
+  query: string
+  relatedContent?: string
 }) => {
+  const { prompt, messages } = data
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
 
@@ -26,7 +27,12 @@ export const OpenAIStream = async ({
     method: "POST",
     body: JSON.stringify({
       model: OpenAIModel.GTP,
-      messages,
+      messages: [
+        ...prompt,
+        ...messages,
+        ...(data.relatedContent ? [{ role: "system", content: data.relatedContent }] : []),
+        { role: "user", content: data.query }
+      ],
       max_tokens: 300,
       temperature: 0.0,
       stream: true

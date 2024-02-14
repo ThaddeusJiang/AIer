@@ -9,7 +9,7 @@ export const supabaseAdmin = createClient<Database>(
 
 const apiKey = process.env.OPENAI_API_KEY
 
-export const searchEmbeddings = async ({
+export const searchRelatedContents = async ({
   query,
   limit = 5,
   queryTo
@@ -20,6 +20,7 @@ export const searchEmbeddings = async ({
 }) => {
   const input = query.replace(/\n/g, " ")
 
+  console.log("request openai embedding:", input)
   const embeddingsJson = await fetch("https://api.openai.com/v1/embeddings", {
     headers: {
       "Content-Type": "application/json",
@@ -34,6 +35,11 @@ export const searchEmbeddings = async ({
 
   const json = await embeddingsJson.json()
   const embedding = json.data[0].embedding
+  if (!embedding) {
+    console.error("Error: openai embeddings API return empty")
+
+    return { data: [], error: "openai embeddings API return empty" }
+  }
 
   const { data, error } = await supabaseAdmin.rpc("embeddings_search", {
     query_embedding: embedding,
@@ -41,6 +47,10 @@ export const searchEmbeddings = async ({
     match_count: limit,
     query_to: queryTo
   })
+
+  if (error) {
+    console.error("Error: embeddings_search", error)
+  }
 
   return { data, error }
 }
@@ -52,9 +62,13 @@ export const createQueryRecord = async ({ from, to, message }: { from: string; t
     content: message
   }
   const { error, data } = await supabaseAdmin.from("queries").insert(queryData).select()
-  if (error) throw error
-  const [{ id }] = data
-  console.log(`Query inserted: ${id}`)
+
+  if (error) {
+    return { data: null, error }
+  }
+
+  console.log(`Query inserted: ${data[0]?.id}`)
+  return { data: data[0], error }
 }
 
 // DB:memos, CRUD and search
@@ -127,7 +141,7 @@ export const getUserDetails = async (id: string) => {
   const { data, error } = await supabaseAdmin.from("users").select().eq("id", id).single()
 
   if (error) {
-    console.error(error)
+    console.error("Error: getUserDetails", error)
   }
 
   return data

@@ -7,6 +7,7 @@ import { IconArrowUp } from "@tabler/icons-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import classNames from "classnames"
+import dayjs from "dayjs"
 import produce from "immer"
 
 import { Message } from "~/types"
@@ -36,7 +37,8 @@ export function Chat({
   })
 
   const answerCreateMutation = useMutation({
-    mutationFn: async ({ avatar_id, content }: { avatar_id: string; content: string }) => {
+    mutationFn: async (data: { avatar_id: string; content: string; created_at: string }) => {
+      const { avatar_id, content, created_at } = data
       return fetch("/api/answerCreate", {
         method: "POST",
         headers: {
@@ -44,7 +46,8 @@ export function Chat({
         },
         body: JSON.stringify({
           avatar_id,
-          content
+          content,
+          created_at
         })
       }).then((res) => res.json())
     }
@@ -70,14 +73,16 @@ export function Chat({
       id: "query_" + crypto.randomUUID(),
       from_id: user!.id,
       to_id: avatar.id,
-      content: query
+      content: query,
+      created_at: new Date().toISOString()
     }
 
     let resMessage = {
       id: "answer_" + crypto.randomUUID(),
       from_id: avatar.id,
       to_id: user!.id,
-      content: ""
+      content: "",
+      created_at: new Date().toISOString()
     }
 
     // @ts-ignore FIXME: fix this
@@ -98,10 +103,16 @@ export function Chat({
         queryFrom: user?.id,
         queryTo: avatar.id,
         query,
-        messages: (messageListCache?.pages?.[0]?.items || []).slice(-10).map((m) => ({
-          role: m.from_id === user?.id ? "user" : "assistant",
-          content: m.content
-        }))
+
+        messages: (messageListCache?.pages?.[0]?.items || [])
+          .filter((d) => dayjs(d.created_at).isAfter(dayjs().subtract(10, "minutes")))
+          .slice(-10)
+          .reverse()
+          .map((m) => ({
+            role: m.from_id === user?.id ? "user" : "assistant",
+            content: m.content,
+            created_at: m.created_at
+          }))
       })
     })
 
@@ -139,7 +150,8 @@ export function Chat({
 
     await answerCreateMutation.mutate({
       avatar_id: avatar.id,
-      content: answer
+      content: answer,
+      created_at: new Date().toISOString()
     })
   }
 
@@ -165,6 +177,7 @@ export function Chat({
 
   return (
     <>
+      {/* TODO: error message and re-try */}
       <form className="form-control relative w-full md:max-w-screen-md" onSubmit={handleSubmit(onSubmit)}>
         <div className="relative">
           <textarea

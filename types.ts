@@ -142,9 +142,15 @@ export type Avatar = {
 
 export type Message = {
   id: string
-  from_id: string | null
-  to_id: string | null
-  content: string | null
+  from_id: string
+  to_id: string
+  content: string
+  created_at: string
+}
+
+export interface OpenAIMessage {
+  role: "user" | "system" | "assistant"
+  content: string
 }
 
 export type Memo = {

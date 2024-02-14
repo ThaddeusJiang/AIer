@@ -177,6 +177,7 @@ export function Chat({
 
   return (
     <>
+      {/* TODO: error message and re-try */}
       <form className="form-control relative w-full md:max-w-screen-md" onSubmit={handleSubmit(onSubmit)}>
         <div className="relative">
           <textarea

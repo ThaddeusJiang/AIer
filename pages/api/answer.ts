@@ -57,19 +57,20 @@ const handler = async (req: Request): Promise<Response> => {
   const relatedContents = await _searchRelatedContents({ query, queryTo })
 
   // step2: createQueryRecord
-  try {
-    await createQueryRecord({
-      from: queryFrom,
-      to: queryTo,
-      message: query
+  const { error: createQueryRecordError } = await createQueryRecord({
+    from: queryFrom,
+    to: queryTo,
+    message: query
+  })
+  if (createQueryRecordError) {
+    console.error("Error: createQueryRecord", {
+      input: { queryFrom, queryTo, query },
+      error: createQueryRecordError
     })
-  } catch (error) {
-    console.error("Error: createQueryRecord", error)
     return new Response("Error: createQueryRecord", { status: 500 })
   }
 
   // step3: OpenAIStream
-
   const user = await getUserDetails(queryFrom)
   const avatar = await getAvatar(queryTo)
 

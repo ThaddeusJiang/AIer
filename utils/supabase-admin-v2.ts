@@ -62,9 +62,13 @@ export const createQueryRecord = async ({ from, to, message }: { from: string; t
     content: message
   }
   const { error, data } = await supabaseAdmin.from("queries").insert(queryData).select()
-  if (error) throw error
-  const [{ id }] = data
-  console.log(`Query inserted: ${id}`)
+
+  if (error) {
+    return { data: null, error }
+  }
+
+  console.log(`Query inserted: ${data[0]?.id}`)
+  return { data: data[0], error }
 }
 
 // DB:memos, CRUD and search

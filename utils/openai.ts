@@ -30,12 +30,7 @@ export const OpenAIStream = async (data: {
       messages: [
         ...prompt,
         ...messages,
-        data.relatedContent
-          ? {
-              role: "system",
-              content: data.relatedContent
-            }
-          : undefined,
+        ...(data.relatedContent ? [{ role: "system", content: data.relatedContent }] : []),
         { role: "user", content: data.query }
       ],
       max_tokens: 300,

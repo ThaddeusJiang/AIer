@@ -12,6 +12,7 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { SessionContextProvider } from "@supabase/auth-helpers-react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { Analytics } from "@vercel/analytics/react"
 
 import type { Database } from "types_db"
 
@@ -33,7 +34,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <div>
+    <>
       {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-VW2NTSHYQC" strategy="afterInteractive" />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -59,6 +60,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </QueryClientProvider>
 
       <Toaster />
-    </div>
+      <Analytics />
+    </>
   )
 }
